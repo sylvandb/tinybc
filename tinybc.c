@@ -273,13 +273,33 @@ static void color_stmt(struct cttype *ct)
 
 	t_take(ct->t, TOKEN_COLOR);
 	PDEBUG(lg, "color:\n");
-	if (t_expr_type(ct->t))
+	if (t_expr_type(ct->t)) {
 		n1 = expr(ct);
-	else
+#ifdef BGR
+		if (n1 == 1)
+			n1 = 4;
+		else if (n1 == 3)
+			n1 = 6;
+		else if (n1 == 4)
+			n1 = 1;
+		else if (n1 == 6)
+			n1 = 3;
+#endif
+	} else
 		t_take(ct->t, TOKEN_VARIABLE);
 	t_take(ct->t, TOKEN_COMMA);
 	if (t_expr_type(ct->t)) {
 		n2 = expr(ct);
+#ifdef BGR
+		if (n2 == 1)
+			n2 = 4;
+		else if (n2 == 3)
+			n2 = 6;
+		else if (n2 == 4)
+			n2 = 1;
+		else if (n2 == 6)
+			n2 = 3;
+#endif
 		/* Only COLOR_PAIRS color pairs are allowed */
 		if (ct->colorpairs[n1][n2] && 
 			n1 < MAX_COLOR && n2 < MAX_COLOR) {
@@ -593,6 +613,9 @@ static void stmt(struct cttype *ct)
 		t_take(ct->t, TOKEN_LF);
 		break;
 	default:
+		scrollok(stdscr, TRUE);
+		printw("\n");
+		scrollok(stdscr, FALSE);
 		printw("Statement not implemented, line %d\n",
 			t_currline(ct->t));
 		t_end(ct->t);

@@ -7,7 +7,7 @@ tinybc: tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
 	$(CC) $(DBFLAGS) -o $@ tokenizer.c tinybc.c main.c -lcurses
  
 tinybc.exe: tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
-	$(CC) $(DBFLAGS) -I. -o $@ tokenizer.c tinybc.c main.c -L. -lpdcurses
+	$(CC) $(DBFLAGS) -DBGR -I. -o $@ tokenizer.c tinybc.c main.c -L. -lpdcurses
 
 clean:
 	rm -f tinybc tinybc.exe
@@ -21,6 +21,7 @@ install:
 	install -m 0644 README /usr/share/doc/tinybc
 	install -m 0644 LICENSE /usr/share/doc/tinybc
 	install -m 0644 ex* /usr/share/doc/tinybc
+	install -m 0644 tinybctut.txt /usr/share/doc/tinybc
 
 .PHONY: install
 

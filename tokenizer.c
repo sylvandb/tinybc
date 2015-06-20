@@ -273,6 +273,9 @@ void t_string(struct ttype *t, char *dest, long int len)
 void t_take(struct ttype *t, int expected)
 {
 	if (expected != t->currtype) {
+		scrollok(stdscr, TRUE);
+		printw("\n");
+		scrollok(stdscr, FALSE);
 		printw("Token type not what was expected (expected %d, "
 			"got %d), line %d\n", expected, t_type(t),
 			t->currentline);
