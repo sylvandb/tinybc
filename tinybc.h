@@ -34,16 +34,15 @@ struct cttype {
 	int gosub_stack[MAX_GOSUB_DEPTH];
 	int gosub_stack_ptr;
 	int lastpair; /* Added */
-	long int variables[MAX_VARIND];
 	struct ttype *t;
 };
 
-void tinybc_init(struct cttype *ct, char *program, int *numbers);
+void tinybc_init(struct cttype *ct, char *program, long int *numbers);
 int tinybc_ended(struct cttype *ct);
-int tinybc_get(struct cttype *ct, int varind);
+long int tinybc_get(struct cttype *ct, int varind);
 void tinibc_close(struct cttype *ct);
 void interactive(int mode);
-void tinybc_set(struct cttype *ct, int varind, int value);
+void tinybc_set(struct cttype *ct, long int varind, long int value);
 void tinybc_start(struct cttype *ct);
 void tinybc_statement(struct cttype *ct);
 

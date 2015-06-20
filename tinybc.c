@@ -23,12 +23,12 @@
 #include "tokenizer.h"
 #include "tinybc.h"
 
-static int expr(struct cttype *ct);
+static long int expr(struct cttype *ct);
 static void stmt(struct cttype *ct);
 
-static int factor(struct cttype *ct)
+static long int factor(struct cttype *ct)
 {
-	int minus, n;
+	long int minus, nind, n;
 
 	if (t_ended(ct->t)) return 0;
 	PDEBUG(lg, "factor: token %d\n", t_type(ct->t));
@@ -45,6 +45,11 @@ static int factor(struct cttype *ct)
 		n = minus * rand() % expr(ct);
 		PDEBUG(lg, "factor: random number %d\n", n);
 		t_take(ct->t, TOKEN_RPAREN);
+		break;
+	case TOKEN_SIZE:
+		t_take(ct->t, TOKEN_SIZE);
+		n = minus * t_size(ct->t);
+		PDEBUG(lg, "factor: size %d\n", n);
 		break;
 	case TOKEN_NUMBER:
 		n = minus * t_number(ct->t);
@@ -65,6 +70,16 @@ static int factor(struct cttype *ct)
 			t_variable(ct->t));
 		t_take(ct->t, TOKEN_VARIABLE);
 		break;
+	case TOKEN_AT:
+		t_take(ct->t, TOKEN_AT);
+		t_take(ct->t, TOKEN_LPAREN);
+		nind = expr(ct);
+		n = minus * tinybc_get(ct, MAX_VARIND + nind);
+		PDEBUG(lg, "factor: obtaining value %d from "
+			"array element number %d\n",
+			tinybc_get(ct, MAX_VARIND + nind), nind);
+		t_take(ct->t, TOKEN_RPAREN);
+		break;
 	default:
 		PDEBUG(lg, "factor: wrong token\n");
 		t_end(ct->t);
@@ -73,9 +88,9 @@ static int factor(struct cttype *ct)
 	return n;
 }
 
-static int term(struct cttype *ct)
+static long int term(struct cttype *ct)
 {
-	int n1, n2, op;
+	long int n1, n2, op;
 
 	if (t_ended(ct->t)) return 0;
 	n1 = factor(ct);
@@ -100,18 +115,18 @@ static int term(struct cttype *ct)
 	return n1;
 }
 
-static int expr(struct cttype *ct)
+static long int component(struct cttype *ct)
 {
-	int n1, n2, op;
+	long int n1, n2, op;
 	
 	if (t_ended(ct->t)) return 0;
 	n1 = term(ct);
 	op = t_type(ct->t);
-	PDEBUG(lg, "expr: token %d\n", op);
+	PDEBUG(lg, "component: token %d\n", op);
 	while (op == TOKEN_PLUS || op == TOKEN_MINUS) {
 		t_next(ct->t);
 		n2 = term(ct);
-		PDEBUG(lg, "expr: %d %d %d\n", n1, op, n2);
+		PDEBUG(lg, "component: %d %d %d\n", n1, op, n2);
 		switch(op) {
 		case TOKEN_PLUS:
 			n1 = n1 + n2;
@@ -122,24 +137,24 @@ static int expr(struct cttype *ct)
 		}
 		op = t_type(ct->t);
 	}
-	PDEBUG(lg, "expr: %d\n", n1);
+	PDEBUG(lg, "component: %d\n", n1);
 	return n1;
 }
 
-static int relation(struct cttype *ct)
+static long int expr(struct cttype *ct)
 {
-	int n1, n2, op;
+	long int n1, n2, op;
 
 	if (t_ended(ct->t)) return 0;
-	n1 = expr(ct);
+	n1 = component(ct);
 	op = t_type(ct->t);
-	PDEBUG(lg, "relation: token %d\n", op);
+	PDEBUG(lg, "expr: token %d\n", op);
 	while (op == TOKEN_LT || op == TOKEN_GT ||
 		op == TOKEN_EQ || op == TOKEN_NOTEQ ||
 		op == TOKEN_LE || op == TOKEN_GE) {
 		t_next(ct->t);
-		n2 = expr(ct);
-		PDEBUG(lg, "relation: %d %d %d\n", n1, op, n2);
+		n2 = component(ct);
+		PDEBUG(lg, "expr: %d %d %d\n", n1, op, n2);
 		switch(op) {
 		case TOKEN_LT:
 			n1 = n1 < n2;
@@ -162,7 +177,7 @@ static int relation(struct cttype *ct)
 		}
 		op = t_type(ct->t);
 	}
-	PDEBUG(lg, "relation: %d\n", n1);
+	PDEBUG(lg, "expr: %d\n", n1);
 	return n1;
 }
 
@@ -197,7 +212,7 @@ void interactive(int mode)
  */
 static void assign_stmt(struct cttype *ct)
 {
-	int n1ind, n2;
+	long int n1ind, n2;
 
 	t_take(ct->t, TOKEN_ASSIGN);
 	PDEBUG(lg, "assign:\n");
@@ -212,9 +227,24 @@ static void assign_stmt(struct cttype *ct)
 		tinybc_set(ct, n1ind, n2);
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 #endif
+
+static void at_stmt(struct cttype *ct)
+{
+	long int n1ind;
+
+	t_take(ct->t, TOKEN_AT);
+	t_take(ct->t, TOKEN_LPAREN);
+	n1ind = expr(ct);
+	t_take(ct->t, TOKEN_RPAREN);
+	t_take(ct->t, TOKEN_EQ);
+	tinybc_set(ct, MAX_VARIND + n1ind, expr(ct));
+	PDEBUG(lg, "at: assign value %d to array element number %d\n",
+		tinybc_get(ct, MAX_VARIND + n1ind), n1ind);
+	t_take(ct->t, TOKEN_LF);
+}
 
 static void cls_stmt(struct cttype *ct)
 {
@@ -223,12 +253,12 @@ static void cls_stmt(struct cttype *ct)
 	bkgd(COLOR_PAIR(ct->currentcolor[0]));
 	clear();
 	refresh();
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void color_stmt(struct cttype *ct)
 {
-	int n1, n2;
+	long int n1, n2;
 
 	t_take(ct->t, TOKEN_COLOR);
 	PDEBUG(lg, "color:\n");
@@ -257,7 +287,7 @@ static void color_stmt(struct cttype *ct)
 		attrset(COLOR_PAIR(ct->currentcolor[0]));
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void end_stmt(struct cttype *ct)
@@ -265,17 +295,17 @@ static void end_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_END);
 	PDEBUG(lg, "end:t\n");
 	t_end(ct->t);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void gosub_stmt(struct cttype *ct)
 {
-	int linenum;
+	long int linenum;
 
 	t_take(ct->t, TOKEN_GOSUB);
 	PDEBUG(lg, "gosub:\n");
 	linenum = expr(ct);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 	if (ct->gosub_stack_ptr < MAX_GOSUB_DEPTH) {
 		ct->gosub_stack[ct->gosub_stack_ptr++] = t_number(ct->t);
 		t_jump(ct->t, linenum);
@@ -288,33 +318,33 @@ static void gosub_stmt(struct cttype *ct)
 
 static void goto_stmt(struct cttype *ct)
 {
-	int linenum;
+	long int linenum;
 
 	t_take(ct->t, TOKEN_GOTO);
 	PDEBUG(lg, "goto:\n");
 	linenum = expr(ct);
-	t_take(ct->t, TOKEN_CR);
 	t_jump(ct->t, linenum);
 }
 
 static void if_stmt(struct cttype *ct)
 {
-	int r;
+	long int n;
 	
 	t_take(ct->t, TOKEN_IF);
-	r = relation(ct);
-	PDEBUG(lg, "if: relation %d\n", r);
+	n = expr(ct);
+	PDEBUG(lg, "if: expression %d\n", n);
 	/* THEN not compulsory */
 	if (t_type(ct->t) == TOKEN_THEN) t_take(ct->t, TOKEN_THEN);
-	if (r) 
+	if (n) {
+		if (t_type(ct->t) == TOKEN_LET) t_take(ct->t, TOKEN_LET);
 		stmt(ct);
-	else
+	} else
 		t_next_line(ct->t);
 }
 
 static void inchar_stmt(struct cttype *ct)
 {
-	int n1ind;
+	long int n1ind;
 
 	t_take(ct->t, TOKEN_INCHAR);
 	PDEBUG(lg, "inchar:\n");
@@ -323,12 +353,12 @@ static void inchar_stmt(struct cttype *ct)
 		tinybc_set(ct, n1ind, inch() & A_CHARTEXT);
 	}
 	t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void inkey_stmt(struct cttype *ct)
 {
-	int n1ind;
+	long int n1ind;
 
 	t_take(ct->t, TOKEN_INKEY);
 	PDEBUG(lg, "inkey:\n");
@@ -337,19 +367,20 @@ static void inkey_stmt(struct cttype *ct)
 		tinybc_set(ct, n1ind, wgetch(stdscr));
 	}
 	t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void input_stmt(struct cttype *ct)
 {
 	char buffer[MAX_STRLEN], *p;
-	int n1ind, i, c, n;
+	long int n1ind, i, c, n;
 
 	t_take(ct->t, TOKEN_INPUT);
 	PDEBUG(lg, "input:\n");
 	strcpy(buffer, "");
 	printw("? ");
 	interactive(0);
+	refresh();
 	getnstr(buffer, MAX_STRLEN - 1);
 	p = buffer;
 	for (; ;)
@@ -372,12 +403,13 @@ static void input_stmt(struct cttype *ct)
 		} else
 			break;
 	interactive(1);
-	t_take(ct->t, TOKEN_CR);
+	refresh();
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void let_stmt(struct cttype *ct)
 {
-	int n1ind;
+	long int n1ind;
 
 	n1ind = t_variable(ct->t);
 	t_take(ct->t, TOKEN_VARIABLE);
@@ -385,12 +417,12 @@ static void let_stmt(struct cttype *ct)
 	tinybc_set(ct, n1ind, expr(ct));
 	PDEBUG(lg, "let: assign value %d to variable number %d\n",
 		tinybc_get(ct, n1ind), n1ind);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void locate_stmt(struct cttype *ct)
 {
-	int n1, n2;
+	long int n1, n2;
 
 	t_take(ct->t, TOKEN_LOCATE);
 	PDEBUG(lg, "locate:\n");
@@ -404,12 +436,12 @@ static void locate_stmt(struct cttype *ct)
 		move(n1, n2);
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void nap_stmt(struct cttype *ct)
 {
-	int n1;
+	long int n1;
 
 	t_take(ct->t, TOKEN_NAP);
 	PDEBUG(lg, "nap:\n");
@@ -418,7 +450,7 @@ static void nap_stmt(struct cttype *ct)
 		napms(n1);
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void print_stmt(struct cttype *ct)
@@ -452,23 +484,24 @@ static void print_stmt(struct cttype *ct)
 		printw("\n");
 		scrollok(stdscr, FALSE);
 	}
-	t_take(ct->t, TOKEN_CR);
+	refresh();
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void rem_stmt(struct cttype *ct)
 {
 	t_take(ct->t, TOKEN_REM);
 	PDEBUG(lg, "rem:\n");
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 }
 
 static void return_stmt(struct cttype *ct)
 {
-	int linenum;
+	long int linenum;
 
 	t_take(ct->t, TOKEN_RETURN);
 	PDEBUG(lg, "return:\n");
-	t_take(ct->t, TOKEN_CR);
+	t_take(ct->t, TOKEN_LF);
 	if (ct->gosub_stack_ptr > 0)
 		linenum = ct->gosub_stack[--(ct->gosub_stack_ptr)];
 	else {
@@ -485,6 +518,9 @@ static void return_stmt(struct cttype *ct)
 static void stmt(struct cttype *ct)
 {
 	switch (t_type(ct->t)) {
+	case TOKEN_AT:
+		at_stmt(ct);
+		break;
 	case TOKEN_CLS:
 		cls_stmt(ct);
 		break;
@@ -512,8 +548,6 @@ static void stmt(struct cttype *ct)
 	case TOKEN_INPUT:
 		input_stmt(ct);
 		break;
-	case TOKEN_LET:
-		t_take(ct->t, TOKEN_LET);
 	case TOKEN_VARIABLE:
 		let_stmt(ct);
 		break;
@@ -532,8 +566,8 @@ static void stmt(struct cttype *ct)
 	case TOKEN_RETURN:
 		return_stmt(ct);
 		break;
-	case TOKEN_CR:
-		t_take(ct->t, TOKEN_CR);
+	case TOKEN_LF:
+		t_take(ct->t, TOKEN_LF);
 		break;
 	default:
 		printw("Statement not implemented, line %d\n",
@@ -542,14 +576,14 @@ static void stmt(struct cttype *ct)
 	}
 }
 
-int tinybc_close(struct cttype *ct)
+void tinybc_close(struct cttype *ct)
 {
-		free(ct->t);
+	free(ct->t);
 
-		clear();
-		refresh();
-		delwin(stdscr);
-		endwin();
+	clear();
+	refresh();
+	delwin(stdscr);
+	endwin();
 }
 
 int tinybc_ended(struct cttype *ct)
@@ -567,14 +601,17 @@ int tinybc_ended(struct cttype *ct)
 	return t_ended(ct->t);
 }
 
-int tinybc_get(struct cttype *ct, int varind)
+long int tinybc_get(struct cttype *ct, int varind)
 {
-	if (varind >= 0 && varind <= MAX_VARIND)
-		return ct->variables[varind];
+	long int *data;
+
+	data = t_data(ct->t);
+	if (varind >= 0 && (varind + 1) * 4 < t_size(ct->t))
+		return data[varind];
 	return 0;
 }
 
-void tinybc_init(struct cttype *ct, char *program, int *numbers)
+void tinybc_init(struct cttype *ct, char *program, long int *numbers)
 {
 	struct ttype *t;
 	void *p;
@@ -591,21 +628,26 @@ void tinybc_init(struct cttype *ct, char *program, int *numbers)
 	interactive(0);
 }
 
-void tinybc_set(struct cttype *ct, int varind, int value)
+void tinybc_set(struct cttype *ct, long int varind, long int value)
 {
-	if (varind >= 0 && varind <= MAX_VARIND)
-		ct->variables[varind] = value;
+	long int *data;
+
+	data = t_data(ct->t);
+	if (varind >= 0 && (varind + 1) * 4 < t_size(ct->t))
+		data[varind] = value;
 }
 
 void tinybc_start(struct cttype *ct)
 {
-	int i;
-
 	clear();
 	refresh();
+
 	interactive(1);
 	t_start(ct->t);
-	for (i = 0; i < MAX_VARIND; i++) tinybc_set(ct, i, 0);
+	if (t_size(ct->t) < MAX_VARIND * 4) {
+		printw("Not enough memory for data\n");
+		t_end(ct->t);
+	}
 }
 
 void tinybc_statement(struct cttype *ct)
@@ -627,6 +669,7 @@ void tinybc_statement(struct cttype *ct)
 	}
 	/* Line numbers are compulsory */
 	t_take(ct->t, TOKEN_NUMBER);
+	if (t_type(ct->t) == TOKEN_LET) t_take(ct->t, TOKEN_LET);
 	stmt(ct);
 	return;
 }

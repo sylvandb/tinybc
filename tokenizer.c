@@ -46,6 +46,7 @@ static const struct pstr patterns[] = {
 	{TOKEN_REM, "REM"}, /* Added */
 	{TOKEN_RETURN, "RETURN"},
 	{TOKEN_RND, "RND"}, /* Added */
+	{TOKEN_SIZE, "SIZE"},
 	{TOKEN_THEN, "THEN"},
 	{TOKEN_NONE, NULL}
 };
@@ -53,8 +54,9 @@ static const struct pstr patterns[] = {
 static int specialchar(struct ttype *t)
 {
 	switch (*t->ptr) {
-	case '\n': return TOKEN_CR;
+	case '\n': return TOKEN_LF;
 	case '*': return TOKEN_ASTR;
+	case '@': return TOKEN_AT;
 	case ',': return TOKEN_COMMA;
 	case '=': return TOKEN_EQ;
 	case '>': return TOKEN_GT;
@@ -73,7 +75,7 @@ static int get_type(struct ttype *t)
 {
 	const struct pstr *pt;
 	const char *p;
-	int slen;
+	long int slen;
 
 #ifdef DEBUG
 	char str[20];
@@ -91,6 +93,7 @@ static int get_type(struct ttype *t)
 			return TOKEN_NUMBER;
 		}
 		PDEBUG(lg, "get: too long number\n");
+		t->ended = 1;
 		return TOKEN_NONE;
 	}
 	if (specialchar(t)) {
@@ -130,14 +133,19 @@ static int get_type(struct ttype *t)
 	return TOKEN_NONE;
 }
 
-int t_currline(struct ttype *t)
+long int t_currline(struct ttype *t)
 {
 	return t->currentline;
 }
 
-void t_currline_set(struct ttype *t, int currline)
+void t_currline_set(struct ttype *t, long int currline)
 {
 	t->currentline = currline;
+}
+
+long int *t_data(struct ttype *t)
+{
+	return t->data;
 }
 
 void t_end(struct ttype *t)
@@ -156,12 +164,14 @@ int t_expr_type(struct ttype *t)
 		t->currtype == TOKEN_NUMBER ||
 		t->currtype == TOKEN_MINUS ||
 		t->currtype == TOKEN_RND ||
+		t->currtype == TOKEN_SIZE ||
+		t->currtype == TOKEN_AT ||
 		t->currtype == TOKEN_LPAREN)
 		return 1;
 	return 0;
 }
 
-void t_jump(struct ttype *t, int line)
+void t_jump(struct ttype *t, long int line)
 {
 	if (t_ended(t)) return;
 	if (line >= ARRSIZE ||
@@ -175,7 +185,7 @@ void t_jump(struct ttype *t, int line)
 	t->currtype = get_type(t);
 }
 
-void t_init(struct ttype *t, const char *program, int *numbers)
+void t_init(struct ttype *t, char *program, long int *numbers)
 {
 #ifdef DEBUG
 	lg = fopen("log.txt", "w");
@@ -188,7 +198,7 @@ void t_next(struct ttype *t)
 {
 	if (t_ended(t)) return;
 	t->ptr = t->next;
-	t->ptr += strspn(t->ptr, " ");
+	if (*t->ptr) t->ptr += strspn(t->ptr, " ");
 	t->currtype = get_type(t);
 	PDEBUG(lg, "next: current type %d\n", t->currtype);
 	return;
@@ -197,25 +207,41 @@ void t_next(struct ttype *t)
 void t_next_line(struct ttype *t)
 {
 	if (t_ended(t)) return;
-	t->ptr += strcspn(t->ptr, "\n");
+	if (*t->ptr) t->ptr += strcspn(t->ptr, "\n");
 	if (*t->ptr) t->ptr++;
 	t->currtype = get_type(t);
 	return;
 }
 
-int t_number(struct ttype *t)
+long int t_number(struct ttype *t)
 {
 	return atoi(t->ptr);
 }
 
+long int t_size(struct ttype *t)
+{
+	return t->size;
+}
+
 void t_start(struct ttype *t)
 {
-	int n, i;
+	long int n, i;
+	char *p;
 
 	t->ended = 0;
 	t->ptr = t->program;
 	t->firstline = atoi(t->ptr);
 	for (i = 0; i < ARRSIZE; i++) t->numbers[i] = 0;
+
+	for (i = 0; i < BUFSIZE && *(t->ptr + i); i++);
+	n = i + 1;
+	t->data = (long int *) t->ptr + n;
+	t->size = BUFSIZE - n;
+	for (i = n; i < BUFSIZE; i++) {
+		p = (char *) t->ptr + i;
+		*p = 0;
+	}
+
 	for (i = 0; *(t->ptr + i) && !t->ended; ) {
 		if (i >= ARRSIZE) t->ended = 1;
 		if ((n = atoi(t->ptr + i)) < ARRSIZE) 
@@ -229,11 +255,12 @@ void t_start(struct ttype *t)
 	t->currtype = get_type(t);
 }
 
-void t_string(struct ttype *t, char *dest, int len)
+void t_string(struct ttype *t, char *dest, long int len)
 {
 	const char *sptr, *p;
 	char shex[3], *dptr;
-	int slen;
+	unsigned int n;
+	long int slen;
 	
 	if (t_type(t) != TOKEN_STRING) return;
 	slen = 0;
@@ -246,8 +273,10 @@ void t_string(struct ttype *t, char *dest, int len)
 	for (sptr = t->ptr + 1; sptr < t->ptr + 1 + slen; dptr++)
 		if (*sptr == '\\' && strlen(sptr) >= 4) {
 			strncpy(shex, sptr + 2, 2);
+			n = 0;
 			shex[2] = 0;
-			sscanf(shex, "%x", dptr);
+			sscanf(shex, "%x", &n);
+			*dptr = (char) n;
 			*(dptr + 1) = 0;
 			sptr += 4;
 		} else {

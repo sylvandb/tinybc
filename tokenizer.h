@@ -31,6 +31,7 @@
 
 #define MAX_NUMLEN 10
 #define MAX_STRLEN FILENAME_MAX
+#define BUFSIZE 1000000
 #define ARRSIZE 100000
 #ifdef DEBUG
 #define PDEBUG(log, ...) fprintf(log, __VA_ARGS__)
@@ -42,10 +43,10 @@
 enum {
 	TOKEN_NONE,
 	TOKEN_ASTR,
+	TOKEN_AT,
 	TOKEN_CLS, /* Added */
 	TOKEN_COLOR, /* Added */
 	TOKEN_COMMA,
-	TOKEN_CR,
 	TOKEN_END,
 	TOKEN_EQ,
 	TOKEN_GE,
@@ -58,6 +59,7 @@ enum {
 	TOKEN_INPUT,
 	TOKEN_LE,
 	TOKEN_LET,
+	TOKEN_LF,
 	TOKEN_LOCATE, /* Added */
 	TOKEN_LPAREN,
 	TOKEN_LT,
@@ -72,6 +74,7 @@ enum {
 	TOKEN_RND,
 	TOKEN_RPAREN,
 	TOKEN_SEMICOLON,
+	TOKEN_SIZE,
 	TOKEN_SLASH,
 	TOKEN_STRING,
 	TOKEN_THEN,
@@ -79,30 +82,34 @@ enum {
 };
 
 struct ttype {
-	const char *program;
+	char *program;
 	const char *ptr, *next;
-	int currentline;
+	long int currentline;
 	int currtype;
 	int ended;
-	int firstline;
-	int *numbers;
+	long int firstline;
+	long int *numbers;
+	long int size;
+	long int *data;
 };
 
-int t_currline(struct ttype *t);
+long int t_currline(struct ttype *t);
 int t_ended(struct ttype *t);
 int t_expr_type(struct ttype *t);
-int t_number(struct ttype *t);
+long int t_number(struct ttype *t);
+long int t_size(struct ttype *t);
 int t_toolong(struct ttype *t);
 int t_type(struct ttype *t);
 int t_variable(struct ttype *t);
-void t_currline_set(struct ttype *t, int currline);
+long int *t_data(struct ttype *t);
+void t_currline_set(struct ttype *t, long int currline);
 void t_end(struct ttype *t);
-void t_init(struct ttype *t,  const char *program, int *numbers);
-void t_jump(struct ttype *t, int line);
+void t_init(struct ttype *t, char *program, long int *numbers);
+void t_jump(struct ttype *t, long int line);
 void t_next_line(struct ttype *t);
 void t_next(struct ttype *t);
 void t_start(struct ttype *t);
-void t_string(struct ttype *t, char *dest, int len);
+void t_string(struct ttype *t, char *dest, long int len);
 void t_take(struct ttype *t, int expected);
 
 FILE *lg;

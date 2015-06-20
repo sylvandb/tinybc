@@ -34,14 +34,14 @@
 
 struct mttype {
 	char program[BUFSIZE];
-	int numbers[ARRSIZE];
+	long int numbers[ARRSIZE];
 	struct cttype *ct;
 };
 
-static void list(struct mttype *mt, int m, int n)
+static void list(struct mttype *mt, long int m, long int n)
 {
 	char buffer[FILENAME_MAX], *p;
-	int exit, i, k;
+	long int exit, i, k;
 
 	p = mt->program;
 	while (*p && m && atoi(p) != m) {
@@ -73,7 +73,7 @@ static void list(struct mttype *mt, int m, int n)
 static void insert(struct mttype *mt, char *buffer)
 {
 	char *p, *p1;
-	int n;
+	long int n;
 
 	n = atoi(buffer);
 	if (!n) return;
@@ -115,7 +115,7 @@ static void help(void)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.5.0\n");
+	printw("Tiny BASIC for Curses, version 0.6.0\n");
 	printw("Type HELP if you need help\n\n");
 }
 
@@ -127,8 +127,8 @@ static void run(struct mttype *mt)
 
 int main(int argc, char **argv)
 {
-	char buffer[MAX_STRLEN], *p, *p1;
-	int pos, result, fileind, lastnum, exit, m, n;
+	char buffer[MAX_STRLEN], *result, *p, *p1;
+	long int pos, fileind, lastnum, exit, m, n;
 	struct mttype *mt;
 	FILE *f;
 
@@ -144,10 +144,10 @@ int main(int argc, char **argv)
 			printf("tinybc: cannot open the file\n");
 			return 1;
 		}
-		result = 1;
-		for (pos = 0; pos + FILENAME_MAX < BUFSIZE && result; ) {
+		result = buffer;
+		for (pos = 0; pos + MAX_STRLEN < BUFSIZE && result; ) {
 			strcpy(buffer, "");
-			result = (int) fgets(buffer, FILENAME_MAX, f);
+			result = fgets(buffer, MAX_STRLEN, f);
 			strcpy(mt->program + pos, buffer);
 			pos += strlen(buffer);
 		}

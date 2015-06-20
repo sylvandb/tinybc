@@ -1,4 +1,4 @@
-.TH tinybc 1 "October 10, 2011" "" "Tiny BASIC for Curses"
+.TH tinybc 1 "October 18, 2011" "" "Tiny BASIC for Curses"
 
 .SH NAME
 tinybc \- Tiny BASIC for Curses
@@ -21,13 +21,13 @@ Curses is a library for using computer interactively in a character mode. It cor
 .SH Tiny BASIC
 Tiny BASIC is the specification of the most minimal BASIC. In fact, there is not much to choose from, because the next smallest specification is the Small BASIC standard, and this does not provide a small language at all. The Tiny BASIC specification was written by Dennis Allison and was published in the People's Computer Company newsletter in December 1975. The specification was necessary because of the need to have a small interpreter which can fit into 2 KB of memory. Tiny BASIC was one of the first programming languages for the microcomputers.
 
-Tiny BASIC is strikingly minimal. This interpreter is minimal not because it was difficult to add more functionality, adding functionality is surprisingly simple. This interpreter is minimal because it is meant to implement Tiny BASIC. But i think that minimalism enables creatity.
+This interpreter is minimal not because it was difficult to add more functionality, adding functionality is surprisingly simple. This interpreter is minimal because it is meant to implement Tiny BASIC. But i think that minimalism enables creatity.
 
-This interpreter is mostly based on the Tom Pittman's Tiny BASIC, except the USR function, using full expressions for input, and variables are 32 bits long. The Tom Pittman's Tiny BASIC is implemented so completely that the programs written for it run without modifications. The computed GOTO and GOSUB are implemented too, but their expressions would be renumbered when they only consist of a single number.
+This interpreter is mostly based on the Tom Pittman's Tiny BASIC, except the USR function and using full expressions for input. The Tom Pittman's Tiny BASIC is implemented so completely that the programs written in it run without modifications. The computed GOTO and GOSUB are implemented too, but their expressions would be renumbered when they only consist of a single number. Two additional features are taken from the Palo Alto Tiny BASIC, one big array named @, and using relation operators in expressions. This enables to run programs written in Palo Alto Tiny BASIC with some modifications.
 
 .SH OPTIONS
 .IP \fB\-i\fP
-Starts the interpreter interactively.
+Starts the interpreter interactively and loads the file.
 .IP \fB\-number\fP
 Renumbers the program starting from number.
 
@@ -38,12 +38,12 @@ mingw32-make tinybc.exe
 
 make tinybc.exe
 
-The binaries for Linux and Windows are provided, but because of viruses, etc, it's safer to compile. The program depends only on some version of the curses library. For compiling in Linux, the ncurses development package has to be installed. In Windows, the compiler such as MinGW has to be installed. If install MinGW, add its bin directory to the path. The PDCurses library for Windows is included in the distribution.
+The binaries for Linux and Windows are provided, but because of viruses, etc, it's safer to compile. The program depends only on some version of the curses library. For compiling in Linux, the ncurses development package has to be installed. In Windows, the compiler such as MinGW has to be installed. If you install MinGW, add its bin directory to the path. The PDCurses library for Windows is included in the distribution.
 
 In the Windows versions starting from Vista, it is possible to open the console (terminal) from Windows Explorer in the browsed directory, by right clicking on that directory when holding down the shift key, and then choosing "Open Command Prompt Here". In the older versions, without changing the registry, the best way is to run cmd and copy the path from the file properties.
 
 .SH LANGUAGE DESCRIPTION
-The language consists of Tiny BASIC and of statements which were added for curses operations.
+Because of lack of the if and while blocks, Tiny BASIC does not correspond to the modern programming paradigm. To avoid a "spaghetti code", one solution is to mark all the destinations of jumps with REM statements, such as REM Subroutine DrawPixel (X, Y), REM DO, REM ELSE and REM END IF, and use lines only consisting of a line number for making the code clearer.
 
 .SH Program statements
 In statements, all lines must begin with a number. It is not always necessary though that the numbers are different or in a growing order. The line numbers are required because Tiny BASIC is a traditional BASIC. The lines can also be renumbered. See the examples (the files with the bas extension). The LET and THEN keywords can be omitted, the PRINT keyword can be abbreviated as PR.
@@ -58,8 +58,8 @@ Ends the execution of the program, can be anywhere in the program
 Executes a subroutine which starts with the number which is the value of the expression, subroutine ends with return
 .IP "\fBGOTO expr\fP"
 Executes the line with the number which is the value of the expression
-.IP "\fBIF relation THEN statement\fP"
-Executes statement if the relation is true
+.IP "\fBIF expr THEN statement\fP"
+Executes statement if expr is true
 .IP "\fBINCHAR variable\fP"
 Writes the code of the character at the current position into the variable
 .IP "\fBINPUT variable1, ... variablen\fP"
@@ -68,6 +68,8 @@ Inputs variables
 Inputs a key code, -1 if no keys pressed
 .IP "\fBLET variable = expr\fP"
 Assigns an expression to variable
+.IP "\fBLET @(expr1) = expr2\fP"
+Assigns expr2 to array element expr1
 .IP "\fBLOCATE expr1, expr2\fP"
 Cursor to line expr1 and column expr2, the next PRINT prints to that location
 .IP "\fBNAP expr\fP"
@@ -75,14 +77,14 @@ Sleeps the expr of milliseconds, at least NAP 10 must be in the main loop to giv
 .IP "\fBPRINT expr1, .... exprn\fP"
 Prints the expressions, ; allowed
 .IP "\fBREM comment\fP"
-Any text can be written after rem as a comment
+Any text can be written after REM as a comment
 .IP "\fBRETURN\fP"
 Ends the subroutine block and executes the line after the calling GOSUB statement
 
 .SH Interactive mode
 In the interactive mode you can both edit and run the program. Interactive mode is a part of the Tiny BASIC specification, so it has to be implemented in every language which is said to be Tiny BASIC. The HELP statement is added. SAVE is also an additional statement which is not in the Tiny BASIC specification. Because in the early computers, they used teletypes as terminals, and so there was no difference whether the input or ouput was done with a typewriter, or with a punched tape.
 
-As it is the tradition of BASIC, the first character can be written instead of the full keyword. The line edit is exactly as in the Tom Pittman's tiny basic, backspace deletes the last character and ctrl-x deletes the entire input line.
+As it is the tradition of BASIC, the first character can be written instead of the full keyword.
 
 When you write a line which starts with a number, then this is considered to be a program line and it will be added to to program to the appropriate place. When the number is the number of an existing statement, then this statement will be replaced with the statement which you entered. If the line consists only of a number with no additional text, then the statement with that number will be deleted.
 
@@ -104,14 +106,20 @@ Saves the program
 Prints help
 
 .SH Variables
+There is no separate memory allocated for variables in tinybc, all memory remaining in the program buffer after the program can be used as data. The first 26 * 4 bytes of it is used for variables, and the rest is used for array. All the data space is filled with zeroes in the beginning of running the program, so one can consider that the initial values of all variables and array elements are 0.
+
 There are 26 variables, the names of which are the upper case letters A--Z. Variables are integers, but these are quite long integers with up to 10 decimal places. This enables to do real number calculations assuming that the point is somewhere in the middle of the number.
+
+As in Palo Alto Tiny BASIC, there is one big array named @, the size of which is all memory in the program buffer remaining from the program and variables. As in 68000 Tiny BASIC, array elements are 32 bit integers the same as variables.
 
 .SH Expressions
 The order of calculations is natural (multiplications, etc. first).
 
-One function, RND(expr) , can be used in expression. This function generates a random number. Example: assign to the variable n a random number in the range 1 to 10:
+One constant named SIZE can be used in expression. This is taken from the Palo Alto Tiny BASIC. The value of that constant is the memory remaining in the program buffer, the maximum size of the @ array is thus SIZE/4.
 
-10 n = RND(10) + 1
+One function, RND(expr) , can be used in expression. This function generates a random number. Example: assign to the variable N a random number in the range 1 to 10:
+
+10 N = RND(10) + 1
 
 Expressions can contain variables, numbers, and the following operators:
 
@@ -127,7 +135,7 @@ Division
 Parentheses, the expression in parentheses is calculated first
 
 .SH Relations
-The elements of a relation are expressions. The relation operators are the following:
+The elements of a relation are expressions. The relation operators can also be used in expressions, with the lowest priority. This enables the expressions like (A > B) * (A < C) , where * and + are used as and and or, correspondingly. The relation operators are the following:
 
 .IP "\fB<\fP"
 Less
@@ -159,11 +167,11 @@ Make sure that you provide at least NAP 10 after a print statement, or if you us
 .SH Running
 The Tiny BASIC programs can run both in the interactive mode and from the command line. Because programs which use Curses can write everywhere on the screen, the screen is cleared when the program terminates. Therefore remember to press any key when the program is finished, to go back to command line. This enables to always see the result of the program.
 
-When the program asks for input, one can enter both numbers and variable names. In case of variable the names, the corresponding input would be the value of the variable.
+When the program asks for input, one can enter both numbers and variable names. In case of variable names, the corresponding input would be the value of the variable.
 
 If your program provides no way to exit normally, ctrl-c should do that harmlessly to the operating system and to the terminal (but not to your BASIC program). In Windows, the key for interrupting the program is ctrl-break, the break key is a key in the upper right corner of the keyboard, with "Pause" written on it.
 
-Input and output redirection works with Curses, also it is possible to copy from the terminal and paste to the terminal.
+Programs written both in Linux and Windows run, but do not use Notepad to edit Linux files in Windows, use less primitive editor such as Wordpad, but not a word processor. When copying Windows text files to Linux, they must be converted with tr -d '\\r' or with a text editor. Input and output redirection works with Curses, also it is possible to copy from the terminal and paste to the terminal.
 
 .SH Troubleshooting
 If the program exits unnormally, like when you happen to divide by zero, it may happen that your terminal settings would be changed. It depends on your terminal how to restore the default settings. Running a tinybc program that exits normally can restore the settings. But if nothing else helps, closing the terminal and running it again will always restore the settings, as running tinybc does not change anything permanently.
@@ -174,7 +182,8 @@ The debug mode can be switched on by defining the DEBUG symbol in Makefile and c
 LGPL
 
 .SH AUTHOR
-Tarvo Korrovite
+Tarvo Korrovits
 
 .SH BUGS
 Send to tkorrovi@mail.com
+
