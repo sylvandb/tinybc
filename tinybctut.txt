@@ -9,23 +9,22 @@ You don't know anything about programming? OK, no problem, then Tiny
 BASIC for Curses is for you. Yes you can make things to move around on
 screen, yes you can control everything with your keys. But still it
 is primitive, of course everyone who knows that there is more, wants
-more. It is though not exactly right that a beginner needs something
-more advanced, nothing more advanced is simple, or when it is simple
-then it is not complete.
+more. Nothing more advanced is simple though, or when it is simple then
+it is not complete.
 
 Think that it is how it was, there was such BASIC on old microcomputers,
-and the most important about it was that it was very simple. So
-simple that no programming language can be simpler. You may ask how
-can a programming language with some twenty of pages of programming
-manual be simple, yet it is true that this is the simplest programming
-language. This is how complex programming is that explaining even the
+and the most important about it was that it was very simple. So simple
+that no programming language can be simpler. You may ask how can a
+programming language with some twenty of pages of programming manual be
+simple. But this is how complex programming is that explaining even the
 simplest programming language takes that many pages.
 
 This manual is a part of the Tiny BASIC for Curses project, the project's
 page in freecode is http://freecode.com/projects/tinybc and the download
 page in SourceForge is http://sourceforge.net/projects/tinybc . Also
-read the manual page http://tinybc.sourceforge.net which you can read
-in Linux with man tinybc if Tiny BASIC for Curses is installed.
+read the manual page http://tinybc.sourceforge.net which you can read in
+Linux with man tinybc if Tiny BASIC for Curses is installed. The online
+version is the latest version of this manual.
 
 
 Starting Tiny BASIC
@@ -66,8 +65,8 @@ All commands have to be in upper case, just because this is how it
 once was in that BASIC, and you can write only the first letter of a
 command. If you type L (LIST) after the tinybc prompt and press Enter,
 you would see the program which you entered. When your program is longer
-than the screen, it prints a part of it and stops, after that press any
-key when you want to see the next part. That way you can see all your
+than the screen, it prints a part of it and stops, press any key after
+that when you want to see the next part. That way you can see all your
 code until the prompt appears. You may also follow the L with one or
 two numbers. For example L 100 prints your code starting from the line
 which begins with the number 100, L 100-200 prints all lines of your
@@ -99,19 +98,19 @@ something which executes the program line after line. So as you likely
 already understood, when you run your program, the lines shall be executed
 one after another, in the order of their numbers. So write this program:
 
-10 PRINT “Hello ”;
-20 PRINT “World!”
+10 PRINT "Hello ";
+20 PRINT "World!"
 
 Type L to see that you have only these two lines in your program. To
 run the program, type R followed by Enter. If you wrote the program
 exactly as above, the terminal screen will be cleared and the text
-“Hello world!” will appear at the top of the screen. As you can see,
-this program has only two lines, after executing the last line there
-is nothing more to execute and the program exits. After the program
-exits, the interpreter waits you to press any key, so always remember
-to press any key when the program ends and you want to return to the
-tinybc prompt. Thus after pressing any key the terminal screen will be
-cleared and you will see the tinybc prompt again.
+"Hello world!" will appear at the top of the screen. As you can see,
+this program has only two lines, after executing the last line there is
+nothing more to execute and the program exits. After the program exits,
+the interpreter waits you to press any key, so always remember to press
+any key when the program ends and you want to return to the prompt. Thus
+after pressing any key the terminal screen will be cleared and you will
+see the tinybc prompt again.
 
 So now you have written your first program and run it. The line which
 starts with a number is called statement, and there are different kind of
@@ -145,21 +144,21 @@ statements starting from the statement with that number, in increasing
 order as usual, until there would be another GOTO statement. Consider
 the following code:
 
-10 PRINT “Hello World!”
+10 PRINT "Hello World!"
 20 GOTO 10
 
 This code shall cause a problem in that it never stops. So you can
 see that there can be programs which work forever, unless stopped by
 some means. You may think whether you actually run that program, but you
 had to see it to have some idea. If you are courageous and still run that
-program, what you will see is a screen where “Hello World!” is printed
+program, what you will see is a screen where "Hello World!" is printed
 on every line. This is because the program printed a screenful of these
 texts so quickly that you did not see how it happened, and after that
 it continues to print that text on the last line. After printing on the
 last line of the screen, all that is on the screen moves up by one line,
 so that new text can be written on the last line.
 
-So you know now one of the most powerful statements called GOTO. The
+So you now know one of the most powerful statements called GOTO. The
 way GOTO was used in the example above was not a good use though. Because
 GOTO is a very powerful statement, one should be careful to use it only
 in the correct way. What you saw in the program above is called loop, but
@@ -188,10 +187,10 @@ run the following program:
 20 B = 3
 30 @(0) = 4
 40 C = A + B * @(0)
-50 PRINT “C =”, C
+50 PRINT "C =", C
 
 As you could guess, PRINT statement there prints the value of the
-variable C, which is a number, after the text “C =”. So there can
+variable C, which is a number, after the text "C =". So there can
 be both strings and numbers in the PRINT statement, separated by commas
 or semicolons.
 
@@ -278,7 +277,7 @@ and @(10).
 And this is not all. In assignment to array, in the comma separated list
 which follows =, there can also be strings. Consider the following:
 
-10 @(5) = 2, “abc”, -6
+10 @(5) = 2, "abc", -6
 
 There, to the array element 5 shall be assigned number 2, but to the
 array elements 6, 7 and 8 shall be assigned the codes of the letters a,
@@ -316,10 +315,10 @@ shall not be executed. Write and run the following program:
 
 10 A = 3
 20 B = -2
-30 IF A > -1 PRINT “A is a positive number”
-40 IF B > -1 PRINT “B is a positive number”
+30 IF A > -1 PRINT "A is a positive number"
+40 IF B > -1 PRINT "B is a positive number"
 
-The text “A is a positive number” shall be printed, but the next
+The text "A is a positive number" shall be printed, but the next
 text shall not be printed, because in case of B the condition is not true.
 
 
@@ -331,7 +330,7 @@ statement. This statement is simple because it does nothing. Consider
 the following:
 
 10 REM DO
-20 PRINT “Hello World!”
+20 PRINT "Hello World!"
 30 GOTO 10
 
 This works exactly the same as the previous example of a loop. The
@@ -348,7 +347,7 @@ explained more thoroughly.
 
 The text after REM is not processed by the interpreter at all, thus
 it can be whatever. REM statements without any text can be used to add
-empty lines, add empty lines between subroutines and between bigger
+empty lines. Add empty lines between subroutines and between bigger
 parts of the code, to make the code clearer.
 
 REM statements are also often used to describe what one or another part of
@@ -429,7 +428,7 @@ loops, if-else blocks and subroutines.
 If-else blocks
 --------------
 
-Where you also have to use GOTO statements is in if-else blocks. These
+Where you also have to use GOTO statements, is in if-else blocks. These
 blocks are also provided by other programming languages, but there you
 have to implement them without GOTO, so it is important to know how they
 exactly work. Write the following program and run it:
@@ -437,10 +436,10 @@ exactly work. Write the following program and run it:
 10 N = RND(2) + 1
 20 PRINT N
 30 IF N <> 1 GOTO 60
-40 PRINT “one”
+40 PRINT "one"
 50 GOTO 80
 60 REM ELSE
-70 PRINT “two”
+70 PRINT "two"
 80 REM END IF
 
 Using if and else together is necessary to do either one or the other,
@@ -451,25 +450,25 @@ it is not true, we go to the if block and in the end of it jump to the
 end of the two blocks.
 
 If-else blocks can be inside other if-else blocks. It is also possible
-to use multiple else blocks, which does almost the same as the case
+to use multiple else blocks, which does almost the same as the switch
 statement in some programming languages. Write the following program
 and run it:
 
 10 N = RND(3) + 1
 20 PRINT N
 30 IF N <> 1 GOTO 60
-40 PRINT “one”
+40 PRINT "one"
 50 GOTO 120
 60 REM ELSE
 70 IF N <> 2 GOTO 100
-80 PRINT “two”
+80 PRINT "two"
 90 GOTO 120
 100 REM ELSE
-110 PRINT “three”
+110 PRINT "three"
 120 REM END IF
 
 The benefit of such chain of else blocks is that when the necessary
-operation is done, like in statement 50, a jump is made to the end of all
+operation is done, like in statement 40, a jump is made to the end of all
 blocks and no other IF statement is executed. Basically, if-else block
 is like several blocks inside a bigger block, and jump can be made from
 the end of these blocks to the end of the bigger block.
@@ -518,21 +517,21 @@ write some interactive program. There are several statements for input
 and output in Tiny BASIC for Curses. The most straightforward of these
 is the INPUT statement. Write the following program and run it:
 
-10 PRINT “A, B”,
+10 PRINT "A, B",
 20 INPUT A, B
-30 PRINT “A =”, A, “B =”, B
+30 PRINT "A =", A, "B =", B
 
-The program asks “A, B ?”, after which you should write two numbers
+The program asks "A, B ?", after which you should write two numbers
 separated by either comma or space, and then press Enter. The numbers
 which you entered shall be assigned to variables A and B, and then the
 values of these variables shall be printed. Instead of a number you may
-also enter an upper-case letter, in that case the entered value would
+also enter an upper-case letter, in that case the entered value shall
 be the value of the variable which corresponds to that letter. INPUT
 is convenient but rather restricted. Therefore Tiny BASIC for Curses
 provides two more general statements for input and output, INKEY and
 OUT. Write the following program and run it:
 
-10 PRINT “Please enter your name”
+10 PRINT "Please enter your name"
 20 REM DO
 30 NAP 10
 40 INKEY K
@@ -542,7 +541,7 @@ OUT. Write the following program and run it:
 80 I = I + 1
 90 GOTO 20
 100 REM LOOP
-110 PRINT “Your name is”,
+110 PRINT "Your name is",
 120 REM DO
 130 IF @(J) = 0 GOTO 170
 140 OUT @(J)
@@ -550,17 +549,18 @@ OUT. Write the following program and run it:
 160 GOTO 120
 170 REM LOOP
 
-The program asks your name, you write your name, and the program
-prints what your name is. As you can see, in the beginning there is a
-loop for inputting the name. The loop sleeps for 10 milliseconds to not
-read the key code too often, then writes the key code to the variable
-K. The loop ends when the key was Enter. We also check the boundary of
-the text. If K is not a letter, we go to the next iteration and skip the
-rest of the loop. Then K shall be assigned to the element of the array
-with the current index, and the index I shall be incremented.
+The program asks your name, you write your name, and the program prints
+your name. As you can see, in the beginning there is a loop for inputting
+the name. The loop sleeps for 10 milliseconds to not read the key code
+too often, then writes the key code to the variable K. The loop ends when
+the key was Enter. We also check the boundary of the text. If K is not a
+letter, we go to the next iteration and skip the rest of the loop. Then
+K shall be assigned to the element of the array with the current index,
+and the index I shall be incremented. The variables I and J are mostly
+used as array indexes.
 
-After the name is stored to the array, the program prints “Your name
-is” and starts to print the name letter by letter. As you may notice,
+After the name is stored to the array, the program prints "Your name
+is" and starts to print the name letter by letter. As you may notice,
 the loop for that is a while loop, because it may happen that no letters
 were entered and nothing shall be done then. The letters shall be printed
 using the OUT statement which writes a character to the screen, until the
@@ -570,8 +570,8 @@ because no letter code is 0.
 OUT can output every character, including the pseudo graphics
 characters. In IBM850 code page there are characters for a large rectangle
 (219), lower square (220) and upper square (223), these characters enable
-to draw pseudo graphics similar to the “graphics” which some old
-microcomputers had. There are also other pseudo graphics characters
+to draw pseudo graphics very similar to the "graphics" which some
+old microcomputers had. There are also other pseudo graphics characters
 in the IBM850 code page, such as characters for drawing boxes and
 rectangular diagrams.
 
@@ -589,20 +589,20 @@ there. It is true that variable can be used after GOTO, so that problem
 can be solved, but this is not a good way to do it.
 
 For that purpose there are subroutines, which in other programming
-languages such as python are called functions. For that there is GOSUB
-statement with a line number after GOSUB. This is called calling a
-subroutine. You can use it instead of GOTO to go to your repeatedly used
-piece of code. How it differs from GOTO is that the line from which the
-subroutine was called is remembered. And there is the statement RETURN
-which jumps back to the line next to the GOSUB statement of the last
-subroutine call. You can see how it works in the following example. Write
-the following program and run it:
+languages such as python are called functions. For jumping to a
+subroutine there is GOSUB statement with a line number after GOSUB. This
+is called calling a subroutine. You can use it instead of GOTO to go
+to your repeatedly used piece of code. How it differs from GOTO is that
+the line from which the subroutine was called is remembered. And there
+is the statement RETURN which jumps back to the line next to the GOSUB
+statement of the last subroutine call. You can see how it works in the
+following example. Write the following program and run it:
 
 10 N = 10
-20 @(N) = “Hello World!”
+20 @(N) = "Hello World!"
 30 C = N
 40 GOSUB 1000
-50 @(N) = “Hello tinybc”
+50 @(N) = "Hello tinybc"
 60 C = N
 70 GOSUB 1000
 80 END
@@ -626,8 +626,8 @@ this of course changes when you renumber the whole program.
 The main program starts by assigning 10 to N. 10 is the index of the
 array element from which the text starts, and this number is always
 the same, such number is called a constant. We could as well write 10
-instead of N everywhere, but it is a good practice not to use “magic
-numbers” in the code. At least when some number is used several times,
+instead of N everywhere, but it is a good practice not to use "magic
+numbers" in the code. At least when some number is used several times,
 it is a good practice to assign that number to a variable, and then use
 that variable instead. This also makes the code much more flexible, like
 if we want to write texts starting from the element 100 instead of 10,
@@ -636,7 +636,7 @@ all we have to do is to change that number in one place.
 The main program writes two texts using the same subroutine. You can
 see how convenient it is, now every time when we need to print a text
 from the array, we only need to call that subroutine. Before calling the
-subroutine, N is assigned to variable C. Why we have to do that is that
+subroutine, N is assigned to variable C. Why we have to do it is that
 in Tiny BASIC there are no local variables. Local variables are like
 a separate set of variables used in the subroutine or function only, so
 that changing these variables do not change the same variables in the main
@@ -683,11 +683,11 @@ is written in every error message, so that you can browse your program
 again and find out why the error occurred on that line. It may be just
 because you made a simple writing error.
 
-“Statement not implemented” means that something is wrong with
-the first word of the statement. “Token type not what was expected”,
+"Statement not implemented" means that something is wrong with
+the first word of the statement. "Token type not what was expected",
 followed by the wrong token, means that some other word or operator is
 not what it had to be. What you should avoid is dividing by zero, because
-the program shall be exited then by the system (called “crash”),
+the program shall be exited then by the system (called "crash"),
 and you cannot see where it happened. The token types are the following:
 
 1  -- *		11 -- >		21 -- <		31 -- RND
@@ -724,7 +724,7 @@ is not necessary if your debug code consists only of a PRINT statement,
 and there is some text which you always print in debug messages.
 
 Most importantly the debug code prints the values of some variables.
-Most often it is enough to just print “here”, to see whether a certain
+Most often it is enough to just print "here", to see whether a certain
 place in the code was reached or not. Debug code can be used for much
 more though, you can use the power of the computer against the computer,
 like by analyzing data in every step.
@@ -749,9 +749,9 @@ In order not to add large key code tables to the manual for beginners,
 the most important input key codes are written below. The input key
 codes are the following:
 
-10 -- Enter
-27 -- Escape
-258 -- down arrow.
+10 -- Enter,
+27 -- Escape,
+258 -- down arrow,
 259 -- up arrow,
 260 -- left arrow,
 261 -- right arrow,
@@ -812,19 +812,19 @@ the following program and run it:
 70 IF K = -1 GOTO 30
 80 LOCATE I, J
 90 COLOR 7, 4
-100 PRINT “            “;
-110 IF (K = 258) * (I < 25) I = I + 1
+100 PRINT "            ";
+110 IF (K = 258) * (I < 24) I = I + 1
 120 IF (K = 259) * (I > 0) I = I - 1
 130 IF (K = 260) * (J > 0) J = J - 1
 140 IF (K = 261) * (J < 65) J = J + 1
 150 LOCATE I, J
 160 COLOR 7, 6
-170 PRINT “Hello World!”;
+170 PRINT "Hello World!";
 180 GOTO 30
 190 REM LOOP
 
 First you see nothing, but when you press arrow keys, you can move
-the text “Hello World!” around the screen, Escape key exits the
+the text "Hello World!" around the screen, Escape key exits the
 program. Press Escape twice because the interpreter waits for one
 more key. As you can see, most of the program consists of an endless
 loop. This loop is similar to the loop in the previous example where
@@ -837,8 +837,8 @@ Then the indexes of row and column, I and J, are changed if the arrow
 keys were pressed. Notice that the boundaries are checked, so that the
 text cannot be moved outside the screen. Always remember to check the
 boundaries also when you process text or other data in array. After I and
-J are calculated, the location is changed to I, J, and the text “Hello
-World!” is printed to the new location with the text background color.
+J are calculated, the location is changed to I, J, and the text "Hello
+World!" is printed to the new location with the text background color.
 
 Now you know how to write any kind of screen-oriented
 programs. Graphics is in many ways similar, so if you know how to write
@@ -893,12 +893,12 @@ That's all folks
 And this is all. You can never read these words in the end of other
 programming manuals, they all say that you should also learn many more
 things by yourself, thus none of them is complete. This programming
-manual is exceptional in that it explains everything which you need to
-know for programming in Tiny BASIC for Curses. I also believe that you
-would not have to forget much if you will one day not use that programming
-language any more, because it is minimal and so general that most what
-you learned would be useful for you no matter what you would later use
-for programming.
+manual is exceptional in that it explains everything which you need
+to know for programming in Tiny BASIC for Curses. I also believe that
+you would not have to forget much if you will one day not use that
+programming language any more, because it is minimal and so general
+that most of what you learned would be useful for you no matter what
+you would later use for programming.
 
 But if you one day know all that well, you should go ahead, and likely
 the best is to learn python. Python is much more complicated than Tiny
@@ -918,17 +918,39 @@ To show how to apply the principles described above to bigger programs,
 below is the Star Trek game ported from Palo Alto Tiny BASIC. I do not
 know how good game the Star Trek is, but this is the old game which every
 BASIC must have. Palo Alto Tiny BASIC introduced several good things
-into Tiny BASIC, but what Palo Alto Tiny BASIC allows to do, results in
-a horrible code. The game should be exactly as it was in Palo Alto Tiny
-BASIC, but I do not know whether it works correctly, especially because
-there were also bugs in the original code. Because I could not find the
-license of that code anywhere, I assume that the author of the original
-code is Li-Chen Wang, and that it has no copyright the same as Palo Alto
-Tiny BASIC.
+into Tiny BASIC, but what Palo Alto Tiny BASIC allows to do, results
+in a horrible code. The game should be the same as it was in Palo Alto
+Tiny BASIC, but all I know is that I won it once, so I will be thankful
+if someone finds any bugs. Because I could not find the license of that
+code anywhere, I assume that the author of the original code is Li-Chen
+Wang, and that it has no copyright the same as Palo Alto Tiny BASIC.
+
+Global variables:
+B -- Number of Starbases
+C -- Number of casualties
+D -- Number of days left
+E -- Energy
+F -- Number of torpedoes
+H -- Number of Klingons destroyed
+K -- Number of Klingons
+N -- Number of Klingons in the quadrant
+O -- Docked to Starbase
+U, V -- Quadrant coordinates
+X, Y -- Sector coordinates
+
+Array offsets:
+0   -- Galaxy map 8 x 8
+       (100 * Klingons + 10 * Starbases + stars)
+64  -- Days to repair damages
+       (sr, map, lr, phaser, warp, torpedo, shield)
+71  -- Quadrant map 8 x 8
+       (0 empty, 1 Klingon, 2 Starbase, 3 star, 4 Enterprise)
+135 -- Three 6 element arrays for Klingons data
+       (energies, X coordinates, Y coordinates)
 
 10 REM DO
 20 PRINT "Do you want a difficult game (y or n)?";
-30 GOSUB 6780
+30 GOSUB 6770
 40 Y = 2999
 50 IF A = 121 Y = 999
 60 PRINT "Stardate 3200: your mission is",
@@ -955,8 +977,8 @@ Tiny BASIC.
 270 GOSUB 1100
 280 C = 0
 290 H = K
-300 GOSUB 6280
-310 GOSUB 6350
+300 GOSUB 6270
+310 GOSUB 6340
 320 GOSUB 870
 330 GOSUB 3230
 340 REM DO
@@ -965,7 +987,7 @@ Tiny BASIC.
 370 PRINT "g=Galaxy map   p=Phaser       t=Torpedo"
 380 PRINT "w=Warp engine  ***please use one of these commands***"
 390 PRINT "Captain?";
-400 GOSUB 6780
+400 GOSUB 6770
 410 IF A = 103 GOSUB 1370
 420 IF A = 108 GOSUB 1820
 430 IF A = 115 GOSUB 2100
@@ -1006,13 +1028,13 @@ Tiny BASIC.
 780 Y = 987
 790 PRINT
 800 PRINT "Another game (y or n)?";
-810 GOSUB 6780
+810 GOSUB 6770
 820 IF A = 121 GOTO 10
 830 REM LOOP
 840 PRINT "Good bye."
 850 END
 860 REM
-870 REM SUBROUTINE 145
+870 REM SUBROUTINE docking
 880 I = X - (X > 1)
 890 REM DO
 900 IF I > X + (X < 8) GOTO 1010
@@ -1035,20 +1057,20 @@ Tiny BASIC.
 1070 GOSUB 1100
 1080 RETURN
 1090 REM
-1100 REM SUBROUTINE 160
+1100 REM SUBROUTINE restore and repair
 1110 E = 4000
 1120 F = 10
 1130 O = 1
 1140 I = 64
 1150 REM DO
-1160 IF  I > 70 GOTO 1200
+1160 IF I > 70 GOTO 1200
 1170 @(I) = 0
 1180 I = I + 1
 1190 GOTO 1150
 1200 REM LOOP
 1210 RETURN
 1220 REM
-1230 REM SUBROUTINE 165
+1230 REM SUBROUTINE assign random sector
 1240 REM DO
 1250 S = RND(8) + 1
 1260 T = RND(8) + 1
@@ -1058,7 +1080,7 @@ Tiny BASIC.
 1300 @(A) = I
 1310 RETURN
 1320 REM
-1330 REM SUBROUTINE 175
+1330 REM SUBROUTINE enterprise location
 1340 PRINT "Enterprise in q-", U; ","; V, " s-", X; ","; Y
 1350 RETURN
 1360 REM
@@ -1204,7 +1226,7 @@ Tiny BASIC.
 2760 IF M > 140 GOTO 2860
 2770 IF @(M) GOTO 2800
 2780 M = M + 1
-2790 GOTO 2850
+2790 GOTO 2750
 2800 REM END IF
 2810 GOSUB 2900
 2820 PRINT S, "units hit",
@@ -1215,7 +1237,7 @@ Tiny BASIC.
 2870 A = 0
 2880 RETURN
 2890 REM
-2900 REM SUBROUTINE 295
+2900 REM SUBROUTINE shield damage
 2910 IF A <= 1090 GOTO 2970
 2920 PRINT "...overloaded..."
 2930 J = 4
@@ -1228,7 +1250,7 @@ Tiny BASIC.
 3000 S = A * 30 / (30 + I * I + J * J) + 1
 3010 RETURN
 3020 REM
-3030 REM SUBROUTINE 305
+3030 REM SUBROUTINE hit klingon
 3040 PRINT "Klingon at s-", @(M + 6); ","; @(M + 12),
 3050 @(M) = @(M) - S
 3060 IF @(M) <= 0 GOTO 3090
@@ -1248,7 +1270,7 @@ Tiny BASIC.
 3200 PRINT "***destroyed***"
 3210 RETURN
 3220 REM
-3230 REM SUBROUTINE 325
+3230 REM SUBROUTINE klingon attack
 3240 A = 1
 3250 IF N = 0 RETURN
 3260 PRINT "Klingon attack"
@@ -1284,7 +1306,7 @@ Tiny BASIC.
 3560 A = 1
 3570 RETURN
 3580 REM
-3590 REM SUBROUTINE 360
+3590 REM SUBROUTINE random damages
 3600 IF @(70) GOTO 3650
 3610 @(70) = RND(T / 50 + 1) + 1
 3620 J = 7
@@ -1299,7 +1321,7 @@ Tiny BASIC.
 3710 GOSUB 3740
 3720 RETURN
 3730 REM
-3740 REM SUBROUTINE 375
+3740 REM SUBROUTINE print damage
 3750 I = @(J + 63)
 3760 IF J = 1 PRINT "Short range sensor",
 3770 IF J = 2 PRINT "Computer display",
@@ -1370,7 +1392,7 @@ Tiny BASIC.
 4420 PRINT "Scotty: 'Sir, we do not have the energy.'"
 4430 RETURN
 4440 REM END IF
-4450 GOSUB 5960
+4450 GOSUB 5950
 4460 A = 1
 4470 IF R = 0 RETURN
 4480 D = D - 1
@@ -1427,14 +1449,14 @@ Tiny BASIC.
 4990 IF (U < 1) + (U > 8) + (V < 1) + (V > 8) GOTO 5050
 5000 X = (P + 9 - 72 * U) / 9
 5010 Y = (G + 9 - 72 * V) / 9
-5020 GOSUB 6350
+5020 GOSUB 6340
 5030 A = 1
 5040 RETURN
 5050 REM END IF
 5060 PRINT "**You wandered outside the galaxy**"
 5070 PRINT "On board computer takes over, and saved your life"
-5080 GOSUB 6280
-5090 GOSUB 6350
+5080 GOSUB 6270
+5090 GOSUB 6340
 5100 A = 1
 5110 RETURN
 5120 REM
@@ -1448,167 +1470,166 @@ Tiny BASIC.
 5200 RETURN
 5210 REM END IF
 5220 PRINT "loaded"
-5230 GOSUB 5960
+5230 GOSUB 5950
 5240 IF R = 0 RETURN
 5250 PRINT "Torpedo track",
 5260 F = F - 1
 5270 P = 45 * X + 22
 5280 G = 45 * Y + 22
-5290 REM DO
-5300 P = P + S
-5310 G = G + T
-5320 I = P / 45
-5330 J = G / 45
-5340 IF @(8 * I + J + 62) GOTO 5360
-5350 IF (I > 0) * (I < 9) * (J > 0) * (J < 9) GOTO 5290
-5360 REM LOOP
-5370 IF (I > 0) * (I < 9) * (J > 0) * (J < 9) GOTO 5410
-5380 PRINT "...missed"
-5390 A = 0
-5400 RETURN
-5410 REM END IF
-5420 L = 8 * I + J + 62
-5430 W = 8 * U + V - 9
-5440 R = 0
-5450 IF @(W) > 0 R = 1
-5460 IF @(W) < 0 R = -1
-5470 PRINT I; ","; J, " ",
-5480 A = 0
-5490 IF @(L) <> 0 GOTO 5530
-5500 PRINT "...missed"
-5510 A = 0
-5520 RETURN
-5530 REM END IF
-5540 IF @(L) <> 1 GOTO 5650
-5550 S = RND(99) + 1 + 280
-5560 M = 135
-5570 REM DO
-5580 IF M > 140 GOTO 5620
-5590 IF (@(M + 6) = I) * (@(M + 12) = J) GOSUB 3030
-5600 M = M + 1
-5610 GOTO 5570
-5620 REM LOOP
-5630 A = 0
-5640 RETURN
-5650 REM END IF
-5660 IF @(L) <> 2 GOTO 5740
-5670 B = B - 1
-5680 @(L) = 0
-5690 @(W) = @(W) - 10 * R
-5700 PRINT "Starbase destroyed"
-5710 PRINT "Spock: 'I often find human behaviour fascinating.'"
-5720 RETURN
+5290 M = 1
+5300 REM DO
+5310 IF M > 8 GOTO 5900
+5320 P = P + S
+5330 G = G + T
+5340 I = P / 45
+5350 J = G / 45
+5360 IF (I < 1) + (I > 8) + (J < 1) + (J > 8) GOTO 5900
+5370 L = 8 * I + J + 62
+5380 W = 8 * U + V - 9
+5390 R = 0
+5400 IF @(W) > 0 R = 1
+5410 IF @(W) < 0 R = -1
+5420 PRINT I; ","; J, " ",
+5430 A = 0
+5440 IF @(L) <> 0 GOTO 5470
+5450 M = M + 1
+5460 GOTO 5300
+5470 REM END IF
+5480 IF @(L) <> 1 GOTO 5590
+5490 S = RND(99) + 1 + 280
+5500 M = 135
+5510 REM DO
+5520 IF M > 140 GOTO 5560
+5530 IF (@(M + 6) = I) * (@(M + 12) = J) GOSUB 3030
+5540 M = M + 1
+5550 GOTO 5510
+5560 REM LOOP
+5570 A = 0
+5580 RETURN
+5590 REM END IF
+5600 IF @(L) <> 2 GOTO 5680
+5610 B = B - 1
+5620 @(L) = 0
+5630 @(W) = @(W) - 10 * R
+5640 PRINT "Starbase destroyed"
+5650 PRINT "Spock: 'I often find human behaviour fascinating.'"
+5660 A = 0
+5670 RETURN
+5680 REM END IF
+5690 IF @(L) <> 3 GOTO 5880
+5700 PRINT "Hit a star"
+5710 IF RND(9) + 1 >= 3 GOTO 5750
+5720 PRINT "Torpedo absorbed"
 5730 A = 0
-5740 REM END IF
-5750 IF @(L) <> 3 GOTO 5940
-5760 PRINT "Hit a star"
-5770 IF RND(9) + 1 >= 3 GOTO 5810
-5780 PRINT "Torpedo absorbed"
-5790 A = 0
-5800 RETURN
-5810 REM END IF
-5820 @(L) = 0
-5830 @(W) = @(W) - R
-5840 IF RND(9) + 1 >= 6 GOTO 5880
-5850 PRINT "Star destroyed"
+5740 RETURN
+5750 REM END IF
+5760 @(L) = 0
+5770 @(W) = @(W) - R
+5780 IF RND(9) + 1 >= 6 GOTO 5820
+5790 PRINT "Star destroyed"
+5800 A = 0
+5810 RETURN
+5820 REM END IF
+5830 T = 300
+5840 PRINT "It novas ***radiation alarm***"
+5850 GOSUB 3590
 5860 A = 0
 5870 RETURN
 5880 REM END IF
-5890 T = 300
-5900 PRINT "It novas ***radiation alarm***"
-5910 GOSUB 3590
+5890 GOTO 5300
+5900 REM LOOP
+5910 PRINT "...missed"
 5920 A = 0
 5930 RETURN
-5940 REM END IF
-5950 REM
-5960 REM SUBRROUTINE 615
-5970 PRINT "Course (0-360)";
-5980 INPUT I
-5990 IF (I <= 360) + (I >= 0) GOTO 6020
-6000 R = 0
-6010 RETURN
-6020 REM END IF
-6030 S = (I + 45) / 90
-6040 I = I - S * 90
-6050 R = (45 + I * I) / 110 + 45
-6060 IF S > 3 S = 0
-6070 IF S <> 0 GOTO 6110
-6080 S = -45
-6090 T = I
-6100 RETURN
-6110 REM END IF
-6120 IF S <> 1 GOTO 6160
-6130 S = I
-6140 T = 45
-6150 RETURN
-6160 REM END IF
-6170 IF S <> 2 GOTO 6210
-6180 S = 45
-6190 T = -I
-6200 RETURN
-6210 REM END IF
-6220 IF S <> 3 GOTO 6260
-6230 S = -I
-6240 T = -45
-6250 RETURN
-6260 REM END IF
-6270 REM
-6280 REM SUBROUTINE 40
-6290 U = RND(8) + 1
-6300 V = RND(8) + 1
-6310 X = RND(8) + 1
-6320 Y = RND(8) + 1
-6330 RETURN
-6340 REM
-6350 REM SUBROUTINE 45
-6360 I = 71
-6370 REM DO
-6380 IF I > 152 GOTO 6420
-6390 @(I) = 0
-6400 I = I + 1
-6410 GOTO 6370
-6420 REM LOOP
-6430 @(8 * X + Y + 62) = 4
-6440 M = @(8 * U + V - 9)
-6450 IF M < 0 M = -M
-6460 N = M / 100
-6470 I = 1
-6480 IF N = 0 GOTO 6590
-6490 J = 1
-6500 REM DO
-6510 IF J > N GOTO 6580
-6520 GOSUB 1230
-6530 @(J + 134) = 300
-6540 @(J + 140) = S
-6550 @(J + 146) = T
-6560 J = J + 1
-6570 GOTO 6500
-6580 REM LOOP
-6590 REM END IF
-6600 GOSUB 1330
-6610 M = M - 100 * N
-6620 I = 2
-6630 IF M / 10 GOSUB 1230
-6640 M = M - M / 10 * 10
-6650 I = 3
-6660 IF M = 0 GOTO 6740
-6670 J = 1
-6680 REM DO
-6690 IF J > M GOTO 6730
-6700 GOSUB 1230
-6710 J = J + 1
-6720 GOTO 6680
-6730 REM LOOP
-6740 REM END IF
-6750 A = 1
-6760 RETURN
-6770 REM
-6780 REM SUBROUTINE input
-6790 REM DO
-6800 INKEY A
-6810 NAP 10
-6820 IF A = -1 GOTO 6790
-6830 REM LOOP
-6840 PRINT
-6850 RETURN
+5940 REM
+5950 REM SUBRROUTINE course
+5960 PRINT "Course (0-360)";
+5970 INPUT I
+5980 IF (I <= 360) + (I >= 0) GOTO 6010
+5990 R = 0
+6000 RETURN
+6010 REM END IF
+6020 S = (I + 45) / 90
+6030 I = I - S * 90
+6040 R = (45 + I * I) / 110 + 45
+6050 IF S > 3 S = 0
+6060 IF S <> 0 GOTO 6100
+6070 S = -45
+6080 T = I
+6090 RETURN
+6100 REM END IF
+6110 IF S <> 1 GOTO 6150
+6120 S = I
+6130 T = 45
+6140 RETURN
+6150 REM END IF
+6160 IF S <> 2 GOTO 6200
+6170 S = 45
+6180 T = -I
+6190 RETURN
+6200 REM END IF
+6210 IF S <> 3 GOTO 6250
+6220 S = -I
+6230 T = -45
+6240 RETURN
+6250 REM END IF
+6260 REM
+6270 REM SUBROUTINE random location
+6280 U = RND(8) + 1
+6290 V = RND(8) + 1
+6300 X = RND(8) + 1
+6310 Y = RND(8) + 1
+6320 RETURN
+6330 REM
+6340 REM SUBROUTINE init quadrant
+6350 I = 71
+6360 REM DO
+6370 IF I > 152 GOTO 6410
+6380 @(I) = 0
+6390 I = I + 1
+6400 GOTO 6360
+6410 REM LOOP
+6420 @(8 * X + Y + 62) = 4
+6430 M = @(8 * U + V - 9)
+6440 IF M < 0 M = -M
+6450 N = M / 100
+6460 I = 1
+6470 IF N = 0 GOTO 6580
+6480 J = 1
+6490 REM DO
+6500 IF J > N GOTO 6570
+6510 GOSUB 1230
+6520 @(J + 134) = 300
+6530 @(J + 140) = S
+6540 @(J + 146) = T
+6550 J = J + 1
+6560 GOTO 6490
+6570 REM LOOP
+6580 REM END IF
+6590 GOSUB 1330
+6600 M = M - 100 * N
+6610 I = 2
+6620 IF M / 10 GOSUB 1230
+6630 M = M - M / 10 * 10
+6640 I = 3
+6650 IF M = 0 GOTO 6730
+6660 J = 1
+6670 REM DO
+6680 IF J > M GOTO 6720
+6690 GOSUB 1230
+6700 J = J + 1
+6710 GOTO 6670
+6720 REM LOOP
+6730 REM END IF
+6740 A = 1
+6750 RETURN
+6760 REM
+6770 REM SUBROUTINE input
+6780 REM DO
+6790 INKEY A
+6800 NAP 10
+6810 IF A = -1 GOTO 6780
+6820 REM LOOP
+6830 PRINT
+6840 RETURN
 

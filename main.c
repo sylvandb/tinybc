@@ -85,7 +85,7 @@ static void insert(struct mttype *mt, char *buffer)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.6.6\n");
+	printw("Tiny BASIC for Curses, version 0.6.8\n");
 	printw("Type HELP if you need help\n\n");
 }
 
@@ -154,8 +154,6 @@ int main(int argc, char **argv)
 
 	mt = (struct mttype *) malloc(sizeof(struct mttype));
 	mt->ct = (struct cttype *) malloc(sizeof(struct cttype));
-	if (argc != 3 || !isdigit(argv[1][1]))
-		tinybc_init(mt->ct, mt->program, mt->numbers);
 	exit = 0;
 	fileind = 1;
 	strcpy(fname, "");
@@ -167,6 +165,8 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
+	if (argc != 3 || !isdigit(argv[1][1]))
+		tinybc_init(mt->ct, mt->program, mt->numbers);
 
 	if (argc == 1 || (argc == 3 && argv[1][1] == 'i')) {
 		intro();

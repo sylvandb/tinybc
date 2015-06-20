@@ -110,6 +110,10 @@ static int get_type(struct ttype *t)
 			t->next = t->ptr + 2;
 			return TOKEN_GE;
 		}
+		if (!strncmp(t->ptr, "\r\n", 2)) {
+			t->next = t->ptr + 2;
+			return TOKEN_LF;
+		}
 		t->next = t->ptr + 1;
 		return specialchar(t);
 	}
