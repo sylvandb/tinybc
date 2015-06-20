@@ -20,7 +20,7 @@
  *
  */
 
-#include "tokenizer.h"
+#include "tokenize.h"
 
 struct pstr {
 	int token;

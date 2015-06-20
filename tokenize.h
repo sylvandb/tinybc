@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef __TOKENIZER_H__
-#define __TOKENIZER_H__
+#ifndef __TOKENIZE_H__
+#define __TOKENIZE_H__
 
 #include <ctype.h>
 #include <stdio.h>

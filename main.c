@@ -84,7 +84,7 @@ static void insert(struct mttype *mt, char *buffer)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.8.2\n");
+	printw("Tiny BASIC for Curses, version 0.8.4\n");
 	printw("Type HELP if you need help\n\n");
 }
 
@@ -151,8 +151,8 @@ int main(int argc, char **argv)
 	struct mttype *mt;
 	FILE *f;
 
-	mt = (struct mttype *) malloc(sizeof(struct mttype));
-	mt->ct = (struct cttype *) malloc(sizeof(struct cttype));
+	mt = (struct mttype *) calloc(sizeof(struct mttype), 1);
+	mt->ct = (struct cttype *) calloc(sizeof(struct cttype), 1);
 	exit = 0;
 	fileind = 1;
 	strcpy(fname, "");

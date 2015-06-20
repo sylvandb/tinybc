@@ -32,15 +32,17 @@ Starts the interpreter interactively and loads the file.
 Renumbers the program starting from number.
 
 .SH INSTALL
-To compile tinybc in Linux, type make in the terminal. To install tinybc, as root type make install, and to remove the installation, type make remove. The installation also copies the examples to the directory /usr/share/doc/tinybc . To compile tinybc in Windows, type one of the following depending on your system:
+To compile tinybc in Linux, type make in the terminal. To install tinybc, as root type make install, and to remove the installation, type make remove. The installation also copies the examples to the directory /usr/share/doc/tinybc . To compile tinybc in Windows and DOS, type one of the following depending on your system:
 
 mingw32-make tinybc.exe
 
 make tinybc.exe
 
-The binaries for Linux and Windows are provided, but because of viruses, etc, it's safer to compile. The program depends only on some version of the curses library. For compiling in Linux, the ncurses development package has to be installed. In Windows, the compiler such as MinGW has to be installed. If you install MinGW, add its bin directory to the path. The PDCurses library for Windows is included in the distribution.
+make dos
 
-The path of the directory of the temporary input and output files should be set to the environment variable TINYBC_TMP , otherwise these files shall be stored in the current directory. The path must end with either slash or backslash.
+The binaries for Linux and Windows are provided, but because of viruses, etc, it is safer to compile. The program depends only on some version of the curses library. For compiling in Linux, the ncurses development package has to be installed. In Windows, the compiler such as MinGW, and in DOS DJGPP has to be installed. When you install the compiler, add its bin directory to the path. The PDCurses library for Windows is included, in DOS the library in \\pdcurses\\dos has to be compiled. In DOS, tinybc has only been tested in DOSBox, there the files were copied to the directory \\tinybc .
+
+The path of the temporary directory should be set to the environment variable TINYBC_TMP , otherwise temporary files shall be stored in the current directory. The path must end with slash or backslash.
 
 .SH LANGUAGE DESCRIPTION
 The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning strings and lists of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.

@@ -894,6 +894,13 @@ the directory in that new shell, and not in the shell where your program
 runs. Thus you are still in the same directory when you run the next
 SYSTEM statement.
 
+Because the interpreter is expected to run on multiple platforms,
+the implementation of executing external commands is the most simple,
+and such that it can work with different shells. For example many shells
+allow to enclose the command line in parentheses, you may have to do
+that to make sure that the input is directed to the first command in
+the chain of commands connected with pipes.
+
 There is a large number of shell utilities in Linux and not many in
 Windows, install GnuWin32 in Windows to get them all. The shell utilities
 tee and cat are also included in tinybc. The command tee takes the

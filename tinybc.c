@@ -20,7 +20,7 @@
  *
  */
 
-#include "tokenizer.h"
+#include "tokenize.h"
 #include "tinybc.h"
 
 static long int expr(struct cttype *ct);
@@ -204,8 +204,8 @@ void interactive(int mode)
 /*
  * Example of a new statement, assigns n2 to n1.
  * To add a new statement, do the following:
- * 1. Add the new token type to the enum in tokenizer.h,
- * 2. Add the keyword to keywords array in tokenizer.c,
+ * 1. Add the new token type to the enum in tokenize.h,
+ * 2. Add the keyword to keywords array in tokenize.c,
  * 3. Add new statement to the statement function below,
  * 4. Include a new header file here if necessary,
  * 5. Write the new function below this example
@@ -729,8 +729,8 @@ void tinybc_init(struct cttype *ct, char *program, long int *numbers)
 	struct ttype *t;
 	void *p;
 
-	/* Make sure that your malloc is thread-safe */
-	t = (struct ttype *) malloc(sizeof(struct ttype));
+	/* Make sure that your calloc is thread-safe */
+	t = (struct ttype *) calloc(sizeof(struct ttype), 1);
 	ct->t = t;
 	t_init(ct->t, program, numbers);
 	srand(time(0));

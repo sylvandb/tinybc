@@ -3,11 +3,16 @@ CC     = gcc
 
 all: tinybc
  
-tinybc: tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
-	$(CC) $(DBFLAGS) -o $@ tokenizer.c tinybc.c main.c -lcurses
+tinybc: tokenize.c tinybc.c main.c tokenize.h tinybc.h
+	$(CC) $(DBFLAGS) -o $@ tokenize.c tinybc.c main.c -lcurses
  
-tinybc.exe: tee.c cat.c tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
-	$(CC) $(DBFLAGS) -DBGR -I. -o $@ tokenizer.c tinybc.c main.c -L. -lpdcurses
+tinybc.exe: tee.c cat.c tokenize.c tinybc.c main.c tokenize.h tinybc.h
+	$(CC) $(DBFLAGS) -DBGR -I. -o $@ tokenize.c tinybc.c main.c -L. -lpdcurses
+	$(CC) $(DBFLAGS) -o tee.exe tee.c
+	$(CC) $(DBFLAGS) -o cat.exe cat.c
+
+dos: tee.c cat.c tokenize.c tinybc.c main.c tokenize.h tinybc.h
+	$(CC) $(DBFLAGS) -DBGR -I\pdcurses -o tinybc.exe tokenize.c tinybc.c main.c c:\pdcurses\dos\pdcurses.a
 	$(CC) $(DBFLAGS) -o tee.exe tee.c
 	$(CC) $(DBFLAGS) -o cat.exe cat.c
 

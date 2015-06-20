@@ -11,7 +11,7 @@
 110 REM 135 - Klingons data 3 x 6 (energies, X, Y)
 120 REM DO
 130 PRINT "Do you want a difficult game (y or n)?";
-140 GOSUB 5830
+140 GOSUB 5810
 150 Z = (A <> 121) * 2999 + (A = 121) * 999
 160 PRINT "Stardate 3200: your mission is",
 170 REM DO
@@ -36,8 +36,8 @@
 360 D = 30
 370 H = K
 380 GOSUB 1140
-390 GOSUB 5400
-400 GOSUB 5470
+390 GOSUB 5380
+400 GOSUB 5450
 410 GOSUB 950
 420 GOSUB 2770
 430 REM DO
@@ -46,14 +46,14 @@
 460 PRINT "g = Galaxy map   p = Phaser       t = Torpedo"
 470 PRINT "w = Warp engine  ***Please use these commands***"
 480 PRINT "Captain?";
-490 GOSUB 5830
+490 GOSUB 5810
 500 IF A = 103 GOSUB 1340
 510 IF A = 108 GOSUB 1590
 520 IF A = 115 GOSUB 1840
 530 IF A = 112 GOSUB 2130
 540 IF A = 114 GOSUB 3350
 550 IF A = 119 GOSUB 3740
-560 IF A = 116 GOSUB 4590
+560 IF A = 116 GOSUB 4570
 570 IF (A = 113) + (A = 27) A = -A
 580 IF A > 0 GOTO 440
 590 REM LOOP
@@ -87,7 +87,7 @@
 870 REM LOOP
 880 PRINT
 890 PRINT "Another game (y or n)?";
-900 GOSUB 5830
+900 GOSUB 5810
 910 IF A = 121 GOTO 120
 920 REM LOOP
 930 PRINT "Good bye."
@@ -394,7 +394,7 @@
 3940 PRINT "Scotty: 'Sir, we do not have the energy.'"
 3950 RETURN
 3960 REM END IF
-3970 GOSUB 5260
+3970 GOSUB 5220
 3980 IF R = 0 RETURN
 3990 D = D - 1
 4000 E = E - M * M / 2
@@ -405,187 +405,185 @@
 4050 N = N + 1
 4060 IF N <= 70 GOTO 4030
 4070 REM LOOP
-4080 B = 45 * (X + 1) + 22
-4090 G = 45 * (Y + 1) + 22
-4100 M = 45 * M
-4110 REM DO
-4120 M = M - R
-4130 IF M >= -22 GOTO 4180
-4140 @(71 + 8 * X + Y) = 4
-4150 A = 0
-4160 GOSUB 1300
-4170 RETURN
-4180 REM END IF
-4190 B = B + S
-4200 G = G + T
-4210 I = B / 45 - 1
-4220 J = G / 45 - 1
-4230 IF (I < 0) + (I > 7) + (J < 0) + (J > 7) GOTO 4350
-4240 IF @(71 + 8 * I + J) = 0 GOTO 4310
-4250 PRINT "**Emergency stop**"
-4260 PRINT "Spock: 'To err is human.'"
-4270 @(71 + 8 * X + Y) = 4
-4280 GOSUB 1300
-4290 A = 0
-4300 RETURN
-4310 REM END IF
-4320 X = I
-4330 Y = J
-4340 GOTO 4110
-4350 REM LOOP
-4360 B = (U + 1) * 72 + B / 5 + M / 5 * S / R - 9
-4370 G = (V + 1) * 72 + G / 5 + M / 5 * T / R - 9
-4380 U = B / 72 - 1
-4390 V = G / 72 - 1
-4400 IF RND(9) GOTO 4440
-4410 PRINT "***Space storm***"
-4420 T = 100
-4430 GOSUB 3080
-4440 REM END IF
-4450 IF (U < 0) + (U > 7) + (V < 0) + (V > 7) GOTO 4510
-4460 X = (B + 9 - 72 * (U + 1)) / 9 - 1
-4470 Y = (G + 9 - 72 * (V + 1)) / 9 - 1
-4480 GOSUB 5470
-4490 A = 0
-4500 RETURN
-4510 REM END IF
-4520 PRINT "**You wandered outside the galaxy**"
-4530 PRINT "On board computer takes over, and saved your life"
-4540 GOSUB 5400
-4550 GOSUB 5470
-4560 A = 0
-4570 RETURN
-4580 REM
-4590 REM SUBROUTINE torpedo
-4600 M = 5
-4610 GOSUB 3230
-4620 IF @(64 + M) RETURN
-4630 IF F GOTO 4660
-4640 PRINT "empty"
-4650 RETURN
-4660 REM END IF
-4670 PRINT "loaded"
-4680 GOSUB 5260
-4690 IF R = 0 RETURN
-4700 F = F - 1
-4710 PRINT "Torpedo track",
-4720 B = 45 * (X + 1) + 22
-4730 G = 45 * (Y + 1) + 22
-4740 REM DO
-4750 B = B + S
-4760 G = G + T
-4770 I = B / 45 - 1
-4780 J = G / 45 - 1
-4790 IF (I < 0) + (I > 7) + (J < 0) + (J > 7) GOTO 5210
-4800 PRINT I + 1; ","; J + 1,
-4810 L = 71 + 8 * I + J
-4820 M = 8 * U + V
-4830 Z = (@(M) > 0) - (@(M) < 0)
-4840 A = 0
-4850 IF @(L) = 0 GOTO 4740
-4860 IF @(L) <> 1 GOTO 4950
-4870 S = RND(99) + 281
-4880 N = 135
-4890 REM DO
-4900 IF (@(N + 6) = I) * (@(N + 12) = J) GOSUB 2630
-4910 N = N + 1
-4920 IF N <= 140 GOTO 4890
-4930 REM LOOP
-4940 RETURN
-4950 REM END IF
-4960 IF @(L) <> 2 GOTO 5020
-4970 @(L) = 0
-4980 @(M) = @(M) - 10 * Z
-4990 PRINT "Starbase destroyed"
-5000 PRINT "Spock: 'I often find human behaviour fascinating.'"
-5010 RETURN
-5020 REM END IF
-5030 IF @(L) <> 3 GOTO 5190
-5040 PRINT "Hit a star"
-5050 IF RND(9) > 1 GOTO 5080
-5060 PRINT "Torpedo absorbed"
-5070 RETURN
-5080 REM END IF
-5090 @(L) = 0
-5100 @(M) = @(M) - Z
-5110 IF RND(9) > 4 GOTO 5140
-5120 PRINT "Star destroyed"
-5130 RETURN
-5140 REM END IF
-5150 T = 300
-5160 PRINT "It novas ***radiation alarm***"
-5170 GOSUB 3080
-5180 RETURN
-5190 REM END IF
-5200 GOTO 4740
-5210 REM LOOP
-5220 PRINT "...missed"
-5230 A = 0
-5240 RETURN
-5250 REM
-5260 REM SUBRROUTINE course
-5270 PRINT "Course (0-360)";
-5280 N = -1
-5290 INPUT N
-5300 R = 0
-5310 IF (N < 0) + (N > 360) RETURN
-5320 S = (N + 45) / 90
-5330 N = N - S * 90
-5340 R = (45 + N * N) / 110 + 45
-5350 Z = (S < 4) * S
-5360 S = (Z = 0) * -45 + (Z = 1) * N + (Z = 2) * 45 + (Z = 3) * -N
-5370 T = (Z = 0) * N + (Z = 1) * 45 + (Z = 2) * -N + (Z = 3) * -45
-5380 RETURN
-5390 REM
-5400 REM SUBROUTINE random location
-5410 U = RND(8)
-5420 V = RND(8)
-5430 X = RND(8)
-5440 Y = RND(8)
-5450 RETURN
-5460 REM
-5470 REM SUBROUTINE init quadrant
-5480 I = 71
-5490 REM DO
-5500 @(I) = 0
-5510 I = I + 1
-5520 IF I <= 152 GOTO 5490
-5530 REM LOOP
-5540 @(71 + 8 * X + Y) = 4
-5550 M = @(8 * U + V)
-5560 M = (2 * (M > 0) - 1) * M
-5570 N = 1
-5580 I = 1
-5590 REM DO
-5600 IF I > M / 100 GOTO 5670
-5610 GOSUB 1210
-5620 @(135 + I - 1) = 300
-5630 @(141 + I - 1) = S
-5640 @(147 + I - 1) = T
-5650 I = I + 1
-5660 GOTO 5590
-5670 REM LOOP
-5680 GOSUB 1300
-5690 M = M - M / 100 * 100
-5700 N = 2
-5710 IF M / 10 GOSUB 1210
-5720 M = M - M / 10 * 10
-5730 N = 3
-5740 I = 1
-5750 REM DO
-5760 IF I > M GOTO 5800
-5770 GOSUB 1210
-5780 I = I + 1
-5790 GOTO 5750
-5800 REM LOOP
-5810 RETURN
-5820 REM
-5830 REM SUBROUTINE input
-5840 REM DO
-5850 INKEY A
-5860 NAP 10
-5870 IF A < 0 GOTO 5840
-5880 REM LOOP
-5890 PRINT
-5900 RETURN
+4080 M = 45 * M
+4090 REM DO
+4100 M = M - R
+4110 IF M >= -22 GOTO 4160
+4120 @(71 + 8 * X + Y) = 4
+4130 A = 0
+4140 GOSUB 1300
+4150 RETURN
+4160 REM END IF
+4170 B = B + S
+4180 G = G + T
+4190 I = B / 45 - 1
+4200 J = G / 45 - 1
+4210 IF (I < 0) + (I > 7) + (J < 0) + (J > 7) GOTO 4330
+4220 IF @(71 + 8 * I + J) = 0 GOTO 4290
+4230 PRINT "**Emergency stop**"
+4240 PRINT "Spock: 'To err is human.'"
+4250 @(71 + 8 * X + Y) = 4
+4260 GOSUB 1300
+4270 A = 0
+4280 RETURN
+4290 REM END IF
+4300 X = I
+4310 Y = J
+4320 GOTO 4090
+4330 REM LOOP
+4340 B = (U + 1) * 72 + B / 5 + M / 5 * S / R - 9
+4350 G = (V + 1) * 72 + G / 5 + M / 5 * T / R - 9
+4360 U = B / 72 - 1
+4370 V = G / 72 - 1
+4380 IF RND(9) GOTO 4420
+4390 PRINT "***Space storm***"
+4400 T = 100
+4410 GOSUB 3080
+4420 REM END IF
+4430 IF (U < 0) + (U > 7) + (V < 0) + (V > 7) GOTO 4490
+4440 X = (B + 9 - 72 * (U + 1)) / 9 - 1
+4450 Y = (G + 9 - 72 * (V + 1)) / 9 - 1
+4460 GOSUB 5450
+4470 A = 0
+4480 RETURN
+4490 REM END IF
+4500 PRINT "**You wandered outside the galaxy**"
+4510 PRINT "On board computer takes over, and saved your life"
+4520 GOSUB 5380
+4530 GOSUB 5450
+4540 A = 0
+4550 RETURN
+4560 REM
+4570 REM SUBROUTINE torpedo
+4580 M = 5
+4590 GOSUB 3230
+4600 IF @(64 + M) RETURN
+4610 IF F GOTO 4640
+4620 PRINT "empty"
+4630 RETURN
+4640 REM END IF
+4650 PRINT "loaded"
+4660 GOSUB 5220
+4670 IF R = 0 RETURN
+4680 F = F - 1
+4690 PRINT "Torpedo track",
+4700 REM DO
+4710 B = B + S
+4720 G = G + T
+4730 I = B / 45 - 1
+4740 J = G / 45 - 1
+4750 IF (I < 0) + (I > 7) + (J < 0) + (J > 7) GOTO 5170
+4760 PRINT I + 1; ","; J + 1,
+4770 L = 71 + 8 * I + J
+4780 M = 8 * U + V
+4790 Z = (@(M) > 0) - (@(M) < 0)
+4800 A = 0
+4810 IF @(L) = 0 GOTO 4700
+4820 IF @(L) <> 1 GOTO 4910
+4830 S = RND(99) + 281
+4840 N = 135
+4850 REM DO
+4860 IF (@(N + 6) = I) * (@(N + 12) = J) GOSUB 2630
+4870 N = N + 1
+4880 IF N <= 140 GOTO 4850
+4890 REM LOOP
+4900 RETURN
+4910 REM END IF
+4920 IF @(L) <> 2 GOTO 4980
+4930 @(L) = 0
+4940 @(M) = @(M) - 10 * Z
+4950 PRINT "Starbase destroyed"
+4960 PRINT "Spock: 'I often find human behaviour fascinating.'"
+4970 RETURN
+4980 REM END IF
+4990 IF @(L) <> 3 GOTO 5150
+5000 PRINT "Hit a star"
+5010 IF RND(9) > 1 GOTO 5040
+5020 PRINT "Torpedo absorbed"
+5030 RETURN
+5040 REM END IF
+5050 @(L) = 0
+5060 @(M) = @(M) - Z
+5070 IF RND(9) > 4 GOTO 5100
+5080 PRINT "Star destroyed"
+5090 RETURN
+5100 REM END IF
+5110 T = 300
+5120 PRINT "It novas ***radiation alarm***"
+5130 GOSUB 3080
+5140 RETURN
+5150 REM END IF
+5160 GOTO 4700
+5170 REM LOOP
+5180 PRINT "...missed"
+5190 A = 0
+5200 RETURN
+5210 REM
+5220 REM SUBRROUTINE course
+5230 PRINT "Course (0-360)";
+5240 N = -1
+5250 INPUT N
+5260 R = 0
+5270 IF (N < 0) + (N > 360) RETURN
+5280 S = (N + 45) / 90
+5290 N = N - S * 90
+5300 R = (45 + N * N) / 110 + 45
+5310 Z = (S < 4) * S
+5320 S = (Z = 0) * -45 + (Z = 1) * N + (Z = 2) * 45 + (Z = 3) * -N
+5330 T = (Z = 0) * N + (Z = 1) * 45 + (Z = 2) * -N + (Z = 3) * -45
+5340 B = 45 * (X + 1) + 22
+5350 G = 45 * (Y + 1) + 22
+5360 RETURN
+5370 REM
+5380 REM SUBROUTINE random location
+5390 U = RND(8)
+5400 V = RND(8)
+5410 X = RND(8)
+5420 Y = RND(8)
+5430 RETURN
+5440 REM
+5450 REM SUBROUTINE init quadrant
+5460 I = 71
+5470 REM DO
+5480 @(I) = 0
+5490 I = I + 1
+5500 IF I <= 152 GOTO 5470
+5510 REM LOOP
+5520 @(71 + 8 * X + Y) = 4
+5530 M = @(8 * U + V)
+5540 M = (2 * (M > 0) - 1) * M
+5550 N = 1
+5560 I = 1
+5570 REM DO
+5580 IF I > M / 100 GOTO 5650
+5590 GOSUB 1210
+5600 @(135 + I - 1) = 300
+5610 @(141 + I - 1) = S
+5620 @(147 + I - 1) = T
+5630 I = I + 1
+5640 GOTO 5570
+5650 REM LOOP
+5660 GOSUB 1300
+5670 M = M - M / 100 * 100
+5680 N = 2
+5690 IF M / 10 GOSUB 1210
+5700 M = M - M / 10 * 10
+5710 N = 3
+5720 I = 1
+5730 REM DO
+5740 IF I > M GOTO 5780
+5750 GOSUB 1210
+5760 I = I + 1
+5770 GOTO 5730
+5780 REM LOOP
+5790 RETURN
+5800 REM
+5810 REM SUBROUTINE input
+5820 REM DO
+5830 INKEY A
+5840 NAP 10
+5850 IF A < 0 GOTO 5820
+5860 REM LOOP
+5870 PRINT
+5880 RETURN
 
