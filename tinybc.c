@@ -264,7 +264,6 @@ static void cls_stmt(struct cttype *ct)
 	PDEBUG(lg, "cls:\n");
 	bkgd(COLOR_PAIR(ct->currentcolor[0]));
 	clear();
-	refresh();
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -375,15 +374,59 @@ static void if_stmt(struct cttype *ct)
 
 static void inchar_stmt(struct cttype *ct)
 {
-	long int n1ind;
+	long int n1ind, n2ind, n3ind, ch, co, i, j, k;
 
 	t_take(ct->t, TOKEN_INCHAR);
 	PDEBUG(lg, "inchar:\n");
 	if (t_type(ct->t) == TOKEN_VARIABLE) {
 		n1ind = t_variable(ct->t);
-		tinybc_set(ct, n1ind, inch() & A_CHARTEXT);
+		ch = inch();
+		tinybc_set(ct, n1ind, ch & A_CHARTEXT);
 	}
 	t_take(ct->t, TOKEN_VARIABLE);
+	if (t_type(ct->t) == TOKEN_COMMA) {
+		t_take(ct->t, TOKEN_COMMA);
+		for (i = 1, k = 1; i <= 4; i++) {
+			if (A_COLOR & k) break;
+			if (i < 4) k *= 256;
+		}
+		co = (ch & A_COLOR) / k;
+		for (i = 0; i < MAX_COLOR; i++) {
+			for (j = 0; j < MAX_COLOR; j++)
+				if (ct->colorpairs[i][j] == co)
+					break;
+			if (ct->colorpairs[i][j] == co) break;
+		}
+#ifdef BGR
+		if (i == 1)
+			i = 4;
+		else if (i == 3)
+			i = 6;
+		else if (i == 4)
+			i = 1;
+		else if (i == 6)
+			i = 3;
+		if (j == 1)
+			j = 4;
+		else if (j == 3)
+			j = 6;
+		else if (j == 4)
+			j = 1;
+		else if (j == 6)
+			j = 3;
+#endif
+		if (t_type(ct->t) == TOKEN_VARIABLE) {
+			n2ind = t_variable(ct->t);
+			tinybc_set(ct, n2ind, i);
+		}
+		t_take(ct->t, TOKEN_VARIABLE);
+		t_take(ct->t, TOKEN_COMMA);
+		if (t_type(ct->t) == TOKEN_VARIABLE) {
+			n3ind = t_variable(ct->t);
+			tinybc_set(ct, n3ind, j);
+		}
+		t_take(ct->t, TOKEN_VARIABLE);
+	}
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -398,6 +441,7 @@ static void inkey_stmt(struct cttype *ct)
 		tinybc_set(ct, n1ind, wgetch(stdscr));
 	}
 	t_take(ct->t, TOKEN_VARIABLE);
+	refresh();
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -475,6 +519,7 @@ static void nap_stmt(struct cttype *ct)
 
 	t_take(ct->t, TOKEN_NAP);
 	PDEBUG(lg, "nap:\n");
+	refresh();
 	if (t_expr_type(ct->t)) {
 		n1 = expr(ct);
 		napms(n1);
@@ -496,8 +541,8 @@ static void out_stmt(struct cttype *ct)
 		scrollok(stdscr, TRUE);
 		printw("\n");
 		scrollok(stdscr, FALSE);
+		refresh();
 	}
-	refresh();
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -531,8 +576,8 @@ static void print_stmt(struct cttype *ct)
 		scrollok(stdscr, TRUE);
 		printw("\n");
 		scrollok(stdscr, FALSE);
+		refresh();
 	}
-	refresh();
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -704,6 +749,7 @@ int tinybc_ended(struct cttype *ct)
 	if (t_ended(ct->t)) {
 		PDEBUG(lg, "tinybc ended\n");
 
+		refresh();
 		while (wgetch(stdscr) < 0) napms(100);
 		attrset(COLOR_PAIR(0));
 		bkgd(COLOR_PAIR(0));

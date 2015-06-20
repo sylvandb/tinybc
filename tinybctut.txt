@@ -64,11 +64,11 @@ possible, but not efficient and convenient to use.
 All commands have to be in upper case, just because this is how it
 once was in that BASIC, and you can write only the first letter of a
 command. If you type L (LIST) after the tinybc prompt and press Enter,
-you would see the program which you entered. When your program is longer
+you will see the program which you entered. When your program is longer
 than the screen, it prints a part of it and stops, press any key after
 that when you want to see the next part. That way you can see all your
-code until the prompt appears. You may also follow the L with one or
-two numbers. For example L 100 prints your code starting from the line
+code until the prompt appears. You may also follow L with one or two
+numbers. For example L 100 prints your code starting from the line
 which begins with the number 100, L 100-200 prints all lines of your
 code between 100 and 200.
 
@@ -85,7 +85,7 @@ you run your program.
 C (CLEAR) clears the program so that you can write a new one. H (HELP)
 prints help, Q (QUIT) exits tinybc. You can use Backspace to delete
 wrongly written characters, this is the key above Enter with a left
-arrow on it.
+arrow on it, ctrl-u deletes the whole line.
 
 
 Writing your first program
@@ -511,10 +511,17 @@ resources, and some operating systems such as Windows would become not
 responsive when no such time is given. Second, it can be used to adjust
 the speed of the game or other program.
 
-If it happens that the output becomes crappy, it would be good to add
-a NAP statement after every LOCATE statement. This should not happen
-but it depends on your platform. In some platforms the output to the
-terminal is not synchronized, and thus long printing operations may
+For fast output, write the whole screen without line feeds, but
+in that case anything which you wrote shall appear on the screen only
+after input statements or NAP statement. It is common in programs such
+as text editors to rewrite the entire screen after inserting every single
+character. For the maximum output speed, in output statements the screen
+is only refreshed when printing a line feed.
+
+If it happens that the output becomes crappy, you may also have
+to use NAP statement before PRINT or OUT statements. This should not
+happen but it depends on your terminal. In some terminals the output to
+the terminal is not synchronized, and thus long printing operations may
 continue when the program already has to print something else.
 
 
@@ -791,13 +798,14 @@ statement. Foreground_color and background_color are both the color codes
 described above. CLS clears the screen, at that the color of the screen
 shall be the background color set by the previous COLOR statement.
 
-LOCATE line_number, column_number moves cursor to the line and column
-on the screen set by line_number and column_number. The line and
+LOCATE line_number, column_number moves cursor to the line and
+column on the screen set by line_number and column_number. The line and
 column numbers start from zero and are counted top to bottom and left
 to right. Cursor is the location on the screen where the next PRINT or
 OUT statement prints. Printing changes the cursor location to the right
 of the printed text. There shall be no error when printing outside the
-screen, but nothing printed there shall be visible.
+screen, but curses then prints at the beginning of the screen instead
+of the desired location.
 
 There is one more character screen statement which is not often used,
 but which is still important. INCHAR variable assigns the code of the
@@ -806,7 +814,8 @@ for example when a certain pattern of characters forms the background,
 and we want to make something to move or change on that background. In
 that case before printing any character to the screen, we can store the
 character which is at the location where we want to print, to a variable
-or to array.
+or to array. INCHAR var1, var2, var3 also assigns the foreground and
+background colors to the variables var2 and var3.
 
 When doing so, we can later remove that which we printed, by restoring
 the characters. After that we can print again to a new location, which
@@ -1034,13 +1043,15 @@ square root using the Babylonian method.
 plot.bas is a port of the classic demo 3D Plot, it calculates both
 sine and square root.
 
-random.bas is the first demo of the Tom Pittman's Tiny BASIC.
-
 sine.bas is a port of the classic David Ahl demo, it calculates sine.
 
 stars.bas is a version of the game which was played on the first
 microcomputers, using only the lights and switches on the front panel.
 
-startrek.bas is a port of the old game Star Trek, it shows many things
-which you would need for writing bigger programs, such as using array.
+startrek.bas is a port of the old game Star Trek, it shows many
+things which you would need for writing bigger programs, such as using
+array. Also the warp engine there can be used for ray casting, similar
+to that which they used in early 3D games.
+
+trident.bas is a 3D rendering example.
 

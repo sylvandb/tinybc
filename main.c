@@ -84,7 +84,7 @@ static void insert(struct mttype *mt, char *buffer)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.8.4\n");
+	printw("Tiny BASIC for Curses, version 0.8.6\n");
 	printw("Type HELP if you need help\n\n");
 }
 
