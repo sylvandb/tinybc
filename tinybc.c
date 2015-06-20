@@ -563,7 +563,7 @@ static void return_stmt(struct cttype *ct)
 
 static void system_stmt(struct cttype *ct)
 {
-	char buffer[MAX_STRLEN], p;
+	char buffer[MAX_STRLEN], path[MAX_STRLEN], *p;
 	long int n1, n2, pos, i;
 	FILE *f;
 
@@ -576,7 +576,11 @@ static void system_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_COMMA);
 	if (t_expr_type(ct->t)) {
 		n2 = expr(ct);
-		f = fopen("TMP1", "w");
+		strcpy(path, "");
+		p = getenv("TINYBC_TMP");
+		if (p && strlen(p) < MAX_STRLEN) strcpy(path, p);
+		sprintf(buffer, "%sTBC1", path);
+		f = fopen(buffer, "w");
 		for (pos = n2; tinybc_get(ct, MAX_VARIND + pos); ) {
 			for (i = 0; tinybc_get(ct, MAX_VARIND + i) &&
 				tinybc_get(ct, MAX_VARIND + i) != '\n' &&
@@ -590,12 +594,13 @@ static void system_stmt(struct cttype *ct)
 		}
 		fclose(f);
 		for (i = 0; tinybc_get(ct, MAX_VARIND + n1 + i) &&
-			i < MAX_STRLEN - 16; i++)
+			i < MAX_STRLEN - 2 * strlen(path) - 16; i++)
 			buffer[i] = tinybc_get(ct, MAX_VARIND + n1 + i);
 		buffer[i] = 0;
-		strcat(buffer, " < TMP1 > TMP2");
+		sprintf(buffer, "%s < %sTBC1 > %sTBC2", buffer, path, path);
 		system(buffer);
-		f = fopen("TMP2", "r");
+		sprintf(buffer, "%sTBC2", path);
+		f = fopen(buffer, "r");
 		for (pos = n2; f && fgets(buffer, MAX_STRLEN, f); ) {
 			for (i = 0; buffer[i]; i++)
 				tinybc_set(ct, MAX_VARIND + pos + i,
@@ -604,8 +609,10 @@ static void system_stmt(struct cttype *ct)
 			pos += i;
 		}
 		fclose(f);
-		remove("TMP1");
-		remove("TMP2");
+		sprintf(buffer, "%sTBC1", path);
+		remove(buffer);
+		sprintf(buffer, "%sTBC2", path);
+		remove(buffer);
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
 	t_take(ct->t, TOKEN_LF);

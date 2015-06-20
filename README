@@ -83,14 +83,10 @@ INSTALL
        tory  to  the path. The PDCurses library for Windows is included in the
        distribution.
 
-       In the Windows versions starting from Vista, it is possible to open the
-       console  (terminal)  from Windows Explorer in the browsed directory, by
-       right clicking on that directory when holding down the shift  key,  and
-       then  choosing  "Open  Command Prompt Here". The alternative is running
-       cmd and copying the path from the file properties. The  executable  can
-       also  be run by clicking on it, but because Tiny BASIC does not provide
-       any file open dialog, opening files in  the  interactive  mode  may  be
-       inconvenient.
+       The path of the directory of  the  temporary  input  and  output  files
+       should  be set to the environment variable TINYBC_TMP , otherwise these
+       files shall be stored in the current directory. The path must end  with
+       either slash or backslash.
 
 
 LANGUAGE DESCRIPTION

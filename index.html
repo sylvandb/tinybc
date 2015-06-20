@@ -79,7 +79,7 @@ in Linux, the ncurses development package has to be installed. In Windows,
 the compiler such as MinGW has to be installed. If you install MinGW, add its
 bin directory to the path. The PDCurses library for Windows is included
 in the distribution. 
-<p> In the Windows versions starting from Vista, it is possible to open the console (terminal) from Windows Explorer in the browsed directory, by right clicking on that directory when holding down the shift key, and then choosing "Open Command Prompt Here". The alternative is running cmd and copying the path from the file properties. The executable can also be run by clicking on it, but because Tiny BASIC does not provide any file open dialog, opening files in the interactive mode may be inconvenient. 
+<p> The path of the directory of the temporary input and output files should be set to the environment variable TINYBC_TMP , otherwise these files shall be stored in the current directory. The path must end with either slash or backslash.
 <p> 
 <h2><a name='sect6' href='#toc6'>Language Description</a></h2>
 The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning strings and lists of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.

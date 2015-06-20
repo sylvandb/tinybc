@@ -865,15 +865,14 @@ writing graphics programs.
 Executing external commands
 ---------------------------
 
-There is the whole world out there, there are files, there is Internet,
-and you likely want to communicate with that all. Strictly speaking,
-this is not what the programming language for beginners should provide,
-but it was the request by the users to provide such feature, and the
-developers serve the users.
+There is a whole world out there, there are files, there is Internet,
+and you likely want to communicate with all that. It is not what the
+programming language for beginners should provide, but it was a request
+by users to provide such feature, and developers serve the users.
 
 Yet the users should use that feature at their own risk, as it is very
 powerful. It even enables to use Tiny BASIC for Curses for scripting,
-the other question is whether it is the best for that purpose. You cannot
+another question is whether it is the best for that purpose. You cannot
 go over the array boundaries, but you may accidentally overwrite that
 which you already have in the array.
 
@@ -882,14 +881,39 @@ is the beginning of the external command in the array, and the second
 is the beginning of the text in the array, both have to be followed by
 zero. You have written commands in the terminal or console, such as ls,
 dir, etc, and executing programs from the command line. External command
-there is the text of such command line.
+there is the text of such command line. The input of the command is
+taken from the text in the array, and the output of the command shall
+be written to the array, ending with zero and replacing the previous
+text. This method is called filtering though external command.
 
-The input of the command is taken from the text in the array, and the
-output of the command shall be written to the array, ending with zero
-and replacing the previous text. This method is called filtering though
-external command, and it is used in text editors and other programs. You
-can also use the file TMP1 in the command instead of input, for example
-copy TMP1 newfile.txt in Windows. Write the following program and run it:
+You can do with external commands a lot which the operating system
+enables to do, but there are some restrictions. This is because a separate
+shell shall be created when executing an external command. For example
+if you change the directory with the SYSTEM statement, this only changes
+the directory in that new shell, and not in the shell where your program
+runs. Thus you are still in the same directory when you run the next
+SYSTEM statement.
+
+There is a large number of shell utilities in Linux and not many in
+Windows, install GnuWin32 in Windows to get them all. The shell utilities
+tee and cat are also included in tinybc. The command tee takes the
+standard input and writes it to file, and cat does the opposite, reads
+a file and writes it to the standard output. Consider the following code:
+
+10 C = 100
+20 @(0) = "tee myfile.txt", 0
+30 @(C) = "copy", 10, "del", 10, "dir", 10, "time", 0
+40 SYSTEM 0, C
+50 @(0) = "cat myfile.txt", 0
+60 SYSTEM 0, C
+
+This code writes the text in the array starting at C, to the file
+myfile.txt, and then reads the file myfile.txt and writes it to the
+array, also starting at C. So the text in the array remains the same,
+and shall also be written to the file myfile.txt. The list of Windows
+commands there is separated by line feeds (the equivalents in Linux are
+cp, rm, ls and date). The command "tee -a myfile.txt" adds the text to
+the end of the file. Write the following program and run it:
 
 10 C = 100
 20 @(0) = "date", 0
@@ -903,13 +927,12 @@ copy TMP1 newfile.txt in Windows. Write the following program and run it:
 1040 C = C + 1
 1050 GOTO 1010
 1060 REM LOOP
-1080 RETURN
+1070 RETURN
 
-As you can see, we used almost the same subroutine for printing the
-text in the array, as we used in previous examples. This program prints
-the current date. But this date is the output of the external command
-named date, which you can also write in the terminal or console after
-the command prompt.
+As you can see, the subroutine for printing is almost the same as in
+previous examples. This program prints the current date. But that date
+is the output of the external command named date, which you can also
+write in the terminal or console after the command prompt.
 
 
 Loading, saving and renumbering programs
@@ -983,8 +1006,9 @@ with Tiny BASIC for Curses!
 APPENDIX
 --------
 
-There are ten demos and games in the tinybc package. Only the classic
-BASIC games were ported, because classic games provide the basics.
+There are ten demos and games in the tinybc package (in the directory
+/usr/share/doc/tinybc when installed in Linux). Only the classic BASIC
+games were ported, because classic games provide the basics.
 
 circles.bas shows how to draw circles using an algorithm derived from
 the Bresenham's algorithm.

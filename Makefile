@@ -6,8 +6,10 @@ all: tinybc
 tinybc: tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
 	$(CC) $(DBFLAGS) -o $@ tokenizer.c tinybc.c main.c -lcurses
  
-tinybc.exe: tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
+tinybc.exe: tee.c cat.c tokenizer.c tinybc.c main.c tokenizer.h tinybc.h
 	$(CC) $(DBFLAGS) -DBGR -I. -o $@ tokenizer.c tinybc.c main.c -L. -lpdcurses
+	$(CC) $(DBFLAGS) -o tee.exe tee.c
+	$(CC) $(DBFLAGS) -o cat.exe cat.c
 
 clean:
 	rm -f tinybc tinybc.exe
