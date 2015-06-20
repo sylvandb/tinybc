@@ -1,0 +1,40 @@
+    * 0.8.6
+    * 30 Jan 2013
+Release Notes: This release makes the output faster and adds reading colors and 3D rendering example.
+
+    * 0.8.4
+    * 10 Jan 2013 21:22
+Release Notes: This release adds support for DOS.
+
+    * 0.8.2
+    * 07 Jan 2013 23:37
+Release Notes: This release adds utilities to read and write files in Windows.
+
+    * 0.8.0
+    * 27 Dec 2012 00:54
+Release Notes: This release adds the statement SYSTEM for filtering through external commands.
+
+    * 0.6.8
+    * 05 Dec 2012 23:41
+Release Notes: This release fixes the bugs in running Windows files and restoring terminal settings.
+
+    * 0.6.6
+    * 02 Dec 2012 01:31
+Release Notes: This release includes the manual for beginners and fixes the colors and error messages.
+
+    * 0.6.4
+    * 01 Nov 2011 20:59
+Release Notes: This release adds OUT and LOAD statements and assignment of strings to arrays.
+
+    * 0.6.2
+    * 29 Oct 2011 02:54
+Release Notes: This release adds assignment of expression list to array.
+
+    * 0.6.0
+    * 21 Oct 2011 20:53
+Release Notes: This release adds one big array named @, as in Palo Alto Tiny BASIC.
+
+    * 0.5.0
+    * 16 Oct 2011 01:05
+Release Notes: This is the first release.
+
