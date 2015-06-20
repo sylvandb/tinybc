@@ -38,36 +38,18 @@ struct mttype {
 	struct cttype *ct;
 };
 
-static void list(struct mttype *mt, long int m, long int n)
+static void help(void)
 {
-	char buffer[FILENAME_MAX], *p;
-	long int exit, i, k;
-
-	p = mt->program;
-	while (*p && m && atoi(p) != m) {
-		p += strcspn(p, "\n");
-		p += strspn(p, "\n");
-	}
-	if (!(*p)) return;
-	i = 0;
-	exit = 0;
-	do {
-		if (strcspn(p, "\n") >= FILENAME_MAX - 1) break;
-		strncpy(buffer, p, strcspn(p, "\n"));
-		buffer[strcspn(p, "\n")] = 0;
-		printw("%s\n", buffer);
-		if (i++ == LINES - 3) {
-			i = 0;
-			printw("=== Press any key, ESC to break ===\n");
-			interactive(1);
-			while ((k = getch()) == -1) napms(10);
-			interactive(0);
-			if (k == 27) exit = 1;
-		}
-		p += strcspn(p, "\n");
-		if (*p) p++;
-		if (m && m == n) break;
-	} while (*p && (!m || atoi(p) <= n) && !exit);
+	printw("\nCommand line: tinybc [options] [filename]\n");
+	printw("Options: -number renumber, -i run interactively\n");
+	printw("CLEAR -- Delete program\n");
+	printw("LIST line1-line2 -- List program from line1 to line2\n");
+	printw("LOAD filename -- Load program from file\n");
+	printw("QUIT -- Exit\n");
+	printw("RUN -- Run program\n");
+	printw("SAVE [filename] -- Save program\n");
+	printw("HELP -- This help\n");
+	printw("Other statements do not run interactively\n\n");
 }
 
 static void insert(struct mttype *mt, char *buffer)
@@ -101,22 +83,60 @@ static void insert(struct mttype *mt, char *buffer)
 	memmove(p, buffer, strlen(buffer));
 }
 
-static void help(void)
-{
-	printw("\nCommand line: tinybc [options] [filename]\n");
-	printw("Options: -number renumber, -i run interactively\n");
-	printw("CLEAR -- Delete program\n");
-	printw("LIST line1-line2 -- List program from line1 to line2\n");
-	printw("QUIT -- Exit\n");
-	printw("RUN -- Run program\n");
-	printw("SAVE filename -- Save program\n");
-	printw("HELP -- This help\n\n");
-}
-
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.6.2\n");
+	printw("Tiny BASIC for Curses, version 0.6.4\n");
 	printw("Type HELP if you need help\n\n");
+}
+
+static void list(struct mttype *mt, long int m, long int n)
+{
+	char buffer[FILENAME_MAX], *p;
+	long int exit, i, k;
+
+	p = mt->program;
+	while (*p && m && atoi(p) != m) {
+		p += strcspn(p, "\n");
+		p += strspn(p, "\n");
+	}
+	if (!(*p)) return;
+	i = 0;
+	exit = 0;
+	do {
+		if (strcspn(p, "\n") >= FILENAME_MAX - 1) break;
+		strncpy(buffer, p, strcspn(p, "\n"));
+		buffer[strcspn(p, "\n")] = 0;
+		printw("%s\n", buffer);
+		if (i++ == LINES - 3) {
+			i = 0;
+			printw("=== Press any key, ESC to break ===\n");
+			interactive(1);
+			while ((k = getch()) == -1) napms(10);
+			interactive(0);
+			if (k == 27) exit = 1;
+		}
+		p += strcspn(p, "\n");
+		if (*p) p++;
+		if (m && m == n) break;
+	} while (*p && (!m || atoi(p) <= n) && !exit);
+}
+
+static int load(struct mttype *mt, const char *fname)
+{
+	char buffer[MAX_STRLEN];
+	long int pos;
+	FILE *f;
+
+	f = fopen(fname, "r");
+	if (!f) return 0;
+	for (pos = 0; fgets(buffer, MAX_STRLEN, f); ) {
+		if (pos + strlen(buffer) >= BUFSIZE) break;
+		if (buffer[0] == '\n') continue;
+		strcpy(mt->program + pos, buffer);
+		pos += strlen(buffer);
+	}
+	fclose(f);
+	return 1;
 }
 
 static void run(struct mttype *mt)
@@ -127,8 +147,8 @@ static void run(struct mttype *mt)
 
 int main(int argc, char **argv)
 {
-	char buffer[MAX_STRLEN], *result, *p, *p1;
-	long int pos, fileind, lastnum, exit, m, n;
+	char buffer[MAX_STRLEN], fname[MAX_STRLEN], *p, *p1;
+	long int fileind, lastnum, exit, m, n;
 	struct mttype *mt;
 	FILE *f;
 
@@ -138,21 +158,14 @@ int main(int argc, char **argv)
 		tinybc_init(mt->ct, mt->program, mt->numbers);
 	exit = 0;
 	fileind = 1;
+	strcpy(fname, "");
 	if (argc == 3) fileind = 2;
 	if (argc > 1) {
-		f = fopen(argv[fileind], "r");
-		if (!f) {
+		strcpy(fname, argv[fileind]);
+		if (!load(mt, fname)) {
 			printf("tinybc: cannot open the file\n");
 			return 1;
 		}
-		result = buffer;
-		for (pos = 0; pos + MAX_STRLEN < BUFSIZE && result; ) {
-			strcpy(buffer, "");
-			result = fgets(buffer, MAX_STRLEN, f);
-			strcpy(mt->program + pos, buffer);
-			pos += strlen(buffer);
-		}
-		fclose(f);
 	}
 
 	if (argc == 1 || (argc == 3 && argv[1][1] == 'i')) {
@@ -173,12 +186,20 @@ int main(int argc, char **argv)
 			case 'L':
 				p += strcspn(p, " ");
 				p += strspn(p, " ");
-				m = atoi(p);
-				p += strcspn(p, "-");
-				p += strspn(p, "-");
-				n = atoi(p);
-				if (!n) n = m;
-				list(mt, m, n);
+				if (isdigit(*p) || !(*p)) {
+					m = atoi(p);
+					p += strcspn(p, "-");
+					p += strspn(p, "-");
+					n = atoi(p);
+					if (!n) n = m;
+					list(mt, m, n);
+				} else {
+					strcpy(fname, p);
+					if (!load(mt, fname)) {
+						printw("Cannot open file\n");
+						strcpy(fname, "");
+					}
+				}
 				break;
 			case 'Q':
 				tinybc_close(mt->ct);
@@ -190,9 +211,15 @@ int main(int argc, char **argv)
 			case 'S':
 				p += strcspn(p, " ");
 				p += strspn(p, " ");
-				f = fopen(p, "w");
-				fputs(mt->program, f);
-				fclose(f);
+				if (*p) {
+					f = fopen(p, "w");
+					fputs(mt->program, f);
+					fclose(f);
+				} else if (strcmp(fname, "")) {
+					f = fopen(fname, "w");
+					fputs(mt->program, f);
+					fclose(f);
+				}
 				break;
 			case 'H':
 				help();

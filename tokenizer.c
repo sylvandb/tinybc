@@ -41,11 +41,12 @@ static const struct pstr patterns[] = {
 	{TOKEN_LET, "LET"},
 	{TOKEN_LOCATE, "LOCATE"}, /* Added */
 	{TOKEN_NAP, "NAP"}, /* Added */
+	{TOKEN_OUT, "OUT"}, /* Added */
 	{TOKEN_PRINT, "PRINT"},
 	{TOKEN_PRINT, "PR"},
-	{TOKEN_REM, "REM"}, /* Added */
+	{TOKEN_REM, "REM"},
 	{TOKEN_RETURN, "RETURN"},
-	{TOKEN_RND, "RND"}, /* Added */
+	{TOKEN_RND, "RND"},
 	{TOKEN_SIZE, "SIZE"},
 	{TOKEN_THEN, "THEN"},
 	{TOKEN_NONE, NULL}
@@ -232,16 +233,11 @@ void t_start(struct ttype *t)
 	t->ptr = t->program;
 	t->firstline = atoi(t->ptr);
 	for (i = 0; i < ARRSIZE; i++) t->numbers[i] = 0;
-
 	for (i = 0; i < BUFSIZE && *(t->ptr + i); i++);
 	n = i + 1;
 	t->data = (long int *) t->ptr + n;
 	t->size = BUFSIZE - n;
-	for (i = n; i < BUFSIZE; i++) {
-		p = (char *) t->ptr + i;
-		*p = 0;
-	}
-
+	for (i = n; i < BUFSIZE; *p = 0) p = (char *) t->ptr + i++;
 	for (i = 0; *(t->ptr + i) && !t->ended; ) {
 		if (i >= ARRSIZE) t->ended = 1;
 		if ((n = atoi(t->ptr + i)) < ARRSIZE) 
@@ -257,32 +253,21 @@ void t_start(struct ttype *t)
 
 void t_string(struct ttype *t, char *dest, long int len)
 {
-	const char *sptr, *p;
-	char shex[3], *dptr;
-	unsigned int n;
 	long int slen;
+	const char *sptr, *p;
+	char *dptr;
 	
-	if (t_type(t) != TOKEN_STRING) return;
 	slen = 0;
+	if (t_type(t) != TOKEN_STRING) return;
 	for (p = t->ptr + 1; *p && *p != '\"' && slen < MAX_STRLEN; p++)
 		slen++;
 	if (*p != '\"') return;
 	if (len < slen) slen = len;
 	dptr = dest;
 	*dptr = 0;
-	for (sptr = t->ptr + 1; sptr < t->ptr + 1 + slen; dptr++)
-		if (*sptr == '\\' && strlen(sptr) >= 4) {
-			strncpy(shex, sptr + 2, 2);
-			n = 0;
-			shex[2] = 0;
-			sscanf(shex, "%x", &n);
-			*dptr = (char) n;
-			*(dptr + 1) = 0;
-			sptr += 4;
-		} else {
-			*dptr = *sptr++;
-			*(dptr + 1) = 0;
-		}
+	for (sptr = t->ptr + 1; sptr < t->ptr + 1 + slen;
+		*((dptr++) + 1) = 0)
+		*dptr = *sptr++;
 }
 
 void t_take(struct ttype *t, int expected)

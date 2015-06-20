@@ -233,6 +233,7 @@ static void assign_stmt(struct cttype *ct)
 
 static void at_stmt(struct cttype *ct)
 {
+	char string[MAX_STRLEN], *p;
 	long int n1ind;
 
 	t_take(ct->t, TOKEN_AT);
@@ -242,7 +243,12 @@ static void at_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_RPAREN);
 	t_take(ct->t, TOKEN_EQ);
 	for (; ;)
-		if (t_expr_type(ct->t))
+		if (t_type(ct->t) == TOKEN_STRING) {
+			t_string(ct->t, string, MAX_STRLEN);
+			for (p = string; *p; p++)
+				tinybc_set(ct, MAX_VARIND + n1ind++, *p);
+			t_take(ct->t, TOKEN_STRING);
+		} else if (t_expr_type(ct->t))
 			tinybc_set(ct, MAX_VARIND + n1ind++, expr(ct));
 		else if (t_type(ct->t) == TOKEN_COMMA)
 			t_take(ct->t, TOKEN_COMMA);
@@ -310,7 +316,6 @@ static void gosub_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_GOSUB);
 	PDEBUG(lg, "gosub:\n");
 	linenum = expr(ct);
-	t_take(ct->t, TOKEN_LF);
 	if (ct->gosub_stack_ptr < MAX_GOSUB_DEPTH) {
 		ct->gosub_stack[ct->gosub_stack_ptr++] = t_number(ct->t);
 		t_jump(ct->t, linenum);
@@ -457,6 +462,18 @@ static void nap_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_LF);
 }
 
+static void out_stmt(struct cttype *ct)
+{
+	int n1;
+
+	t_take(ct->t, TOKEN_OUT);
+	PDEBUG(lg, "out:\n");
+	n1 = (int) expr(ct);
+	printw("%c", n1);
+	refresh();
+	t_take(ct->t, TOKEN_LF);
+}
+
 static void print_stmt(struct cttype *ct)
 {
 	char string[MAX_STRLEN];
@@ -505,7 +522,6 @@ static void return_stmt(struct cttype *ct)
 
 	t_take(ct->t, TOKEN_RETURN);
 	PDEBUG(lg, "return:\n");
-	t_take(ct->t, TOKEN_LF);
 	if (ct->gosub_stack_ptr > 0)
 		linenum = ct->gosub_stack[--(ct->gosub_stack_ptr)];
 	else {
@@ -560,6 +576,9 @@ static void stmt(struct cttype *ct)
 		break;
 	case TOKEN_NAP:
 		nap_stmt(ct);
+		break;
+	case TOKEN_OUT:
+		out_stmt(ct);
 		break;
 	case TOKEN_PRINT:
 		print_stmt(ct);

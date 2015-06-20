@@ -66,9 +66,7 @@ number.
 </dl>
 
 <h2><a name='sect5' href='#toc5'>Install</a></h2>
-To compile tinybc in Linux, type make in the terminal. To
-compile tinybc in Windows, type one of the following depending on your
-system: 
+To compile tinybc in Linux, type make in the terminal. To install tinybc, as root type make install, and to remove the installation, type make remove. The install also copies the examples to the directory /usr/share/doc/tinybc . To compile tinybc in Windows, type one of the following depending on your system: 
 <p> mingw32-make tinybc.exe 
 <p> make tinybc.exe 
 <p> The binaries for Linux
@@ -78,15 +76,12 @@ in Linux, the ncurses development package has to be installed. In Windows,
 the compiler such as MinGW has to be installed. If you install MinGW, add its
 bin directory to the path. The PDCurses library for Windows is included
 in the distribution. 
-<p> In the Windows versions starting from Vista, it is
-possible to open the console (terminal) from Windows Explorer in the browsed
-directory, by right clicking on that directory when holding down the shift
-key, and then choosing "Open Command Prompt Here". In the older versions,
-without changing the registry, the best way is to run cmd and copy the
-path from the file properties. 
+<p> In the Windows versions starting from Vista, it is possible to open the console (terminal) from Windows Explorer in the browsed directory, by right clicking on that directory when holding down the shift key, and then choosing "Open Command Prompt Here". The alternative is running cmd and copying the path from the file properties. The executable can also be run by clicking on it, but because Tiny BASIC does not provide any file open dialog, opening files in the interactive mode may be inconvenient. 
 <p> 
 <h2><a name='sect6' href='#toc6'>Language Description</a></h2>
-The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning a list of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.
+The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning strings and lists of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.
+<p>
+These interpreters also had a direct access to input/output port, and they could also send escape sequences to the display. The statements OUT, INKEY, and the other curses statements provide that in tinybc.
 <p>
 Because of lack of the if and while blocks, Tiny BASIC does not correspond to the modern programming paradigm. To avoid a "spaghetti code", one solution is to mark all the destinations of jumps with REM statements, such as REM SUB DrawPixel (X, Y), REM DO, REM ELSE and REM END IF, and use lines only consisting of a line number for making the code clearer. Contrary to the popular misunderstanding, the original Tiny BASIC had no FOR...NEXT loop.
 
@@ -115,7 +110,7 @@ execution of the program, can be anywhere in the program </dd>
 <dt><b>GOSUB expr</b></dt>
 <dd>Executes
 a subroutine which starts with the number which is the value of the expression,
-subroutine ends with return </dd>
+subroutine ends with RETURN </dd>
 
 <dt><b>GOTO expr</b></dt>
 <dd>Executes the line with the number
@@ -128,7 +123,7 @@ which is the value of the expression </dd>
 <dd>Writes the code of the
 character at the current position into the variable </dd>
 
-<dt><b>INPUT variable1, ... variablen</b></dt>
+<dt><b>INPUT variable, ... variable</b></dt>
 <dd>Inputs
 variables </dd>
 
@@ -139,11 +134,11 @@ variables </dd>
 = expr</b></dt>
 <dd>Assigns an expression to variable </dd>
 
-<dt><b>LET @(expr) = expr1, ... exprn</b></dt>
-<dd>Assigns the list of expressions to consecutive array elements </dd>
+<dt><b>LET @(expr) = string|expr, ... string|expr</b></dt>
+<dd>Assigns the expressions and characters from strings to consecutive array elements </dd>
 
 <dt><b>LOCATE expr1, expr2</b></dt>
-<dd>Cursor to line
+<dd>Moves cursor to line
 expr1 and column expr2, the next PRINT prints to that location </dd>
 
 <dt><b>NAP expr</b></dt>
@@ -151,8 +146,11 @@ expr1 and column expr2, the next PRINT prints to that location </dd>
 the expr of milliseconds, a NAP statement should be in the main loop to give
 time for the operating system </dd>
 
-<dt><b>PRINT expr1, .... exprn</b></dt>
-<dd>Prints the expressions,
+<dt><b>OUT expr</b></dt>
+<dd>Prints a character, the code of which is the expression </dd>
+
+<dt><b>PRINT string|expr, .... string|expr</b></dt>
+<dd>Prints the strings and expressions,
 ; allowed </dd>
 
 <dt><b>REM comment</b></dt>
@@ -165,13 +163,7 @@ time for the operating system </dd>
 </dl>
 
 <h2><a name='sect8' href='#toc8'>Interactive mode</a></h2>
-In the interactive mode you can both edit and run the
-program. Interactive mode is a part of the Tiny BASIC specification, so
-it has to be implemented in every language which is said to be Tiny BASIC.
-The HELP statement is added. SAVE is also an additional statement which
-is not in the Tiny BASIC specification. Because in the early computers,
-they used teletypes as terminals, and so there was no difference whether
-the input or ouput was done with a typewriter, or with a punched tape. 
+In the interactive mode you can both edit and run the program. Interactive mode is a part of the Tiny BASIC specification, so it has to be implemented in every language which is said to be Tiny BASIC. The HELP statement is added. LOAD and SAVE are also additional statements are not in the Tiny BASIC specification. Because in the early computers, they used teletypes as terminals, and so there was no difference whether the input or ouput was done with a typewriter, or with a punched tape. 
 <p>
 As it is the tradition of BASIC, the first character can be written instead
 of the full keyword.
@@ -198,13 +190,16 @@ the whole program </dd>
 <dd>Lists program
 from line1 to line2 </dd>
 
+<dt><b>LOAD filename</b></dt>
+<dd>Loads program from file </dd>
+
 <dt><b>QUIT</b></dt>
 <dd>Exits </dd>
 
 <dt><b>RUN</b></dt>
 <dd>Runs the program </dd>
 
-<dt><b>SAVE filename</b></dt>
+<dt><b>SAVE [filename]</b></dt>
 <dd>Saves the
 program </dd>
 
@@ -302,18 +297,7 @@ terminal encoding to IBM850, which is the MS-DOS encoding, to be able to
 print the pseudographics characters. The explanation why it is implemented
 like that is rather technical. You  can print ASCII characters in any encoding.
 
-<p> Use escape sequences to enter characters which cannot be entered with
-keyboard. These escape sequences are in the format which is used in several
-programming languages for adding some characters to string. This format
-is \x followed by two digit hexadecimal code of the character. 
-<p> The following
-example shows how to use escape sequences in a string in the print statement:
-
-<p> 70 PRINT "The character \xdf is the upper pixel" 
-<p> Make sure that you provide
-at least NAP 10 after a print statement, or if you use locate, after locate
-statement, in a bigger loop. To make sure that the previous graphics operation
-is finished, otherwise the output may be weird. 
+<p> Make sure that you provide a NAP statement after a print statement, or if you use locate, after locate statement, in a bigger loop. To make sure that the previous graphics operation is finished, otherwise the output may be weird. 
 <p> 
 <h2><a name='sect14' href='#toc14'>Running</a></h2>
 The Tiny BASIC programs

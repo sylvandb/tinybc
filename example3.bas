@@ -7,7 +7,7 @@
 70 I = I + 1
 80 IF RND(3200) > 2000 THEN @(I) = -@(I)
 90 IF I < 9 GOTO 60
-100 GOSUB 510
+100 GOSUB 490
 110 
 120 REM DO - Game loop
 130 REM DO
@@ -22,42 +22,40 @@
 220 C = C + 1
 230 IF @(N) <= 0 GOTO 130
 240 
-250 H = 0
+250 B = 0
 260 I = 1
-270 B = 0
-280 GOSUB 430
-290 REM DO - Check score
-300 H = H + (@(I) < 0)
-310 B = B + @(I)
-320 I = I + 1
-330 IF I <= 9 GOTO 290
-340 GOSUB 510
-350 IF B = 96 PRINT "Sorry, you lost."
-360 IF B = 96 END
-370 IF H < 9 GOTO 120
-380 
-390 PRINT "You win!"
-400 PRINT "You fired", C, "shots."
-410 END
-420 
-430 REM SUB (N) - Inverts some stars and black holes
-440 J = 1
-450 REM DO
-460 IF @(N + 9) / @(J) * @(J) = @(N + 9) THEN @(J) = -@(J)
-470 J = J + 1
-480 IF J <= 9 GOTO 450
-490 RETURN
-500 
-510 REM SUB - Prints out the galaxy
-520 J = 1
-530 REM DO
-540 IF @(J) < 0 PRINT "   .",
-550 IF @(J) > 0 PRINT "   *",
-560 IF J / 3 * 3 <> J GOTO 590
-570 PRINT
-580 PRINT
-590 REM END IF
-600 J = J + 1
-610 IF J <= 9 GOTO 530
-620 RETURN
+270 GOSUB 410
+280 REM DO - Check score
+290 B = B + (@(I) < 0)
+300 I = I + 1
+310 IF I <= 9 GOTO 280
+320 GOSUB 490
+330 IF B = 1 PRINT "Sorry, you lost."
+340 IF B = 1 END
+350 REM Or was it win?
+360 IF B < 9 GOTO 120
+370 PRINT "You win!"
+380 PRINT "You fired", C, "shots."
+390 END
+400 
+410 REM SUB (N) - Inverts some stars and black holes
+420 J = 1
+430 REM DO
+440 IF @(N + 9) / @(J) * @(J) = @(N + 9) THEN @(J) = -@(J)
+450 J = J + 1
+460 IF J <= 9 GOTO 430
+470 RETURN
+480 
+490 REM SUB - Prints out the galaxy
+500 J = 1
+510 REM DO
+520 IF @(J) < 0 PRINT "   .",
+530 IF @(J) > 0 PRINT "   *",
+540 IF J / 3 * 3 <> J GOTO 570
+550 PRINT
+560 PRINT
+570 REM END IF
+580 J = J + 1
+590 IF J <= 9 GOTO 510
+600 RETURN
 
