@@ -1,0 +1,8 @@
+10 REM Random colors
+20 COLOR 0, RND(8)
+30 LOCATE RND(26), RND(40) * 2
+40 NAP 10
+50 PRINT "  ";
+60 INKEY K
+70 IF K = -1 THEN GOTO 10
+
