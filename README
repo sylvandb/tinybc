@@ -89,12 +89,22 @@ INSTALL
 
 
 LANGUAGE DESCRIPTION
-       Because of lack of the if and while blocks, Tiny BASIC does not  corre-
-       spond  to the modern programming paradigm. To avoid a "spaghetti code",
-       one solution is to mark all the destinations of jumps with  REM  state-
-       ments,  such  as  REM Subroutine DrawPixel (X, Y), REM DO, REM ELSE and
-       REM END IF, and use lines only consisting of a line number  for  making
-       the code clearer.
+       The features such as an array were added in order  to  make  tinybc  as
+       advanced  as  Tiny  BASIC, not more advanced. Because in spite that the
+       Tiny BASIC specification provides no arrays, most  of  the  Tiny  BASIC
+       interpreters  at  the time (1976) enabled some memory access, thus pro-
+       viding a data storage similar to array. Such memory access also enabled
+       to  read  program statements, which could been used to read pre-defined
+       data. In tinybc, assigning a list of expressions to array  is  provided
+       to compensate the lack of DATA statement in Tiny BASIC.
+
+       Because  of lack of the if and while blocks, Tiny BASIC does not corre-
+       spond to the modern programming paradigm. To avoid a "spaghetti  code",
+       one  solution  is to mark all the destinations of jumps with REM state-
+       ments, such as REM SUB DrawPixel (X, Y), REM DO, REM ELSE and  REM  END
+       IF,  and use lines only consisting of a line number for making the code
+       clearer. Contrary to the popular misunderstanding,  the  original  Tiny
+       BASIC had no FOR...NEXT loop.
 
 
 Program statements
@@ -124,7 +134,7 @@ Program statements
               expression
 
        IF expr THEN statement
-              Executes statement if expr is true
+              Executes statement if the value of the expression is not zero
 
        INCHAR variable
               Writes the code of the character at the  current  position  into
@@ -139,16 +149,16 @@ Program statements
        LET variable = expr
               Assigns an expression to variable
 
-       LET @(expr1) = expr2
-              Assigns expr2 to array element expr1
+       LET @(expr) = expr1, ... exprn
+              Assigns the list of expressions to consecutive array elements
 
        LOCATE expr1, expr2
               Cursor  to line expr1 and column expr2, the next PRINT prints to
               that location
 
        NAP expr
-              Sleeps the expr of milliseconds, at least NAP 10 must be in  the
-              main loop to give time for the operating system
+              Sleeps the expr of milliseconds, a NAP statement  should  be  in
+              the main loop to give time for the operating system
 
        PRINT expr1, .... exprn
               Prints the expressions, ; allowed

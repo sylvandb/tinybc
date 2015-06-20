@@ -236,13 +236,18 @@ static void at_stmt(struct cttype *ct)
 	long int n1ind;
 
 	t_take(ct->t, TOKEN_AT);
+	PDEBUG(lg, "at:\n");
 	t_take(ct->t, TOKEN_LPAREN);
 	n1ind = expr(ct);
 	t_take(ct->t, TOKEN_RPAREN);
 	t_take(ct->t, TOKEN_EQ);
-	tinybc_set(ct, MAX_VARIND + n1ind, expr(ct));
-	PDEBUG(lg, "at: assign value %d to array element number %d\n",
-		tinybc_get(ct, MAX_VARIND + n1ind), n1ind);
+	for (; ;)
+		if (t_expr_type(ct->t))
+			tinybc_set(ct, MAX_VARIND + n1ind++, expr(ct));
+		else if (t_type(ct->t) == TOKEN_COMMA)
+			t_take(ct->t, TOKEN_COMMA);
+		else
+			break;
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -413,10 +418,9 @@ static void let_stmt(struct cttype *ct)
 
 	n1ind = t_variable(ct->t);
 	t_take(ct->t, TOKEN_VARIABLE);
+	PDEBUG(lg, "let:\n");
 	t_take(ct->t, TOKEN_EQ);
 	tinybc_set(ct, n1ind, expr(ct));
-	PDEBUG(lg, "let: assign value %d to variable number %d\n",
-		tinybc_get(ct, n1ind), n1ind);
 	t_take(ct->t, TOKEN_LF);
 }
 
@@ -633,8 +637,11 @@ void tinybc_set(struct cttype *ct, long int varind, long int value)
 	long int *data;
 
 	data = t_data(ct->t);
-	if (varind >= 0 && (varind + 1) * 4 < t_size(ct->t))
+	if (varind >= 0 && (varind + 1) * 4 < t_size(ct->t)) {
 		data[varind] = value;
+		PDEBUG(lg, "set: assign value %d to data element "
+			"number %d\n", value, varind);
+	}
 }
 
 void tinybc_start(struct cttype *ct)

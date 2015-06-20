@@ -115,7 +115,7 @@ static void help(void)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.6.0\n");
+	printw("Tiny BASIC for Curses, version 0.6.2\n");
 	printw("Type HELP if you need help\n\n");
 }
 
@@ -134,7 +134,8 @@ int main(int argc, char **argv)
 
 	mt = (struct mttype *) malloc(sizeof(struct mttype));
 	mt->ct = (struct cttype *) malloc(sizeof(struct cttype));
-	tinybc_init(mt->ct, mt->program, mt->numbers);
+	if (argc != 3 || !isdigit(argv[1][1]))
+		tinybc_init(mt->ct, mt->program, mt->numbers);
 	exit = 0;
 	fileind = 1;
 	if (argc == 3) fileind = 2;
@@ -214,7 +215,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	tinybc_close(mt->ct);
 	lastnum = atoi(argv[1] + 1);
 	for (p = mt->program; *p; p++) {
 		if (lastnum + 10 >= ARRSIZE || atoi(p) >= ARRSIZE) {

@@ -16,7 +16,7 @@ tinybc - Tiny BASIC for Curses
 <p> 
 <h2><a name='sect1' href='#toc1'>Description</a></h2>
 <b>tinybc</b> is a BASIC interpreter for the curses character screen
-handling library, which fully corresponds to the Tiny BASIC specification.
+handling library which fully corresponds to the Tiny BASIC specification.
 
 <p> The tinybc engine is thread-safe and can be embedded into other code. Embedding
 may not make sense because of the capabilities of the interpreter, but
@@ -86,7 +86,9 @@ without changing the registry, the best way is to run cmd and copy the
 path from the file properties. 
 <p> 
 <h2><a name='sect6' href='#toc6'>Language Description</a></h2>
-Because of lack of the if and while blocks, Tiny BASIC does not correspond to the modern programming paradigm. To avoid a "spaghetti code", one solution is to mark all the destinations of jumps with REM statements, such as REM Subroutine DrawPixel (X, Y), REM DO, REM ELSE and REM END IF, and use lines only consisting of a line number for making the code clearer.
+The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning a list of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.
+<p>
+Because of lack of the if and while blocks, Tiny BASIC does not correspond to the modern programming paradigm. To avoid a "spaghetti code", one solution is to mark all the destinations of jumps with REM statements, such as REM SUB DrawPixel (X, Y), REM DO, REM ELSE and REM END IF, and use lines only consisting of a line number for making the code clearer. Contrary to the popular misunderstanding, the original Tiny BASIC had no FOR...NEXT loop.
 
 <p> 
 <h2><a name='sect7' href='#toc7'>Program statements</a></h2>
@@ -119,9 +121,8 @@ subroutine ends with return </dd>
 <dd>Executes the line with the number
 which is the value of the expression </dd>
 
-<dt><b>IF relation THEN statement</b></dt>
-<dd>Executes
-statement if the relation is true </dd>
+<dt><b>IF expr THEN statement</b></dt>
+<dd>Executes statement if the value of the expression is not zero </dd>
 
 <dt><b>INCHAR variable</b></dt>
 <dd>Writes the code of the
@@ -138,8 +139,8 @@ variables </dd>
 = expr</b></dt>
 <dd>Assigns an expression to variable </dd>
 
-<dt><b>LET @(expr1) = expr2</b></dt>
-<dd>Assigns expr2 to array element expr1 </dd>
+<dt><b>LET @(expr) = expr1, ... exprn</b></dt>
+<dd>Assigns the list of expressions to consecutive array elements </dd>
 
 <dt><b>LOCATE expr1, expr2</b></dt>
 <dd>Cursor to line
@@ -147,7 +148,7 @@ expr1 and column expr2, the next PRINT prints to that location </dd>
 
 <dt><b>NAP expr</b></dt>
 <dd>Sleeps
-the expr of milliseconds, at least NAP 10 must be in the main loop to give
+the expr of milliseconds, a NAP statement should be in the main loop to give
 time for the operating system </dd>
 
 <dt><b>PRINT expr1, .... exprn</b></dt>
