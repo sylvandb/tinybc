@@ -27,7 +27,6 @@
 #include <curses.h>
 #include "tinybc.h"
 
-#define MAX_STRLEN FILENAME_MAX
 /* Make a large buffer */
 #define BUFSIZE 1000000
 #define ARRSIZE 100000
@@ -85,7 +84,7 @@ static void insert(struct mttype *mt, char *buffer)
 
 static void intro(void)
 {
-	printw("Tiny BASIC for Curses, version 0.6.8\n");
+	printw("Tiny BASIC for Curses, version 0.8.0\n");
 	printw("Type HELP if you need help\n\n");
 }
 
@@ -293,6 +292,7 @@ int main(int argc, char **argv)
 				fputc(*p++, f);
 		fprintf(f, "\n");
 	}
+	fprintf(f, "\n");
 	fclose(f);
 	return 0;
 }

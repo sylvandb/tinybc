@@ -20,7 +20,7 @@ install:
 	install -d /usr/share/doc/tinybc
 	install -m 0644 README /usr/share/doc/tinybc
 	install -m 0644 LICENSE /usr/share/doc/tinybc
-	install -m 0644 ex* /usr/share/doc/tinybc
+	install -m 0644 *.bas /usr/share/doc/tinybc
 	install -m 0644 tinybctut.txt /usr/share/doc/tinybc
 
 .PHONY: install

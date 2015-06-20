@@ -204,9 +204,9 @@ void interactive(int mode)
 /*
  * Example of a new statement, assigns n2 to n1.
  * To add a new statement, do the following:
- * 1. Add the tokenizer type to the enum in tokenizer.h,
+ * 1. Add the new token type to the enum in tokenizer.h,
  * 2. Add the keyword to keywords array in tokenizer.c,
- * 3. Add new function to the statement function below,
+ * 3. Add new statement to the statement function below,
  * 4. Include a new header file here if necessary,
  * 5. Write the new function below this example
  */
@@ -221,7 +221,8 @@ static void assign_stmt(struct cttype *ct)
 		t_take(ct->t, TOKEN_VARIABLE);
 	} else
 		t_take(ct->t, TOKEN_VARIABLE);
-	if (t_expr_type(ct)) {
+	t_take(ct->t, TOKEN_COMMA);
+	if (t_expr_type(ct->t)) {
 		n2 = expr(ct);
 		/* Now we have both parameters, do the operation */
 		tinybc_set(ct, n1ind, n2);
@@ -489,7 +490,13 @@ static void out_stmt(struct cttype *ct)
 	t_take(ct->t, TOKEN_OUT);
 	PDEBUG(lg, "out:\n");
 	n1 = (int) expr(ct);
-	printw("%c", n1);
+	if (n1 != '\n')
+		printw("%c", n1);
+	else {
+		scrollok(stdscr, TRUE);
+		printw("\n");
+		scrollok(stdscr, FALSE);
+	}
 	refresh();
 	t_take(ct->t, TOKEN_LF);
 }
@@ -554,6 +561,56 @@ static void return_stmt(struct cttype *ct)
 	t_jump(ct->t, linenum);
 }
 
+static void system_stmt(struct cttype *ct)
+{
+	char buffer[MAX_STRLEN], p;
+	long int n1, n2, pos, i;
+	FILE *f;
+
+	t_take(ct->t, TOKEN_SYSTEM);
+	PDEBUG(lg, "assign:\n");
+	if (t_expr_type(ct->t))
+		n1 = expr(ct);
+	else
+		t_take(ct->t, TOKEN_VARIABLE);
+	t_take(ct->t, TOKEN_COMMA);
+	if (t_expr_type(ct->t)) {
+		n2 = expr(ct);
+		f = fopen("TMP1", "w");
+		for (pos = n2; tinybc_get(ct, MAX_VARIND + pos); ) {
+			for (i = 0; tinybc_get(ct, MAX_VARIND + i) &&
+				tinybc_get(ct, MAX_VARIND + i) != '\n' &&
+				i < MAX_STRLEN - 2; i++)
+				buffer[i] = tinybc_get(ct, MAX_VARIND +
+					pos + i);
+			if (buffer[i] == '\n') i++;
+			buffer[i] = 0;
+			fputs(buffer, f);
+			pos += i;
+		}
+		fclose(f);
+		for (i = 0; tinybc_get(ct, MAX_VARIND + n1 + i) &&
+			i < MAX_STRLEN - 16; i++)
+			buffer[i] = tinybc_get(ct, MAX_VARIND + n1 + i);
+		buffer[i] = 0;
+		strcat(buffer, " < TMP1 > TMP2");
+		system(buffer);
+		f = fopen("TMP2", "r");
+		for (pos = n2; f && fgets(buffer, MAX_STRLEN, f); ) {
+			for (i = 0; buffer[i]; i++)
+				tinybc_set(ct, MAX_VARIND + pos + i,
+					buffer[i]);
+			tinybc_set(ct, MAX_VARIND + pos + i, 0);
+			pos += i;
+		}
+		fclose(f);
+		remove("TMP1");
+		remove("TMP2");
+	} else
+		t_take(ct->t, TOKEN_VARIABLE);
+	t_take(ct->t, TOKEN_LF);
+}
+
 /* Functions of the new statements must be added here */
 static void stmt(struct cttype *ct)
 {
@@ -608,6 +665,9 @@ static void stmt(struct cttype *ct)
 		break;
 	case TOKEN_RETURN:
 		return_stmt(ct);
+		break;
+	case TOKEN_SYSTEM:
+		system_stmt(ct);
 		break;
 	case TOKEN_LF:
 		t_take(ct->t, TOKEN_LF);

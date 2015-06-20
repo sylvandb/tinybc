@@ -48,6 +48,7 @@ static const struct pstr patterns[] = {
 	{TOKEN_RETURN, "RETURN"},
 	{TOKEN_RND, "RND"},
 	{TOKEN_SIZE, "SIZE"},
+	{TOKEN_SYSTEM, "SYSTEM"},
 	{TOKEN_THEN, "THEN"},
 	{TOKEN_NONE, NULL}
 };

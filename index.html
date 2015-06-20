@@ -7,10 +7,11 @@
 </head>
 <body bgcolor='white'>
 <a href="http://sourceforge.net/projects/tinybc/"><b>SourceForge project page (download)</b></a><p><p>
+<a href="http://tinybc.sourceforge.net/tinybctut.txt"><b>Tiny BASIC manual for beginners</b></a><br><br>
 
-<p> 
 <h2><a name='sect0' href='#toc0'>Name</a></h2>
 tinybc - Tiny BASIC for Curses 
+
 <p>  <b>tinybc</b> [OPTIONS]<i>[FILE]</i> <br>
 
 <p> 
@@ -25,6 +26,7 @@ it makes sense because the code is easily extendable.
 i got and quickly implemented, BASIC is not a programming language which
 i use. I made it for fun and i hope that it would be used for fun, such
 as a minimalist challenge. 
+
 <p> 
 <h2><a name='sect2' href='#toc2'>Curses</a></h2>
 Curses is a library for using computer
@@ -38,7 +40,7 @@ as some earliest microcomputers, and there are many games with such graphics.
 <h2><a name='sect3' href='#toc3'>Tiny BASIC</a></h2>
 Tiny BASIC is the specification of the most minimal BASIC. In
 fact, there is not much to choose from, because the next smallest specification
-is the Small BASIC standard, and this does not provide a small language
+is the Standard for Minimal BASIC, and this does not provide a minimal language
 at all. The Tiny BASIC specification was written by Dennis Allison and was
 published in the People&rsquo;s Computer Company newsletter in December 1975. The
 specification was necessary because of the need to have a small interpreter
@@ -67,6 +69,7 @@ number.
 
 <h2><a name='sect5' href='#toc5'>Install</a></h2>
 To compile tinybc in Linux, type make in the terminal. To install tinybc, as root type make install, and to remove the installation, type make remove. The install also copies the examples to the directory /usr/share/doc/tinybc . To compile tinybc in Windows, type one of the following depending on your system: 
+
 <p> mingw32-make tinybc.exe 
 <p> make tinybc.exe 
 <p> The binaries for Linux
@@ -81,10 +84,12 @@ in the distribution.
 <h2><a name='sect6' href='#toc6'>Language Description</a></h2>
 The features such as an array were added in order to make tinybc as advanced as Tiny BASIC, not more advanced. Because in spite that the Tiny BASIC specification provides no arrays, most of the Tiny BASIC interpreters at the time (1976) enabled some memory access, thus providing a data storage similar to array. Such memory access also enabled to read program statements, which could been used to read pre-defined data. In tinybc, assigning strings and lists of expressions to array is provided to compensate the lack of DATA statement in Tiny BASIC.
 <p>
-These interpreters also had a direct access to input/output port, and they could also send escape sequences to the display. The statements OUT, INKEY, and the other curses statements provide that in tinybc.
+These interpreters also had a direct access to input/output port, and they could also send escape sequences to the display. The statements OUT, INKEY, and the other curses statements provide that in tinybc. It was possible to run system functions. It was also possible to write any output to paper tape and read any input from paper tape. The input/output redirection and copying and pasting to the terminal cannot fully emulate this, but the SYSTEM statement provides that functionality.
 <p>
 Because of lack of the if and while blocks, Tiny BASIC does not correspond to the modern programming paradigm. To avoid a "spaghetti code", one solution is to mark all the destinations of jumps with REM statements, such as REM SUB DrawPixel (X, Y), REM DO, REM ELSE and REM END IF, and use lines only consisting of a line number for making the code clearer. Contrary to the popular misunderstanding, the original Tiny BASIC had no FOR...NEXT loop.
 
+<p>
+It is difficult to provide the simplest language which is usable for some purposes and which still corresponds to some standard. Inevitably it is necessary to omit a lot which is present in advanced BASIC because it is not possible to add it all to a simple BASIC. Adding even a single seemingly simple feature can be enough to make the language not simple or not standard. Making a simple language is a matter of such delicate balance.
 <p> 
 <h2><a name='sect7' href='#toc7'>Program statements</a></h2>
 In statements, all lines must begin with a number. It
@@ -117,11 +122,12 @@ subroutine ends with RETURN </dd>
 which is the value of the expression </dd>
 
 <dt><b>IF expr THEN statement</b></dt>
+
 <dd>Executes statement if the value of the expression is not zero </dd>
 
 <dt><b>INCHAR variable</b></dt>
 <dd>Writes the code of the
-character at the current position into the variable </dd>
+character at the current location into the variable </dd>
 
 <dt><b>INPUT variable, ... variable</b></dt>
 <dd>Inputs
@@ -142,6 +148,7 @@ variables </dd>
 expr1 and column expr2, the next PRINT prints to that location </dd>
 
 <dt><b>NAP expr</b></dt>
+
 <dd>Sleeps
 the expr of milliseconds, a NAP statement should be in the main loop to give
 time for the operating system </dd>
@@ -157,21 +164,24 @@ time for the operating system </dd>
 <dd>Any text can be written after REM as a comment </dd>
 
 <dt><b>RETURN</b></dt>
-<dd>Ends the subroutine block and executes the line after the calling GOSUB statement
+<dd>Ends the subroutine block and executes the line after the calling GOSUB statement</dd>
 
-<p> </dd>
+<dt><b>SYSTEM expr1, expr2</b></dt>
+<dd>Filters the text in array starting at expr2 through the external command starting at expr1, both end with 0</dd>
+
+<p>
 </dl>
 
 <h2><a name='sect8' href='#toc8'>Interactive mode</a></h2>
-In the interactive mode you can both edit and run the program. Interactive mode is a part of the Tiny BASIC specification, so it has to be implemented in every language which is said to be Tiny BASIC. The HELP statement is added. LOAD and SAVE are also additional statements are not in the Tiny BASIC specification. Because in the early computers, they used teletypes as terminals, and so there was no difference whether the input or ouput was done with a typewriter, or with a punched tape. 
+In the interactive mode you can both edit and run the program. Interactive mode is a part of the Tiny BASIC specification, so it has to be implemented in every language which is said to be Tiny BASIC. The HELP statement is added. LOAD and SAVE are also additional statements which are not in the Tiny BASIC specification. Because in the early computers, they used teletypes as terminals, and so there was no difference whether the input or ouput was done with a typewriter, or with a punched tape. 
 <p>
 As it is the tradition of BASIC, the first character can be written instead
 of the full keyword.
 <p> When you write a line which starts with a number, then this
-is considered to be a program line and it will be added to to program to
+is considered to be a program line and it will be added to program to
 the appropriate place. When the number is the number of an existing statement,
 then this statement will be replaced with the statement which you entered.
-If the line consists only of a number with no additional text, then the
+If the line consists only of a number, then the
 statement with that number will be deleted. 
 <p> 
 <dl>
@@ -187,6 +197,7 @@ the whole program </dd>
 <dd>Lists the line </dd>
 
 <dt><b>LIST line1-line2</b></dt>
+
 <dd>Lists program
 from line1 to line2 </dd>
 
@@ -209,8 +220,9 @@ program </dd>
 </dl>
 
 <h2><a name='sect9' href='#toc9'>Variables</a></h2>
-There is no separate memory allocated for variables in tinybc, all memory remaining in the program buffer after the program can be used as data. The first 26 * 4 bytes of it is used for variables, and the rest is used for array. All the data space is filled with zeroes in the beginning of running the program, so one can consider that the initial values of all variables and array elements are 0.
+There is no separate memory allocated for variables in tinybc, all memory remaining in the program buffer after the program can be used as data. The first 26 * 4 bytes of it is used for variables, and the rest of it is used for array. All the data space is filled with zeroes in the beginning of running the program, so one can consider that the initial values of all variables and array elements are 0.
 <p>
+
 There are 26 variables, the names of
 which are the upper case letters A--Z. Variables are integers, but these are
 quite long integers with up to 10 decimal places. This enables to do real
@@ -221,7 +233,7 @@ As in Palo Alto Tiny BASIC, there is one big array named @, the size of which is
 <p> 
 <h2><a name='sect10' href='#toc10'>Expressions</a></h2>
 The order of calculations is natural (multiplications,
-etc. first). 
+etc., first). 
 <p>
 One constant named SIZE can be used in expression. This is taken from the Palo Alto Tiny BASIC. The value of that constant is the memory remaining in the program buffer, the maximum size of the @ array is thus SIZE/4.
 <p>
@@ -232,6 +244,7 @@ in the range 1 to 10:
 <p> Expressions can contain variables,
 numbers, and the following operators: 
 <p> 
+
 <dl>
 
 <dt><b>+</b></dt>
@@ -254,8 +267,9 @@ numbers, and the following operators:
 </dl>
 
 <h2><a name='sect11' href='#toc11'>Relations</a></h2>
-The elements of a relation are expressions. The relation operators can also be used in expressions, with the lowest priority. This enables the expressions like (A > B) * (A < C) , where * and + are used as and and or, correspondingly. The relation operators are the following: 
+The elements of a relation are expressions. The relation operators can also be used in expressions, with the lowest priority. This enables the expressions like (A > B) * (A < C) , where * and + are used as and and or, respectively. The relation operators are the following: 
 <p> 
+
 <dl>
 
 <dt><b>&lt;</b></dt>
@@ -268,6 +282,7 @@ The elements of a relation are expressions. The relation operators can also be u
 <dd>Greater </dd>
 
 <dt><b>&gt;=</b></dt>
+
 <dd>Greater or equal </dd>
 
 <dt><b>=</b></dt>
@@ -281,6 +296,7 @@ Not equal
 </dl>
 
 <h2><a name='sect12' href='#toc12'>Colors</a></h2>
+
 Most terminals support 8 colors, so currently 8 colors
 are allowed (colors 0--7). The combination of foreground and background color
 provided in the color statement is called a color pair. The number of color
@@ -288,10 +304,14 @@ pairs is restricted and the maximum number depends on your terminal. For
 example my terminal allows 64 color pairs. When you try to use one color
 combination more than your terminal allows, the color will not change. The
 curses colors are not the best possible and they can be re-defined in the
-code, but the curses colors are the only standard colors, so currently
+code, but they are the only standard colors, so currently
 the colors are the original curses colors. 
 <p> 
 <h2><a name='sect13' href='#toc13'>Strings</a></h2>
+Strings are sequences of characters between quotation marks in the program text. For example "Hello World!" in the following statement is a string:
+<p>
+10 PRINT "Hello World!"
+<p>
 You have to set your
 terminal encoding to IBM850, which is the MS-DOS encoding, to be able to
 print the pseudographics characters. The explanation why it is implemented
@@ -309,6 +329,7 @@ to always see the result of the program.
 <p> When the program asks for input,
 one can enter both numbers and variable names. In case of variable names,
 the corresponding input would be the value of the variable. 
+
 <p> If your program
 provides no way to exit normally, ctrl-c should do that harmlessly to the
 operating system and to the terminal (but not to your BASIC program). In
@@ -335,6 +356,7 @@ This information is verbous though, so avoid too much looping when debugging.
 LGPL <p>
 
 <hr><p>
+
 <a name='toc'><b>Table of Contents</b></a><p>
 <ul>
 <li><a name='toc0' href='#sect0'>Name</a></li>
@@ -344,6 +366,7 @@ LGPL <p>
 <li><a name='toc4' href='#sect4'>Options</a></li>
 <li><a name='toc5' href='#sect5'>Install</a></li>
 <li><a name='toc6' href='#sect6'>Language Description</a></li>
+
 <li><a name='toc7' href='#sect7'>Program statements</a></li>
 <li><a name='toc8' href='#sect8'>Interactive mode</a></li>
 <li><a name='toc9' href='#sect9'>Variables</a></li>
@@ -353,7 +376,9 @@ LGPL <p>
 <li><a name='toc13' href='#sect13'>Strings</a></li>
 <li><a name='toc14' href='#sect14'>Running</a></li>
 <li><a name='toc15' href='#sect15'>Troubleshooting</a></li>
+
 <li><a name='toc16' href='#sect16'>License</a></li>
 </ul>
 </body>
 </html>
+

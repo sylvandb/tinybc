@@ -30,8 +30,8 @@ version is the latest version of this manual.
 Starting Tiny BASIC
 -------------------
 
-So what do you need for programming in Tiny BASIC for Curses? All you
-need for that is terminal. In Linux it may be called terminal or Konsole,
+What do you need for programming in Tiny BASIC for Curses? All you
+need for that is terminal. In Linux it is called terminal or Konsole,
 in Windows it is called cmd, console or command prompt. I assume that you
 have a terminal icon on your desktop, simply run it. I also assume that
 your terminal is configured properly, like the font is large enough,
@@ -72,7 +72,7 @@ two numbers. For example L 100 prints your code starting from the line
 which begins with the number 100, L 100-200 prints all lines of your
 code between 100 and 200.
 
-If you see your code and decide that some lines must be deleted,
+If you browse your code and decide that some lines must be deleted,
 for deleting a line you simply have to write the number of that line
 after the tinybc prompt, and press Enter. To change a line which is
 already there, you can simply write another line with the same number
@@ -109,10 +109,10 @@ this program has only two lines, after executing the last line there is
 nothing more to execute and the program exits. After the program exits,
 the interpreter waits you to press any key, so always remember to press
 any key when the program ends and you want to return to the prompt. Thus
-after pressing any key the terminal screen will be cleared and you will
+after pressing any key, the terminal screen will be cleared and you will
 see the tinybc prompt again.
 
-So now you have written your first program and run it. The line which
+Now you have written your first program and run it. The line which
 starts with a number is called statement, and there are different kind of
 statements. What the PRINT statement does is that it prints everything
 which follows it, as you could guess. The text which you want to print
@@ -178,7 +178,7 @@ are places of data storage where numbers can be stored. Numbers can
 be both positive and negative. The letters A to Z denote 26 of such
 storage places. And since all the memory space which is left after your
 program is used for data storage, the rest of these storage places can
-be accessed using @(n), where n is the number of the storage place, also
+be accessed using @(n). There n is the number of the storage place, also
 called index, and @ is the symbol of the array. Thus a lot of numbers
 can be stored, and that way any data, as you soon will see. Write and
 run the following program:
@@ -194,17 +194,17 @@ variable C, which is a number, after the text "C =". So there can
 be both strings and numbers in the PRINT statement, separated by commas
 or semicolons.
 
-The statements there which contain = are called LET statements. After =
-in the LET statement there is expression. Expression there is like a
+The statements there which contain = are called LET statements. After
+= in the LET statement there is expression. Expression there is like a
 mathematical expression where the operators +. -, *. / and the function
 RND(n) can be used. These operators stand for add, subtract, multiply
-and divide, and RND(n) provides a random number 0 to one less than n,
-n there can be any expression like RND(A + B + 1). The same is true
-about array index, like @(B + 1). Parentheses can be used the same way
-as in mathematical expressions, to change the order of the mathematical
-operations. Before = in the LET statement there is lvalue, a variable
-to which the expression which follows the = will be assigned, or the
-array element to which the expression will be assigned.
+and divide, and RND(n) provides a random number 0 to one less than n.
+Instead of n there can be any expression, like RND(A + B + 1). The same
+is true about array index, like @(B + 1). Parentheses can be used the
+same way as in mathematical expressions, to change the order of the
+mathematical operations. Before = in the LET statement there is lvalue,
+a variable or array element to which the expression which follows the =
+shall be assigned.
 
 So what result shall the PRINT statement print in the example
 above? The right answer is 14, because the expression is evaluated in
@@ -215,7 +215,7 @@ in the order in which the operations occur, the answer were 20.
 
 You can safely consider that when your program starts, the values of
 all variables and array elements are 0. So now you know what variables
-are and what to do with them. Later you would know more about expressions
+are and what to do with them. Next you would know more about expressions
 and array.
 
 
@@ -239,7 +239,7 @@ the following:
 
 The value of B shall be 0 because A - 3 equals 0, and this shall be
 evaluated first. 0 is not greater than 0, so the result of the relational
-operation is 0. But even more complex calculations can be made with
+operation is 0. But even more complex calculations can be done with
 relational operators, considering that parts of the expression can be
 enclosed in parentheses. Consider the following:
 
@@ -286,10 +286,10 @@ b and c, correspondingly. To the array element 9 shall be assigned number
 table. Search google for ASCII and for IBM850 and you would see what
 number corresponds to each character.
 
-So why is all that necessary? Later you would see that assigning strings
-to array is necessary for processing text, because that way text becomes
-data the same as numbers, thus it can be processed the same way as any
-other data.
+So why is all that necessary? Later you would see that assigning
+strings to array is necessary for processing text, because that way text
+becomes data the same as numbers, thus it can be processed the same way as
+any other data. In several programming languages text is stored in arrays.
 
 Assigning many expressions and strings to array at once is useful also
 for data driven code. Data driven code means that what your code does is
@@ -309,9 +309,9 @@ statement called IF statement. The form of the IF statement is IF
 expression statement. The expression there is any expression described
 above, and statement is any statement without a preceding number.
 When the value of the expression is anything different from zero, the
-statement shall be executed the way such statement would normally be
-executed, and when the value of the expression is zero, the statement
-shall not be executed. Write and run the following program:
+statement shall be executed the way such statement shall normally be
+executed. When the value of the expression is zero, the statement shall
+not be executed. Write and run the following program:
 
 10 A = 3
 20 B = -2
@@ -320,6 +320,15 @@ shall not be executed. Write and run the following program:
 
 The text "A is a positive number" shall be printed, but the next
 text shall not be printed, because in case of B the condition is not true.
+
+To understand the importance of IF statements, consider what
+your program has to do. Many things are mostly going on in parallel,
+and it is often not possible to process them in separate parts of the
+program. So processing of them is scattered everywhere in the program,
+and if blocks take care of it, thus associating one aspect of the code
+with the other. The number of these and other associations determines
+the complexity of the code. Later it would be explained how to write
+if blocks.
 
 
 Adding comments to program
@@ -334,7 +343,7 @@ the following:
 30 GOTO 10
 
 This works exactly the same as the previous example of a loop. The
-first statement does nothing and thus every time only the text is
+first statement does nothing and thus every time only the string is
 printed. Yet it is slightly better than the previous loop example. Because
 it is good to always mark the targets of GOTO with REM statements, which
 describe the reason of the jump. In this case the reason is loop, thus the
@@ -389,10 +398,10 @@ form the for in range loop in python. The for in range loop has a loop
 variable, in this case I, provides its initial value, in this case 1,
 its final value, in this case 10 in the condition, and the step, which
 is the number by which the loop variable would be incremented in each
-iteration. In this case statement 50 provides the increment, and the step
-is 1. In python the for in range loop is one statement and the rest of
-the loop follows with an indentation, but it works exactly as the loop
-in our example. Now write the following program and run it:
+iteration. In this case the statement 50 provides the increment, and
+the step is 1. In python the for in range loop is one statement and the
+rest of the loop follows with an indentation, but it works exactly as
+the loop in this example. Now write the following program and run it:
 
 10 REM DO
 20 I = I + 1
@@ -402,8 +411,8 @@ in our example. Now write the following program and run it:
 60 REM LOOP
 
 This does exactly the same as the previous example, only in a slightly
-different way. I is not initialized, so its value in the beginning of the
-program is 0. The GOTO in the statement 40 is equivalent to the break
+different way. I is not initialized, so its value in the beginning of
+the program is 0. GOTO in the statement 40 is equivalent to the break
 statement. We can also say that the statement 50 is equivalent to the
 continue statement, though in other programming languages this jump is
 provided by the loop.
@@ -411,7 +420,7 @@ provided by the loop.
 The loops in this and in the previous example are used for different
 purposes, the difference is that when I is out of range, the loop in
 this example iterates one time, and the loop in the previous example
-does not iterate at all. In other programming languages such as python
+does not iterate at all. In other programming languages, such as python,
 there is no GOTO statement, so you have to write loops using only the
 loop statements, the continue statement and the break statement. But
 you should now know what these statements do, so switching to another
@@ -431,7 +440,7 @@ If-else blocks
 Where you also have to use GOTO statements, is in if-else blocks. These
 blocks are also provided by other programming languages, but there you
 have to implement them without GOTO, so it is important to know how they
-exactly work. Write the following program and run it:
+work. Write the following program and run it:
 
 10 N = RND(2) + 1
 20 PRINT N
@@ -445,9 +454,9 @@ exactly work. Write the following program and run it:
 Using if and else together is necessary to do either one or the other,
 but not both. The IF condition used in the example above is inverse of the
 if condition used in other programming languages for doing the same. As
-you can see, if the condition is true, we jump to the else block, but if
-it is not true, we go to the if block and in the end of it jump to the
-end of the two blocks.
+you can see, if the condition is true, we jump to the else block, but
+if it is not true, we enter the if block and in the end of it jump to
+the end of the two blocks.
 
 If-else blocks can be inside other if-else blocks. It is also possible
 to use multiple else blocks, which does almost the same as the switch
@@ -468,10 +477,10 @@ and run it:
 120 REM END IF
 
 The benefit of such chain of else blocks is that when the necessary
-operation is done, like in statement 40, a jump is made to the end of all
-blocks and no other IF statement is executed. Basically, if-else block
-is like several blocks inside a bigger block, and jump can be made from
-the end of these blocks to the end of the bigger block.
+operation is done, like in statement 40, a jump is made to the end of
+all blocks and no other IF statement is executed. Basically, if-else
+block is like several blocks inside a containing block, and jump can be
+made from the end of these blocks to the end of the containing block.
 
 In some cases it may be necessary to use flags, variables which value
 can only be 0 or 1. Set a flag when an operation is done, and later use
@@ -490,17 +499,17 @@ as games, are generally written. In such programs there is often one
 big loop, which is called game loop. The game loop is an endless loop
 which exits only when the user wants to exit. Every iteration of the
 game loop usually checks the user input, does the necessary processing,
-and then draws the next screenful of graphics which is called frame.
+and then draws the next screenful of graphics, which is called frame.
 
-In the beginning of the iteration there must be a statement named
+In the beginning of the game loop there must be a statement named
 NAP. NAP is followed by the number of milliseconds, this is the number
-of milliseconds during which the program does nothing. Providing this
-inactivity period in every iteration is necessary for two reasons. First
-it gives the operating system a time to do other things than running
-your program. Not giving that time takes too much computer resources,
-and some operating systems such as Windows would become not responsive
-when no such time is given. Second, it can be used to adjust the speed
-of the game or other program.
+of milliseconds during which the program does nothing. Providing
+this inactivity period once in every iteration is necessary for two
+reasons. First it gives the operating system a time to do other things
+than running your program. Not giving that time takes too much computer
+resources, and some operating systems such as Windows would become not
+responsive when no such time is given. Second, it can be used to adjust
+the speed of the game or other program.
 
 If it happens that the output becomes crappy, it would be good to add
 a NAP statement after every LOCATE statement. This should not happen
@@ -523,13 +532,16 @@ is the INPUT statement. Write the following program and run it:
 
 The program asks "A, B ?", after which you should write two numbers
 separated by either comma or space, and then press Enter. The numbers
-which you entered shall be assigned to variables A and B, and then the
-values of these variables shall be printed. Instead of a number you may
-also enter an upper-case letter, in that case the entered value shall
-be the value of the variable which corresponds to that letter. INPUT
-is convenient but rather restricted. Therefore Tiny BASIC for Curses
-provides two more general statements for input and output, INKEY and
-OUT. Write the following program and run it:
+which you entered shall be assigned to variables A and B, and then
+the values of these variables shall be printed. You may also enter an
+upper-case letter instead of a number, in that case the entered value
+shall be the value of the variable which corresponds to that letter. If
+you do not enter any number, the value of the input variable shall not
+change, and thus shall not be 0 unless you assign it so.
+
+INPUT is convenient but rather restricted. Therefore Tiny BASIC
+for Curses provides two more general statements for input and output,
+INKEY and OUT. Write the following program and run it:
 
 10 PRINT "Please enter your name"
 20 REM DO
@@ -549,29 +561,29 @@ OUT. Write the following program and run it:
 160 GOTO 120
 170 REM LOOP
 
-The program asks your name, you write your name, and the program prints
-your name. As you can see, in the beginning there is a loop for inputting
-the name. The loop sleeps for 10 milliseconds to not read the key code
-too often, then writes the key code to the variable K. The loop ends when
-the key was Enter. We also check the boundary of the text. If K is not a
-letter, we go to the next iteration and skip the rest of the loop. Then
-K shall be assigned to the element of the array with the current index,
-and the index I shall be incremented. The variables I and J are mostly
-used as array indexes.
+The program asks your name, you write your name followed by Enter,
+and the program prints your name. As you can see, in the beginning there
+is a loop for inputting the name. The loop sleeps for 10 milliseconds to
+not read the key code too often, then writes the key code to the variable
+K. The loop ends when the key was Enter. We also check the boundary of
+the text. If K is not a letter, we go to the next iteration and skip
+the rest of the loop. Then K shall be assigned to the element of the
+array with the current index, and the index I shall be incremented. The
+variables I and J are mostly used as array indexes.
 
 After the name is stored to the array, the program prints "Your name
 is" and starts to print the name letter by letter. As you may notice,
 the loop for that is a while loop, because it may happen that no letters
 were entered and nothing shall be done then. The letters shall be printed
-using the OUT statement which writes a character to the screen, until the
-first array element which is 0. This is how we find the end of the text,
-because no letter code is 0.
+using the OUT statement, which writes a character to the screen, until
+the first array element which is 0. This is how we find the end of the
+text, because no letter code is 0.
 
 OUT can output every character, including the pseudo graphics
 characters. In IBM850 code page there are characters for a large rectangle
 (219), lower square (220) and upper square (223), these characters enable
-to draw pseudo graphics very similar to the "graphics" which some
-old microcomputers had. There are also other pseudo graphics characters
+to draw pseudo graphics very similar to the "graphics" which some old
+microcomputers had. There are also other pseudo graphics characters
 in the IBM850 code page, such as characters for drawing boxes and
 rectangular diagrams.
 
@@ -589,14 +601,14 @@ there. It is true that variable can be used after GOTO, so that problem
 can be solved, but this is not a good way to do it.
 
 For that purpose there are subroutines, which in other programming
-languages such as python are called functions. For jumping to a
-subroutine there is GOSUB statement with a line number after GOSUB. This
-is called calling a subroutine. You can use it instead of GOTO to go
-to your repeatedly used piece of code. How it differs from GOTO is that
-the line from which the subroutine was called is remembered. And there
-is the statement RETURN which jumps back to the line next to the GOSUB
-statement of the last subroutine call. You can see how it works in the
-following example. Write the following program and run it:
+languages such as python are called functions. For jumping to a subroutine
+there is GOSUB statement with a line number after GOSUB. This is named
+calling a subroutine. You can use GOSUB instead of GOTO to go to your
+repeatedly used piece of code. How it differs from GOTO is that the line
+from which the subroutine was called, is remembered. And there is the
+statement RETURN which jumps back to the line next to the GOSUB statement
+of the last subroutine call. You can see how that works in the following
+example. Write the following program and run it:
 
 10 N = 10
 20 @(N) = "Hello World!"
@@ -618,45 +630,47 @@ following example. Write the following program and run it:
 
 This program has a subroutine which prints the sequence of characters
 stored in the array, starting from one particular element. The subroutine
-starts from the line 1000 and the start of the subroutine is marked
+starts from the line 1000, and the start of the subroutine is marked
 with REM SUBROUTINE. It starts from the line 1000 simply because it is
 easier then to change the main program and the subroutine separately,
 this of course changes when you renumber the whole program.
 
 The main program starts by assigning 10 to N. 10 is the index of the
-array element from which the text starts, and this number is always
-the same, such number is called a constant. We could as well write 10
-instead of N everywhere, but it is a good practice not to use "magic
-numbers" in the code. At least when some number is used several times,
-it is a good practice to assign that number to a variable, and then use
-that variable instead. This also makes the code much more flexible, like
+array element from which the text starts, and this number is always the
+same, such number is called constant. We could as well write 10 instead
+of N everywhere, but it is a good practice not to use "magic numbers"
+in the code. At least when some number is used several times, it is a
+good practice to assign that number to a variable, and then use that
+variable instead. This also makes the code much more flexible, like
 if we want to write texts starting from the element 100 instead of 10,
 all we have to do is to change that number in one place.
 
 The main program writes two texts using the same subroutine. You can
 see how convenient it is, now every time when we need to print a text
-from the array, we only need to call that subroutine. Before calling the
-subroutine, N is assigned to variable C. Why we have to do it is that
-in Tiny BASIC there are no local variables. Local variables are like
-a separate set of variables used in the subroutine or function only, so
-that changing these variables do not change the same variables in the main
-program. So certain variables should be used in the subroutines which are
-never used in the main program. Assigning N to C is like passing arguments
-to the subroutine, arguments are the only variables the subroutine uses
-from outside of it, and the only argument in our case is N.
+from the array, we only need to call that subroutine.
 
-In more complex cases other ways can be used to pass arguments
-to subroutine, like the first elements of the array can be used for
-that. In even more complex cases it is even possible to simulate local
-variables by storing the global variables in the array in the beginning
-of the subroutine, and retrieving them from there before returning from
-the subroutine.
+Before calling the subroutine, N is assigned to variable C. Why we
+have to do it is that in Tiny BASIC there are no local variables. Local
+variables are like a separate set of variables used in the subroutine or
+function only, so that changing these variables do not change the same
+variables in the main program. So certain variables should be used in
+the subroutines which are never used in the main program. Assigning N
+to C is like passing arguments to the subroutine, arguments are the only
+variables the subroutine uses from outside of it, and the only argument
+in our case is N.
+
+In more complex cases, other ways can be used to pass arguments to a
+subroutine and get the results from a subroutine, like the first elements
+of the array can be used for that. In even more complex cases it is even
+possible to simulate local variables by storing some global variables
+in the array in the beginning of the subroutine, and retrieving them
+from there before returning from the subroutine.
 
 As you can see, the main program ends with the END statement. Running
 the program ends after the last statement of it (other than GOTO)
 is executed. But in this example there is a subroutine after the last
-statement of the main program. So we used END statement which can exit the
-program anywhere in the program.
+statement of the main program. So we used END statement which can exit
+the program anywhere in the program.
 
 The subroutine outputs the characters in the array, until the array
 element which is 0. The PRINT statement only makes the cursor to go
@@ -675,10 +689,10 @@ Now you know enough to write many kind of programs. So you should
 know more about how to develop and debug the programs.
 
 Tiny BASIC for Curses shows errors only when it runs the program. After
-finding an error the program exits. Error messages are printed by the
-tokenizer, except the messages about the GOSUB stack, these messages mean
+finding an error, the program exits. Error messages are printed by the
+tokenizer, except the messages about the GOSUB stack. These messages mean
 that something is wrong and either too many GOSUB or RETURN statements
-were executed. The number of the program line where the error occurred
+were executed. The number of the program line where the error occurred,
 is written in every error message, so that you can browse your program
 again and find out why the error occurred on that line. It may be just
 because you made a simple writing error.
@@ -698,36 +712,37 @@ and you cannot see where it happened. The token types are the following:
 6  -- END	16 -- <=	26 -- OUT	36 -- "
 7  -- =		17 -- LET	27 -- +		37 -- THEN
 8  -- >=	18 -- Line end	28 -- PRINT	38 -- Variable
-9  -- GOSUB	19 -- LOCATE	29 -- REM
+9  -- GOSUB	19 -- LOCATE	29 -- REM       39 -- SYSTEM
 10 -- GOTO	20 -- (		30 -- RETURN
 
-All people inevitably make mistakes, especially when they make something
-so complex as programs. This is because the brain works differently
-from conventional machines, it associates things, thus doing things in
-certain sequence or order is not natural for the brain, and it cannot
-for example follow a code as faultlessly as an interpreter can do it.
+All people inevitably make mistakes, especially when they make
+something so complex as programs. The brain works differently from
+conventional machines, it associates things, thus doing things in certain
+sequence or order is not natural for the brain, and it cannot for example
+follow a code as faultlessly as an interpreter can do it.
 
 When your program does something different from what you expect, do not
-guess what it could be, but start to debug the program to see what is
-wrong. Guessing makes you to think about many possibilities, and this
-number may be huge in programming, thus trying to fix something in the
-code by guessing is extremely inefficient. The greatest peculiarity of
+guess what it could be, but start to debug the program. Guessing makes
+you to think about many possibilities, and the number of possibilities
+may be huge in programming. Thus trying to fix something in the code
+by guessing is extremely inefficient. And the greatest peculiarity of
 software compared to other kind of technology, is that one cannot see
 what happens when it works.
 
-To overcome that invisibility, that which happens have to be made
+To overcome that invisibility, that which happens has to be made
 visible. The way to make it visible is adding the so-called debug code
 to your program. Debug code is a temporary code which you insert between
-the statements. You may separate it by REM comments, like REM DEBUG
-BEGIN and REM DEBUG END, so that you can later easily remove it. This
-is not necessary if your debug code consists only of a PRINT statement,
+the statements. You may separate it by comments, like REM DEBUG BEGIN
+and REM DEBUG END, so that you can later easily remove it. This is
+not necessary when your debug code consists only of PRINT statement,
 and there is some text which you always print in debug messages.
 
 Most importantly the debug code prints the values of some variables.
 Most often it is enough to just print "here", to see whether a certain
 place in the code was reached or not. Debug code can be used for much
 more though, you can use the power of the computer against the computer,
-like by analyzing data in every step.
+like by analyzing data in every step. You can also use debug code to
+emulate a part of the code which you have not written yet.
 
 
 Color codes and key codes
@@ -751,6 +766,7 @@ codes are the following:
 
 10 -- Enter,
 27 -- Escape,
+32 -- Space,
 258 -- down arrow,
 259 -- up arrow,
 260 -- left arrow,
@@ -763,7 +779,7 @@ codes are the following:
 Screen-oriented programs
 ------------------------
 
-So far you wrote programs which worked in line mode, this is what one
+So far you wrote programs which worked in line mode. This is what one
 always learns first in the programming, but it might be a bit boring. Now
 it is a time to do something more fun. Use the character screen, let's
 bring in the colors and make things to move on the screen.
@@ -783,16 +799,16 @@ OUT statement prints. Printing changes the cursor location to the right
 of the printed text. There shall be no error when printing outside the
 screen, but nothing printed there shall be visible.
 
-There is one more character screen statement which is not often used
-but what is still important. INCHAR variable assigns the code of the
+There is one more character screen statement which is not often used,
+but which is still important. INCHAR variable assigns the code of the
 the character at the cursor location to the variable. This is important
-for example when a certain pattern of characters forms the background
-of the screen, and we want to make something to move or change on that
-background. In that case before printing any character to the screen,
-we can store the character which is at the location where we want to
-print, to a variable or to array.
+for example when a certain pattern of characters forms the background,
+and we want to make something to move or change on that background. In
+that case before printing any character to the screen, we can store the
+character which is at the location where we want to print, to a variable
+or to array.
 
-When doing so we can later remove that which we printed by restoring
+When doing so, we can later remove that which we printed, by restoring
 the characters. After that we can print again to a new location, which
 gives an impression of something moving on the background or something
 temporarily written to the background. The sprites moving on the screen
@@ -846,13 +862,66 @@ screen-oriented programs, you also know several things necessary for
 writing graphics programs.
 
 
+Executing external commands
+---------------------------
+
+There is the whole world out there, there are files, there is Internet,
+and you likely want to communicate with that all. Strictly speaking,
+this is not what the programming language for beginners should provide,
+but it was the request by the users to provide such feature, and the
+developers serve the users.
+
+Yet the users should use that feature at their own risk, as it is very
+powerful. It even enables to use Tiny BASIC for Curses for scripting,
+the other question is whether it is the best for that purpose. You cannot
+go over the array boundaries, but you may accidentally overwrite that
+which you already have in the array.
+
+The statement for that is SYSTEM expr1, expr2 . The first expression
+is the beginning of the external command in the array, and the second
+is the beginning of the text in the array, both have to be followed by
+zero. You have written commands in the terminal or console, such as ls,
+dir, etc, and executing programs from the command line. External command
+there is the text of such command line.
+
+The input of the command is taken from the text in the array, and the
+output of the command shall be written to the array, ending with zero
+and replacing the previous text. This method is called filtering though
+external command, and it is used in text editors and other programs. You
+can also use the file TMP1 in the command instead of input, for example
+copy TMP1 newfile.txt in Windows. Write the following program and run it:
+
+10 C = 100
+20 @(0) = "date", 0
+30 SYSTEM 0, C
+40 GOSUB 1000
+50 END
+1000 REM SUBROUTINE
+1010 REM DO
+1020 IF @(C) = 0 GOTO 1060
+1030 OUT @(C)
+1040 C = C + 1
+1050 GOTO 1010
+1060 REM LOOP
+1080 RETURN
+
+As you can see, we used almost the same subroutine for printing the
+text in the array, as we used in previous examples. This program prints
+the current date. But this date is the output of the external command
+named date, which you can also write in the terminal or console after
+the command prompt.
+
+
 Loading, saving and renumbering programs
 ----------------------------------------
 
 Finally more about what you can do at the command prompt. By now you
-only wrote test programs and then deleted them again. You certainly want
-to store some of your programs somewhere, so that you can later load
-them again. For that you should exit tinybc, and in the terminal go to
+only wrote test programs and then deleted them again. Well, you could
+also paste the code to tinybc prompt by right clicking the mouse on the
+terminal. But you certainly want to store some of your programs somewhere,
+so that you can later load them again.
+
+For storing files you should exit tinybc, and in the terminal go to
 the directory where you want to store your files (current directory),
 using the command cd directory_name. In Linux terminal you only have to
 write the first letters of the directory name and press TAB, this fills
@@ -884,7 +953,7 @@ myprogram.bas renumbers the program myprogram.bas so that the number of
 the first line shall be 100. Number there is the number which you want
 the first line to have, line numbers shall be incremented by 10. When
 the expression is anything other than a number after GOTO, renumbering
-shall not change that expression, so it may become wrong.
+shall not change that expression, so the expression may become wrong.
 
 
 That's all folks
@@ -903,7 +972,7 @@ you would later use for programming.
 But if you one day know all that well, you should go ahead, and likely
 the best is to learn python. Python is much more complicated than Tiny
 BASIC, especially if you want to use some graphics. But there is nothing
-very simple in real graphics and graphics alone is not yet enough. For
+very simple in real graphics, and graphics alone is not yet enough. For
 example pygame is likely the best if you want to make games, as it is
 made by programmers who had a lot of experience in game programming,
 and they knew what is really necessary for making games. But I believe
@@ -914,722 +983,33 @@ with Tiny BASIC for Curses!
 APPENDIX
 --------
 
-To show how to apply the principles described above to bigger programs,
-below is the Star Trek game ported from Palo Alto Tiny BASIC. I do not
-know how good game the Star Trek is, but this is the old game which every
-BASIC must have. Palo Alto Tiny BASIC introduced several good things
-into Tiny BASIC, but what Palo Alto Tiny BASIC allows to do, results
-in a horrible code. The game should be the same as it was in Palo Alto
-Tiny BASIC, but all I know is that I won it once, so I will be thankful
-if someone finds any bugs. Because I could not find the license of that
-code anywhere, I assume that the author of the original code is Li-Chen
-Wang, and that it has no copyright the same as Palo Alto Tiny BASIC.
+There are ten demos and games in the tinybc package. Only the classic
+BASIC games were ported, because classic games provide the basics.
 
-Global variables:
-B -- Number of Starbases
-C -- Number of casualties
-D -- Number of days left
-E -- Energy
-F -- Number of torpedoes
-H -- Number of Klingons destroyed
-K -- Number of Klingons
-N -- Number of Klingons in the quadrant
-O -- Docked to Starbase
-U, V -- Quadrant coordinates
-X, Y -- Sector coordinates
+circles.bas shows how to draw circles using an algorithm derived from
+the Bresenham's algorithm.
 
-Array offsets:
-0   -- Galaxy map 8 x 8
-       (100 * Klingons + 10 * Starbases + stars)
-64  -- Days to repair damages
-       (sr, map, lr, phaser, warp, torpedo, shield)
-71  -- Quadrant map 8 x 8
-       (0 empty, 1 Klingon, 2 Starbase, 3 star, 4 Enterprise)
-135 -- Three 6 element arrays for Klingons data
-       (energies, X coordinates, Y coordinates)
+colors.bas shows the colors.
 
-10 REM DO
-20 PRINT "Do you want a difficult game (y or n)?";
-30 GOSUB 6770
-40 Y = 2999
-50 IF A = 121 Y = 999
-60 PRINT "Stardate 3200: your mission is",
-70 REM DO
-80 K = 0
-90 B = 0
-100 D = 30
-110 I = 0
-120 REM DO
-130 IF I > 63 GOTO 220
-140 J = (RND(99) + 1) < 5
-150 B = B + J
-160 M = RND(Y) + 1
-170 M = (M < 209) + (M < 99) + (M < 49) + (M < 24) + (M < 9) + (M < 2)
-180 K = K + M
-190 @(I) = -100 * M - 10 * J - RND(8) - 1
-200 I = I + 1
-210 GOTO 120
-220 REM LOOP
-230 IF (B < 2) + (K < 4) GOTO 70
-240 REM LOOP
-250 PRINT "to destroy", K, "Klingons in 30 stardates."
-260 PRINT "There are", B, "Starbases."
-270 GOSUB 1100
-280 C = 0
-290 H = K
-300 GOSUB 6270
-310 GOSUB 6340
-320 GOSUB 870
-330 GOSUB 3230
-340 REM DO
-350 REM DO
-360 PRINT "r=Report       s=SR. sensor   l=LR. sensor"
-370 PRINT "g=Galaxy map   p=Phaser       t=Torpedo"
-380 PRINT "w=Warp engine  ***please use one of these commands***"
-390 PRINT "Captain?";
-400 GOSUB 6770
-410 IF A = 103 GOSUB 1370
-420 IF A = 108 GOSUB 1820
-430 IF A = 115 GOSUB 2100
-440 IF A = 112 GOSUB 2510
-450 IF A = 114 GOSUB 3870
-460 IF A = 119 GOSUB 4220
-470 IF A = 116 GOSUB 5130
-480 IF (A = 113) + (A = 27) A = -1
-490 IF A > 0 GOTO 350
-500 REM LOOP
-510 IF A = -1 GOTO 770
-520 GOSUB 870
-530 GOSUB 3230
-540 IF K GOTO 670
-550 PRINT "Mission accomplished."
-560 IF D < 3 PRINT "Boy, you barely made it."
-570 IF D > 5 PRINT "Good work..."
-580 IF D > 9 PRINT "Fantastic!"
-590 IF D > 13 PRINT "Unbelievable!"
-600 D = 30 - D
-610 I = H * 100 / D * 10
-620 PRINT H, "Klingons in", D, "stardates. (", I, ")"
-630 J = 100 * (C = 0) - 5 * C
-640 PRINT C, "casualties incurred. (", J, ")"
-650 PRINT "Your score:", I + J
-660 GOTO 770
-670 REM END IF
-680 IF D >= 0 GOTO 710
-690 PRINT "It's too late, the federation has been conquered."
-700 GOTO 770
-710 REM END IF
-720 IF E >= 0 GOTO 750
-730 PRINT "Enterprise destroyed"
-740 IF H - K > 9 PRINT "But you were a good man"
-750 REM END IF
-760 GOTO 340
-770 REM LOOP
-780 Y = 987
-790 PRINT
-800 PRINT "Another game (y or n)?";
-810 GOSUB 6770
-820 IF A = 121 GOTO 10
-830 REM LOOP
-840 PRINT "Good bye."
-850 END
-860 REM
-870 REM SUBROUTINE docking
-880 I = X - (X > 1)
-890 REM DO
-900 IF I > X + (X < 8) GOTO 1010
-910 J = Y - (Y > 1)
-920 REM DO
-930 IF J > Y + (Y < 8) GOTO 970
-940 IF @(8 * I + J + 62) = 2 GOTO 970
-950 J = J + 1
-960 GOTO 920
-970 REM LOOP
-980 IF @(8 * I + J + 62) = 2 GOTO 1010
-990 I = I + 1
-1000 GOTO 890
-1010 REM LOOP
-1020 IF @(8 * I + J + 62) = 2 GOTO 1050
-1030 O = 0
-1040 RETURN
-1050 REM END IF
-1060 IF O = 0 PRINT "Sulu: 'Captain, we are docked at Starbase.'"
-1070 GOSUB 1100
-1080 RETURN
-1090 REM
-1100 REM SUBROUTINE restore and repair
-1110 E = 4000
-1120 F = 10
-1130 O = 1
-1140 I = 64
-1150 REM DO
-1160 IF I > 70 GOTO 1200
-1170 @(I) = 0
-1180 I = I + 1
-1190 GOTO 1150
-1200 REM LOOP
-1210 RETURN
-1220 REM
-1230 REM SUBROUTINE assign random sector
-1240 REM DO
-1250 S = RND(8) + 1
-1260 T = RND(8) + 1
-1270 A = 8 * S + T + 62
-1280 IF @(A) GOTO 1240
-1290 REM LOOP
-1300 @(A) = I
-1310 RETURN
-1320 REM
-1330 REM SUBROUTINE enterprise location
-1340 PRINT "Enterprise in q-", U; ","; V, " s-", X; ","; Y
-1350 RETURN
-1360 REM
-1370 REM SUBROUTINE map
-1380 A = 1
-1390 GOSUB 1330
-1400 J = 2
-1410 GOSUB 3740
-1420 IF I RETURN
-1430 PRINT "of galaxy map";
-1440 I = 0
-1450 REM DO
-1460 IF I > 7 GOTO 1600
-1470 PRINT
-1480 PRINT I + 1; ":",
-1490 J = 0
-1500 REM DO
-1510 IF J > 7 GOTO 1570
-1520 M = @(8 * I + J)
-1530 M = (M > 0) * M
-1540 PRINT M / 100; M / 10 - M / 100 * 10; M - M / 10 * 10,
-1550 J = J + 1
-1560 GOTO 1500
-1570 REM LOOP
-1580 I = I + 1
-1590 GOTO 1450
-1600 REM LOOP
-1610 PRINT
-1620 PRINT "  ",
-1630 I = 0
-1640 REM DO
-1650 IF I > 7 GOTO 1690
-1660 PRINT "...",
-1670 I = I + 1
-1680 GOTO 1640
-1690 REM LOOP
-1700 PRINT
-1710 PRINT "   ",
-1720 I = 1
-1730 REM DO
-1740 IF I > 8 GOTO 1780
-1750 PRINT I, " ",
-1760 I = I + 1
-1770 GOTO 1730
-1780 REM LOOP
-1790 PRINT
-1800 RETURN
-1810 REM
-1820 REM SUBROUTINE lr
-1830 GOSUB 1330
-1840 J = 3
-1850 GOSUB 3740
-1860 IF I RETURN
-1870 PRINT
-1880 I = U - 1
-1890 REM DO
-1900 IF I > U + 1 GOTO 2060
-1910 J = V - 1
-1920 REM DO
-1930 IF J > V + 1 GOTO 2020
-1940 M = 8 * I + J - 9
-1950 A = 0
-1960 IF (I > 0) * (I < 9) * (J > 0) * (J < 9) A = @(M)
-1970 IF A < 0 A = -A
-1980 @(M) = A
-1990 PRINT A / 100; A / 10 - A / 100 * 10; A - A / 10 * 10,
-2000 J = J + 1
-2010 GOTO 1920
-2020 REM LOOP
-2030 PRINT
-2040 I = I + 1
-2050 GOTO 1890
-2060 REM LOOP
-2070 A = 1
-2080 RETURN
-2090 REM
-2100 REM SUBROUTINE sr
-2110 A = 1
-2120 GOSUB 1330
-2130 J = 1
-2140 GOSUB 3740
-2150 IF I RETURN
-2160 M = 8 * U + V - 9
-2170 IF @(M) < 0 @(M) = -@(M)
-2180 PRINT
-2190 I = 1
-2200 REM DO
-2210 IF I > 8 GOTO 2390
-2220 PRINT I,
-2230 J = 1
-2240 REM DO
-2250 IF J > 8 GOTO 2350
-2260 M = @(8 * I + J + 62)
-2270 IF M = 0 PRINT " .",
-2280 IF M = 1 PRINT " K",
-2290 IF M = 2 PRINT " B",
-2300 IF M = 3 PRINT " *",
-2310 IF M = 4 PRINT " E",
-2320 IF (M < 0) + (M > 4) PRINT " ?",
-2330 J = J + 1
-2340 GOTO 2240
-2350 REM LOOP
-2360 PRINT
-2370 I = I + 1
-2380 GOTO 2200
-2390 REM LOOP
-2400 PRINT "  ",
-2410 I = 1
-2420 REM DO
-2430 IF I > 8 GOTO 2470
-2440 PRINT I; " ",
-2450 I = I + 1
-2460 GOTO 2420
-2470 REM LOOP
-2480 PRINT
-2490 RETURN
-2500 REM
-2510 REM SUBROUTINE phaser
-2520 J = 4
-2530 A = 1
-2540 GOSUB 3740
-2550 IF I RETURN
-2560 PRINT "energized. Units to fire";
-2570 INPUT A
-2580 IF A >= 1 GOTO 2610
-2590 A = 1
-2600 RETURN
-2610 REM END IF
-2620 IF A <= E GOTO 2660
-2630 PRINT "Spock: 'We have only", E, "units.'"
-2640 A = 1
-2650 RETURN
-2660 REM END IF
-2670 E = E - A
-2680 IF N >= 1 GOTO 2720
-2690 PRINT "Phaser fired at empty space."
-2700 A = 0
-2710 RETURN
-2720 REM END IF
-2730 A = A / N
-2740 M = 135
-2750 REM DO
-2760 IF M > 140 GOTO 2860
-2770 IF @(M) GOTO 2800
-2780 M = M + 1
-2790 GOTO 2750
-2800 REM END IF
-2810 GOSUB 2900
-2820 PRINT S, "units hit",
-2830 GOSUB 3030
-2840 M = M + 1
-2850 GOTO 2750
-2860 REM LOOP
-2870 A = 0
-2880 RETURN
-2890 REM
-2900 REM SUBROUTINE shield damage
-2910 IF A <= 1090 GOTO 2970
-2920 PRINT "...overloaded..."
-2930 J = 4
-2940 @(67) = 1
-2950 A = 9
-2960 GOSUB 3740
-2970 REM END IF
-2980 I = @(M + 6) -  X
-2990 J = @(M + 12) - Y
-3000 S = A * 30 / (30 + I * I + J * J) + 1
-3010 RETURN
-3020 REM
-3030 REM SUBROUTINE hit klingon
-3040 PRINT "Klingon at s-", @(M + 6); ","; @(M + 12),
-3050 @(M) = @(M) - S
-3060 IF @(M) <= 0 GOTO 3090
-3070 PRINT "**damaged**"
-3080 RETURN
-3090 REM END IF
-3100 @(M) = 0
-3110 I = 8 * U + V - 9
-3120 J = 0
-3130 IF @(I) > 0 J = 1
-3140 IF @(I) < 0 J = -1
-3150 @(I) = @(I) - 100 * J
-3160 K = K - 1
-3170 I = 8 * @(M + 6) + @(M + 12) + 62
-3180 @(I) = 0
-3190 N = N - 1
-3200 PRINT "***destroyed***"
-3210 RETURN
-3220 REM
-3230 REM SUBROUTINE klingon attack
-3240 A = 1
-3250 IF N = 0 RETURN
-3260 PRINT "Klingon attack"
-3270 IF O = 0 GOTO 3300
-3280 PRINT "Starbase protects Enterprise"
-3290 RETURN
-3300 REM END IF
-3310 T = 0
-3320 M = 135
-3330 REM DO
-3340 IF M > 140 GOTO 3470
-3350 IF @(M) GOTO 3380
-3360 M = M + 1
-3370 GOTO 3330
-3380 REM END IF
-3390 A = (@(M) + RND(@(M)) + 1) / 2
-3400 GOSUB 2900
-3410 T = T + S
-3420 I = @(M + 6)
-3430 J = @(M + 12)
-3440 PRINT S, "units hit from Klingon at s-", I; ","; J
-3450 M = M + 1
-3460 GOTO 3330
-3470 REM LOOP
-3480 E = E - T
-3490 IF E > 0 GOTO 3520
-3500 PRINT "*** bang ***"
-3510 RETURN
-3520 REM END IF
-3530 PRINT E, "units of energy left."
-3540 IF RND(E / 4) + 1 > T RETURN
-3550 GOSUB 3590
-3560 A = 1
-3570 RETURN
-3580 REM
-3590 REM SUBROUTINE random damages
-3600 IF @(70) GOTO 3650
-3610 @(70) = RND(T / 50 + 1) + 1
-3620 J = 7
-3630 GOSUB 3740
-3640 RETURN
-3650 REM END IF
-3660 J = RND(6) + 1
-3670 @(J + 63) = RND(T / 99 + 1) + 1 + @(J + 63)
-3680 I = RND(8) + 2
-3690 C = C + I
-3700 PRINT "McCoy: 'Sickbay to bridge, we suffered", I, "casualties.'"
-3710 GOSUB 3740
-3720 RETURN
-3730 REM
-3740 REM SUBROUTINE print damage
-3750 I = @(J + 63)
-3760 IF J = 1 PRINT "Short range sensor",
-3770 IF J = 2 PRINT "Computer display",
-3780 IF J = 3 PRINT "Long range sensor",
-3790 IF J = 4 PRINT "Phaser",
-3800 IF J = 5 PRINT "Warp engine",
-3810 IF J = 6 PRINT "Photon torpedo tubes",
-3820 IF J = 7 PRINT "Shield",
-3830 IF I = 0 RETURN
-3840 PRINT "damaged,", I, "stardates estimated for repair"
-3850 RETURN
-3860 REM
-3870 REM SUBROUTINE report
-3880 A = 1
-3890 PRINT "Status report:"
-3900 PRINT "Stardate", 3230 - D
-3910 PRINT "Time left", D
-3920 PRINT "Condition     ",
-3930 IF O = 0 GOTO 3960
-3940 PRINT "Docked"
-3950 GOTO 4060
-3960 REM ELSE
-3970 IF N = 0 GOTO 4000
-3980 PRINT "Red"
-3990 GOTO 4060
-4000 REM ELSE
-4010 IF E >= 999 GOTO 4040
-4020 PRINT "Yellow"
-4030 GOTO 4060
-4040 REM ELSE
-4050 PRINT "Green"
-4060 REM END IF
-4070 PRINT "Position       q-", U; ","; V, " s-", X; ","; Y
-4080 PRINT "Energy", E
-4090 PRINT "Torpedoes", F
-4100 PRINT "Klingons left", K
-4110 PRINT "Starbases", B
-4120 J = 1
-4130 REM DO
-4140 IF J > 7 GOTO 4180
-4150 IF @(J + 63) GOSUB 3740
-4160 J = J + 1
-4170 GOTO 4130
-4180 REM LOOP
-4190 A = 1
-4200 RETURN
-4210 REM
-4220 REM SUBROUTINE warp
-4230 J = 5
-4240 A = 1
-4250 GOSUB 3740
-4260 IF I = 0 PRINT
-4270 REM DO
-4280 PRINT "Sector distance";
-4290 INPUT W
-4300 A = 1
-4310 IF W < 1 RETURN
-4320 IF I * (W > 2) = 0 GOTO 4350
-4330 PRINT "Chekov: 'We can try 2 at most, sir.'"
-4340 GOTO 4270
-4350 REM END IF
-4360 REM LOOP
-4370 IF W <= 91 GOTO 4400
-4380 W = 91
-4390 PRINT "Spock: 'Are you sure, Captain?'"
-4400 REM END IF
-4410 IF E >= W * W / 2 GOTO 4440
-4420 PRINT "Scotty: 'Sir, we do not have the energy.'"
-4430 RETURN
-4440 REM END IF
-4450 GOSUB 5950
-4460 A = 1
-4470 IF R = 0 RETURN
-4480 D = D - 1
-4490 E = E - W * W / 2
-4500 @(8 * X + Y + 62) = 0
-4510 M = 64
-4520 REM DO
-4530 IF M > 70 GOTO 4570
-4540 @(M) = (@(M) - 1) * (@(M) > 0)
-4550 M = M + 1
-4560 GOTO 4520
-4570 REM LOOP
-4580 P = 45 * X + 22
-4590 G = 45 * Y + 22
-4600 W = 45 * W
-4610 M = 1
-4620 REM DO
-4630 IF M > 8 GOTO 4810
-4640 W = W - R
-4650 IF W >= -22 GOTO 4700
-4660 @(8 * X + Y + 62) = 4
-4670 A = 0
-4680 GOSUB 1330
-4690 RETURN
-4700 REM END IF
-4710 P = P + S
-4720 G = G + T
-4730 I = P / 45
-4740 J = G / 45
-4750 IF (I < 1) + (I > 8) + (J < 1) + (J > 8) GOTO 4810
-4760 IF @(8 * I + J + 62) GOTO 4810
-4770 X = I
-4780 Y = J
-4790 M = M + 1
-4800 GOTO 4620
-4810 REM LOOP
-4820 IF @(8 * I + J + 62) = 0 GOTO 4890
-4830 PRINT "**Emergency stop**"
-4840 PRINT "Spock: 'To err is human.'"
-4850 @(8 * X + Y + 62) = 4
-4860 GOSUB 1330
-4870 A = 0
-4880 RETURN
-4890 REM END IF
-4900 P = U * 72 + P / 5 + W / 5 * S / R - 9
-4910 U = P / 72
-4920 G = V * 72 + G / 5 + W / 5 * T / R - 9
-4930 V = G / 72
-4940 IF RND(9) + 1 >= 2 GOTO 4980
-4950 PRINT "***Space storm***"
-4960 T = 100
-4970 GOSUB 3590
-4980 REM END IF
-4990 IF (U < 1) + (U > 8) + (V < 1) + (V > 8) GOTO 5050
-5000 X = (P + 9 - 72 * U) / 9
-5010 Y = (G + 9 - 72 * V) / 9
-5020 GOSUB 6340
-5030 A = 1
-5040 RETURN
-5050 REM END IF
-5060 PRINT "**You wandered outside the galaxy**"
-5070 PRINT "On board computer takes over, and saved your life"
-5080 GOSUB 6270
-5090 GOSUB 6340
-5100 A = 1
-5110 RETURN
-5120 REM
-5130 REM SUBROUTINE torpedo
-5140 J = 6
-5150 A = 1
-5160 GOSUB 3740
-5170 IF I RETURN
-5180 IF F GOTO 5210
-5190 PRINT "empty"
-5200 RETURN
-5210 REM END IF
-5220 PRINT "loaded"
-5230 GOSUB 5950
-5240 IF R = 0 RETURN
-5250 PRINT "Torpedo track",
-5260 F = F - 1
-5270 P = 45 * X + 22
-5280 G = 45 * Y + 22
-5290 M = 1
-5300 REM DO
-5310 IF M > 8 GOTO 5900
-5320 P = P + S
-5330 G = G + T
-5340 I = P / 45
-5350 J = G / 45
-5360 IF (I < 1) + (I > 8) + (J < 1) + (J > 8) GOTO 5900
-5370 L = 8 * I + J + 62
-5380 W = 8 * U + V - 9
-5390 R = 0
-5400 IF @(W) > 0 R = 1
-5410 IF @(W) < 0 R = -1
-5420 PRINT I; ","; J, " ",
-5430 A = 0
-5440 IF @(L) <> 0 GOTO 5470
-5450 M = M + 1
-5460 GOTO 5300
-5470 REM END IF
-5480 IF @(L) <> 1 GOTO 5590
-5490 S = RND(99) + 1 + 280
-5500 M = 135
-5510 REM DO
-5520 IF M > 140 GOTO 5560
-5530 IF (@(M + 6) = I) * (@(M + 12) = J) GOSUB 3030
-5540 M = M + 1
-5550 GOTO 5510
-5560 REM LOOP
-5570 A = 0
-5580 RETURN
-5590 REM END IF
-5600 IF @(L) <> 2 GOTO 5680
-5610 B = B - 1
-5620 @(L) = 0
-5630 @(W) = @(W) - 10 * R
-5640 PRINT "Starbase destroyed"
-5650 PRINT "Spock: 'I often find human behaviour fascinating.'"
-5660 A = 0
-5670 RETURN
-5680 REM END IF
-5690 IF @(L) <> 3 GOTO 5880
-5700 PRINT "Hit a star"
-5710 IF RND(9) + 1 >= 3 GOTO 5750
-5720 PRINT "Torpedo absorbed"
-5730 A = 0
-5740 RETURN
-5750 REM END IF
-5760 @(L) = 0
-5770 @(W) = @(W) - R
-5780 IF RND(9) + 1 >= 6 GOTO 5820
-5790 PRINT "Star destroyed"
-5800 A = 0
-5810 RETURN
-5820 REM END IF
-5830 T = 300
-5840 PRINT "It novas ***radiation alarm***"
-5850 GOSUB 3590
-5860 A = 0
-5870 RETURN
-5880 REM END IF
-5890 GOTO 5300
-5900 REM LOOP
-5910 PRINT "...missed"
-5920 A = 0
-5930 RETURN
-5940 REM
-5950 REM SUBRROUTINE course
-5960 PRINT "Course (0-360)";
-5970 INPUT I
-5980 IF (I <= 360) + (I >= 0) GOTO 6010
-5990 R = 0
-6000 RETURN
-6010 REM END IF
-6020 S = (I + 45) / 90
-6030 I = I - S * 90
-6040 R = (45 + I * I) / 110 + 45
-6050 IF S > 3 S = 0
-6060 IF S <> 0 GOTO 6100
-6070 S = -45
-6080 T = I
-6090 RETURN
-6100 REM END IF
-6110 IF S <> 1 GOTO 6150
-6120 S = I
-6130 T = 45
-6140 RETURN
-6150 REM END IF
-6160 IF S <> 2 GOTO 6200
-6170 S = 45
-6180 T = -I
-6190 RETURN
-6200 REM END IF
-6210 IF S <> 3 GOTO 6250
-6220 S = -I
-6230 T = -45
-6240 RETURN
-6250 REM END IF
-6260 REM
-6270 REM SUBROUTINE random location
-6280 U = RND(8) + 1
-6290 V = RND(8) + 1
-6300 X = RND(8) + 1
-6310 Y = RND(8) + 1
-6320 RETURN
-6330 REM
-6340 REM SUBROUTINE init quadrant
-6350 I = 71
-6360 REM DO
-6370 IF I > 152 GOTO 6410
-6380 @(I) = 0
-6390 I = I + 1
-6400 GOTO 6360
-6410 REM LOOP
-6420 @(8 * X + Y + 62) = 4
-6430 M = @(8 * U + V - 9)
-6440 IF M < 0 M = -M
-6450 N = M / 100
-6460 I = 1
-6470 IF N = 0 GOTO 6580
-6480 J = 1
-6490 REM DO
-6500 IF J > N GOTO 6570
-6510 GOSUB 1230
-6520 @(J + 134) = 300
-6530 @(J + 140) = S
-6540 @(J + 146) = T
-6550 J = J + 1
-6560 GOTO 6490
-6570 REM LOOP
-6580 REM END IF
-6590 GOSUB 1330
-6600 M = M - 100 * N
-6610 I = 2
-6620 IF M / 10 GOSUB 1230
-6630 M = M - M / 10 * 10
-6640 I = 3
-6650 IF M = 0 GOTO 6730
-6660 J = 1
-6670 REM DO
-6680 IF J > M GOTO 6720
-6690 GOSUB 1230
-6700 J = J + 1
-6710 GOTO 6670
-6720 REM LOOP
-6730 REM END IF
-6740 A = 1
-6750 RETURN
-6760 REM
-6770 REM SUBROUTINE input
-6780 REM DO
-6790 INKEY A
-6800 NAP 10
-6810 IF A = -1 GOTO 6780
-6820 REM LOOP
-6830 PRINT
-6840 RETURN
+euphoria.bas shows that the programs written in the Tom Pittman's
+Tiny BASIC run without changes, it is a verbatim copy of such program.
+
+gunner.bas is a port of the old game named Gunner, it calculates sine
+and cosine using the Ptolemy's method.
+
+lunar.bas is a port of the old game named Lunar Lander, it calculates
+square root using the Babylonian method.
+
+plot.bas is a port of the classic demo 3D Plot, it calculates both
+sine and square root.
+
+random.bas is the first demo of the Tom Pittman's Tiny BASIC.
+
+sine.bas is a port of the classic David Ahl demo, it calculates sine.
+
+stars.bas is a version of the game which was played on the first
+microcomputers, using only the lights and switches on the front panel.
+
+startrek.bas is a port of the old game Star Trek, it shows many things
+which you would need for writing bigger programs, such as using array.
 

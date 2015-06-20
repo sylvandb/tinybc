@@ -27,6 +27,7 @@
 #define MAX_FOR_DEPTH 100
 #define MAX_GOSUB_DEPTH 100
 #define MAX_VARIND 26
+#define MAX_STRLEN FILENAME_MAX
 
 struct cttype {
 	int colorpairs[MAX_COLOR][MAX_COLOR]; /* Added */
